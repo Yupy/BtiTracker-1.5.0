@@ -38,6 +38,9 @@ require_once("$CURRENTPATH/smilies.php");
 require_once("$CURRENTPATH/defines.php");
 //Fetch classes
 require_once("classes/class.Captcha.php");
+require_once("classes/class.Memcache.php");
+
+$Memcached = new Memcached();
 
 // default for disabling DHT network
 if (!isset($DHT_PRIVATE))

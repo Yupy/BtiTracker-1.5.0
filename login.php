@@ -60,7 +60,7 @@ else $pwd='';
     logincookie($row["id"], $salted);
 
     if (isset($_GET["returnto"]))
-       $url=urldecode($_GET["returnto"]);
+       $url=htmlsafechars(urldecode($_GET["returnto"]));
     else
         $url="index.php";
 
@@ -77,7 +77,7 @@ else $pwd='';
 else {
 
   if (isset($_GET["returnto"]))
-     $url=urldecode($_GET["returnto"]);
+     $url=htmlsafechars(urldecode($_GET["returnto"]));
   else
       $url="index.php";
 

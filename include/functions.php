@@ -759,15 +759,19 @@ function style_list()
 }
 
 function language_list()
-         {
+{
+    global $Memcached;
 
-         $ret = array();
-         $res = run_query("SELECT * FROM language ORDER BY language");
+    $Key = 'Languagelist::';
+ if (($ret = $Memcached->get_value($Key)) == false) {
+    $ret = array();
+    $res = run_query("SELECT * FROM language ORDER BY language");
 
-         while ($row = mysqli_fetch_array($res))
-             $ret[] = $row;
-
-         return $ret;
+     while ($row = mysqli_fetch_array($res))
+        $ret[] = $row;
+    $Memcached->cache_value($Key, $ret, 30 * 86400);
+    }
+    return $ret;
 }
 
 function flag_list($with_unknown=false)

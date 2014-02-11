@@ -156,6 +156,9 @@ if (!isset($array["announce"]))
 
       $status = makeTorrent($hash, true);
       quickQuery($query);
+      
+      $Memcached->delete_value("torrent_count::");
+      
       if ($status)
          {
          move_uploaded_file($_FILES["torrent"]["tmp_name"] , $TORRENTSDIR . "/" . $hash . ".btf") or die(ERR_MOVING_TORR);

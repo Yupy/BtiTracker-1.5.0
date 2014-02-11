@@ -122,6 +122,13 @@ function run_query($query)
     return $result;
 }
 
+function mysqli_result($res, $row, $field = 0)
+{ 
+    $res->data_seek($row); 
+    $datarow = $res->fetch_array(); 
+    return $datarow[$field]; 
+}
+
 #========================================
 #getAgent function by deliopoulos
 #========================================

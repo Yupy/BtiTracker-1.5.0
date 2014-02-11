@@ -258,7 +258,7 @@ if (!validusername($wantusername))
 <b>You will also need the following information that your webhost can provide:</b><br>
 MYSQL 5.x.x or greater.<br>
 PHP version 5.3 or greater.<br>
-The Apache webserver version 3 or similar webservers<br>
+The Apache webserver version 2 or similar webservers<br>
 The ability to change directory permissions to 777 or to change ownership of directories to be owned by the webserver process.<br><br>
 <br />
 <br />

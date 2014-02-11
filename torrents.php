@@ -112,12 +112,16 @@ if (isset($_GET["search"])) {
 // FINE RICERCA
 
 // conteggio dei torrents...
-
+$where_key = "torrent_count::";
+ if (($count = $Memcached->get_value($where_key)) == false) {
 $res = run_query("SELECT COUNT(*) FROM summary LEFT JOIN namemap ON summary.info_hash = namemap.info_hash $where")
         or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
 $row = mysqli_fetch_row($res);
 $count = $row[0];
+$Memcached->cache_value($where_key, $count, 3600); //Expire Time = 3600 secs
+}
+
 if (!isset($search)) $search = "";
 
 if ($count) {

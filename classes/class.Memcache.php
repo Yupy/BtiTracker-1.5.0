@@ -11,9 +11,7 @@
     protected $Part = 0;
        
     function __construct() {
-	    require_once('functions/function_config.php');
-		global $config;
-        $this->connect($config['memcache_ip'], $config['memcache_port']); // Host...
+        $this->connect('127.0.0.1', '11211'); // Host...
     }
 
     public function cache_value($Key, $Value, $Duration=2592000) {

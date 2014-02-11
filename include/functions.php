@@ -743,15 +743,19 @@ function sub_cat($sub)
 }
 
 function style_list()
-         {
+{
+    global $Memcached;
 
-         $ret = array();
-         $res = run_query("SELECT * FROM style ORDER BY id");
+    $Key = 'Stylelist::';
+ if (($ret = $Memcached->get_value($Key)) == false) {
+    $ret = array();
+    $res = run_query("SELECT * FROM style ORDER BY id");
 
-         while ($row = mysqli_fetch_array($res))
-             $ret[] = $row;
-
-         return $ret;
+    while ($row = mysqli_fetch_array($res))
+        $ret[] = $row;
+    $Memcached->cache_value($Key, $ret, 30 * 86400);
+    }
+    return $ret;
 }
 
 function language_list()

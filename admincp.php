@@ -488,6 +488,7 @@ else
                    }
                    run_query("INSERT INTO categories SET name='$name', sub='$sub', sort_index='$sort', image='$img'") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
                    $Memcached->delete_value("Genrelist::");
+                   $Memcached->delete_value("Subcat::");
                 }
                 redirect("admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=category&action=read");
             }
@@ -579,6 +580,7 @@ else
 
                    run_query("UPDATE categories SET name='$name', sub='$sub', sort_index='$sort', image='$img' WHERE id=$id") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
                    $Memcached->delete_value("Genrelist::");
+                   $Memcached->delete_value("Subcat::");
                 }
                 redirect("admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=category&action=read");
             }

@@ -1,0 +1,148 @@
+body {
+    font-family: "tahoma", "arial", "helvetica", "sans-serif";
+    font-size: 8pt;
+    background-color: #1F1B1B;
+    scrollbar-face-color: #4E5559;
+    scrollbar-highlight-color: #A3A3A3;
+    scrollbar-shadow-color: #000000;
+    scrollbar-3dlight-color: #000000;
+    scrollbar-arrow-color:  #A3A3A3;
+    scrollbar-track-color: #000000;
+    scrollbar-darkshadow-color: #000000;
+    color: #EFEFEF;
+}
+a:link,a:active,a:visited { color : #FFC000; }
+a:hover        { text-decoration: underline; color : #FF8000; }
+
+h1 {
+    font-size: 12pt;
+}
+
+p {
+    font-size: 10pt;
+}
+
+
+table.lista {
+    background-color: #87898A;
+    border: 1px #F6F6F6 solid;
+}
+
+td.block {
+         border:1px solid #FFFFFF;
+         background-color: #000000;
+         background-image:url(block_back.gif);
+         padding:0px;
+         margin:0px;
+         font-size: 12pt;
+         color: #FFFFFF;
+}
+
+td.blocklist {
+         background-color: #4D5157;
+         padding:2px;
+         margin:1px;
+         font-size: 8pt;
+         font-weight: bold;
+         color: #DEDEDE;
+}
+
+td.lista {
+    background-color:#626369;
+    color : #FFC000;
+    font-size: 8pt;
+}
+
+td {
+}
+
+td.header {
+           font-weight:bold;
+           color:#FFC000;
+           padding:7px;
+           margin:0px;
+           background-color: #000000;
+           background-image: url(header_back.gif);
+}
+
+td.title {
+    font-size: 8pt;
+}
+
+td.navigation {
+    background-color: #FAFCFE;
+    font-weight: bold;
+    font-size: 8pt;
+}
+
+form {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.sublink {
+    font-style: italic;
+    font-size: 7pt;
+    font-weight: normal;
+}
+
+a.index {
+    font-weight: bold;
+}
+
+a.biglink {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+.important {
+    font-weight: bold;
+    font-size: 10pt;
+}
+
+td.red {
+    background-color:#797B7C;
+    color: red;
+}
+
+td.yellow {
+    background-color:#797B7C;
+    color: #EEEE20;
+}
+
+td.green {
+    background-color:#797B7C;
+    color: #00DD00;
+}
+
+td.progress {
+    padding: 0px;
+    background-image: url(backprogress.gif);
+    background-repeat: repeat-x;
+    height: 10px;
+}
+
+td.red a:link {
+    color: red;
+}
+td.red a:visited {
+    color: red;
+}
+
+td.yellow a:link {
+    color: #EEEE20;
+}
+td.yellow a:visited {
+    color: #EEEE20;
+}
+
+td.green a:link {
+    color: #00DD00;
+}
+
+td.green a:visited {
+    color: #00DD00;
+}
+li{
+list-style-position:inside;
+} 

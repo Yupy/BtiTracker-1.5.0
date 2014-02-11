@@ -52,7 +52,7 @@ $dbuser = "root";
 $dbpass = "fgghg";
 $database = "btit";
 //Tracker's name
-$SITENAME="BtitTracker 1.4.9";
+$SITENAME="BtitTracker 1.5.0";
 //Tracker's Base URL
 $BASEURL="http://localhost";
 // tracker's announce urls, can be more than one

@@ -36,30 +36,10 @@ function verifyHash($input)
 // IP Validation
 function validip($ip)
 {
-    if (!empty($ip) && $ip==long2ip(ip2long($ip)))
-    {
-        // reserved IANA IPv4 addresses
-        // http://www.iana.org/assignments/ipv4-address-space
-        $reserved_ips = array (
-                array('0.0.0.0','2.255.255.255'),
-                array('10.0.0.0','10.255.255.255'),
-                array('127.0.0.0','127.255.255.255'),
-                array('169.254.0.0','169.254.255.255'),
-                array('172.16.0.0','172.31.255.255'),
-                array('192.0.2.0','192.0.2.255'),
-                array('192.168.0.0','192.168.255.255'),
-                array('255.255.255.0','255.255.255.255')
-        );
-
-        foreach ($reserved_ips as $r)
-        {
-                $min = ip2long($r[0]);
-                $max = ip2long($r[1]);
-                if ((ip2long($ip) >= $min) && (ip2long($ip) <= $max)) return false;
-        }
-        return true;
-    }
-    else return false;
+    return filter_var($ip, FILTER_VALIDATE_IP, array(
+        'flags' => FILTER_FLAG_NO_PRIV_RANGE,
+        FILTER_FLAG_NO_RES_RANGE
+    )) ? true : false;
 }
 
 // Patched function to detect REAL IP address if it's valid

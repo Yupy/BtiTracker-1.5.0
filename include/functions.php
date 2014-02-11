@@ -1273,7 +1273,9 @@ function print_users()
                 print("<td class=\"header\" align=\"center\">".DELETE."</td>");
          else print ("</tr>");
 
+         $query="select prefixcolor, suffixcolor, users.id, downloaded,uploaded, IF(downloaded>0,uploaded/downloaded,0) as ratio, username,level,UNIX_TIMESTAMP(joined) AS joined,UNIX_TIMESTAMP(lastconnect) AS lastconnect, flag, flagpic, name FROM users INNER JOIN users_level ON users.id_level=users_level.id LEFT JOIN countries ON users.flag=countries.id WHERE users.id>1 $where ORDER BY $order $by $limit";
          $rusers=run_query($query);
+         
          if (mysqli_num_rows($rusers)==0)
             // flag hack
             print("<tr><td class=lista colspan=9>".NO_USERS_FOUND."</td></tr>");

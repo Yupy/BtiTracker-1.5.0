@@ -10,6 +10,8 @@ Added new function run_query()
 Added new function mysqli_result()
 Changed all mysql_query to run_query
 Added new file class.Memcache.php
+Changed function validip()
+Added faster function getip()
 
 
 Btit Tracker v.1.4.9 

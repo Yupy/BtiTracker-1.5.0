@@ -378,6 +378,9 @@ else
                  fclose($fd);
                  @chmod("include/config.php",0744);
                  run_query("UPDATE users SET language=$_POST[default_langue], style=$_POST[default_style] WHERE id_level=1");
+                 
+                 $Memcached->delete_value("Languagelist::");
+                 
                  print(CONFIG_SAVED);
                  redirect("admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]);
                  exit;
@@ -1154,6 +1157,7 @@ else
              if(unlink("$lang")){
                     run_query("UPDATE users SET language=$DEFAULT_LANGUAGE WHERE language=$id");
                     run_query("DELETE FROM language WHERE id=$id") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+                    $Memcached->delete_value("Languagelist::");
                 }
              else err_msg(ERROR,DELFAILED);
                    }

@@ -1050,21 +1050,23 @@ function err_msg($heading="Error!",$string)
  print("<center><a href=javascript:history.go(-1)>".BACK."</a></center>");
 }
 
-function htmlsafechars($text = "")
+function htmlsafechars($data, $onlyspecialchars = false, $strip_invalid = true)
 {
-    $text = preg_replace("/&(?!#[0-9]+;)(?:amp;)?/s", '&amp;', $text);
-    $text = str_replace(array(
-        "<",
-        ">",
-        '"',
-        "'"
-    ) , array(
-        "&lt;",
-        "&gt;",
-        "&quot;",
-        '&#039;'
-    ) , $text);
-    return $text;
+    if (!is_scalar($data))
+        return '';
+
+    $invalid_chars = array("\x00","\x01","\x02","\x03","\x04","\x05","\x06","\x07","\x08","\x0b","\x0c",
+        "\x0e","\x0f","\x10","\x11","\x12","\x13","\x14","\x15","\x16","\x17","\x18","\x19","\x1a","\x1b",
+        "\x1c","\x1d","\x1e","\x1f");
+
+    if ($onlyspecialchars)
+        $data = htmlspecialchars($data, ENT_QUOTES, "UTF-8");
+    else
+        $data = htmlentities($data, ENT_QUOTES, "UTF-8");
+    if ($strip_invalid)
+        $data = str_replace($invalid_chars, '', $data);
+
+    return $data;
 } 
 
 function sqlesc($x) {

@@ -7,7 +7,7 @@ if (isset($_GET["style"]))
 else
     $style=1;
 if (isset($_GET["returnto"]))
-   $url=urldecode($_GET["returnto"]);
+   $url=htmlsafechars(urldecode($_GET["returnto"]));
 else
    $url="index.php";
 if (isset($_GET["langue"]))
@@ -25,10 +25,10 @@ if (!$CURUSER || $CURUSER["uid"]==1)
  }
 
 if (isset($_GET["style"]))
-   @run_query("UPDATE users SET style=$style WHERE id=".$CURUSER["uid"]);
+   @run_query("UPDATE users SET style=$style WHERE id=".(int)$CURUSER["uid"]);
 
 if (isset($_GET["langue"]))
-   @run_query("UPDATE users SET language=$langue WHERE id=".$CURUSER["uid"]);
+   @run_query("UPDATE users SET language=$langue WHERE id=".(int)$CURUSER["uid"]);
 
 redirect($url);
 ?>

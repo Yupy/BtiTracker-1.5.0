@@ -43,30 +43,18 @@ function validip($ip)
 }
 
 // Patched function to detect REAL IP address if it's valid
-function getip() {
-   if (isset($_SERVER["HTTP_CLIENT_IP"])) {
-    if (validip($_SERVER["HTTP_CLIENT_IP"])) {
-       return $_SERVER["HTTP_CLIENT_IP"];
-     }
-   }
-   if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-     foreach (explode(",",$_SERVER["HTTP_X_FORWARDED_FOR"]) as $ip) {
-       if (validip(trim($ip))) {
-           return $ip;
-       }
-     }
-   }
-   if (validip(isset($_SERVER["HTTP_X_FORWARDED"])?$_SERVER["HTTP_X_FORWARDED"]:'127.0.0.1')) {
-       return $_SERVER["HTTP_X_FORWARDED"];
-   } elseif (validip(isset($_SERVER["HTTP_FORWARDED_FOR"])?$_SERVER["HTTP_FORWARDED_FOR"]:'127.0.0.1')) {
-       return $_SERVER["HTTP_FORWARDED_FOR"];
-   } elseif (validip(isset($_SERVER["HTTP_FORWARDED"])?$_SERVER["HTTP_FORWARDED"]:'127.0.0.1')) {
-       return $_SERVER["HTTP_FORWARDED"];
-   } elseif (validip(isset($_SERVER["HTTP_X_FORWARDED"])?$_SERVER["HTTP_X_FORWARDED"]:'127.0.0.1')) {
-       return $_SERVER["HTTP_X_FORWARDED"];
-   } else {
-       return $_SERVER["REMOTE_ADDR"];
-   }
+function getip()
+{
+    $ip = $_SERVER['REMOTE_ADDR'];
+    if (isset($_SERVER['HTTP_VIA'])) {
+        $forwarded_for = (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) ? (string)$_SERVER['HTTP_X_FORWARDED_FOR'] : '';
+        if ($forwarded_for != $ip) {
+            $ip = $forwarded_for;
+            $nums = sscanf($ip, '%d.%d.%d.%d');
+            if ($nums[0] === null || $nums[1] === null || $nums[2] === null || $nums[3] === null || $nums[0] == 10 || ($nums[0] == 172 && $nums[1] >= 16 && $nums[1] <= 31) || ($nums[0] == 192 && $nums[1] == 168) || $nums[0] == 239 || $nums[0] == 0 || $nums[0] == 127) $ip = $_SERVER['REMOTE_ADDR'];
+        }
+    }
+    return $ip;
 }
 
 if (!function_exists("hex2bin")) { 

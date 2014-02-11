@@ -1228,12 +1228,14 @@ else
                    if ($_GET["what"]=="new")
                       {
                        run_query("INSERT INTO style SET style='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["style"]) : ((trigger_error("Error...", E_USER_ERROR)) ? "" : ""))."',style_url='".$_POST["style_url"]."'") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+                       $Memcached->delete_value("Stylelist::");
                        print(STYLE_ADDED);
                       }
                    else
                        {
                        $id=intval($_GET["id"]);
                        run_query("UPDATE style SET style='".((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["style"]) : ((trigger_error("Error...", E_USER_ERROR)) ? "" : ""))."',style_url='".$_POST["style_url"]."' WHERE id=$id") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+                       $Memcached->delete_value("Stylelist::");
                        print(STYLE_MODIFIED);
                        }
                  redirect("admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=style&action=read");
@@ -1271,6 +1273,7 @@ else
                    {
                    run_query("UPDATE users SET style=$DEFAULT_STYLE WHERE style=$id");
                    run_query("DELETE FROM style WHERE id=$id") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+                   $Memcached->delete_value("Stylelist::");
                    }
                 redirect("admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=style&action=read");
             }

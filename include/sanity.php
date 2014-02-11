@@ -22,7 +22,7 @@ function do_sanity() {
                   $uploaded=max(0,$resupdate["uploaded"]);
                   $downloaded=max(0,$resupdate["downloaded"]);
                   $pid=$resupdate["pid"];
-                  $ip=$resupdate["ip"];
+                  $ip=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $resupdate["ip"]) : ((trigger_error("Error...", E_USER_ERROR)) ? "" : ""));
                   // update user->peer stats only if not livestat
                   if (!$LIVESTATS)
                     {

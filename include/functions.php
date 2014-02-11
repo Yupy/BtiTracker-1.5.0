@@ -667,13 +667,18 @@ function pager($rpp, $count, $href, $opts = array()) {
 
 // give back categories recorset
 function genrelist()
-     {
-
+{
+    global $Memcached;
+	
+    $Key = 'Genrelist::';
+ if (($ret = $Memcached->get_value($Key)) == false) {
     $ret = array();
     $res = run_query("SELECT * FROM categories ORDER BY sort_index, id");
 
     while ($row = mysqli_fetch_array($res))
         $ret[] = $row;
+    $Memcached->cache_value($Key, $ret, 30 * 86400);
+    }
 
     return $ret;
 }

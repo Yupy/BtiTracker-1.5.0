@@ -44,13 +44,13 @@
 */
 function crk($l) {
 
-  global $CURUSER,$btit_settings;
+  global $CURUSER,$BASEURL;
 
-  $xip=$_SERVER["REMOTE_ADDRESS"];
+  $xip=$_SERVER["REMOTE_ADDR"];
   if (function_exists("dbconn"))
      dbconn();
   if (function_exists("write_log"))
-     write_log('Hacking Attempt! User: <a href="'.$btit_settings['url'].'/index.php?page=userdetails&amp;id='.$CURUSER['uid'].'">'.$CURUSER['username'].'</a> IP:'.$xip.' - Attempt: '.htmlspecialchars($l));
+     write_log('Hacking Attempt! User: <a href="'.$BASEURL.'/userdetails.php?id='.$CURUSER['uid'].'">'.$CURUSER['username'].'</a> IP:'.$xip.' - Attempt: '.htmlspecialchars($l));
 
   header('Location: index.php');
   die();

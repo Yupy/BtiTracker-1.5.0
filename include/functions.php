@@ -774,25 +774,35 @@ function language_list()
     return $ret;
 }
 
-function flag_list($with_unknown=false)
+function flag_list($with_unknown = false)
 {
-  $ret = array();
+    global $Memcached;
+
+    $Key = 'Flaglist::';
+ if (($ret = $Memcached->get_value($Key)) == false) {
+    $ret = array();
     $res = run_query("SELECT * FROM countries ".(!$with_unknown?"WHERE id<>100":"")." ORDER BY name");
 
     while ($row = mysqli_fetch_array($res))
-      $ret[] = $row;
-
+        $ret[] = $row;
+    $Memcached->cache_value($Key, $ret, 6400);
+    }
     return $ret;
 }
 
 function timezone_list()
 {
-  $ret = array();
+    global $Memcached;
+
+    $Key = 'TimeZonelist::';
+ if (($ret = $Memcached->get_value($Key)) == false) {
+    $ret = array();
     $res = run_query("SELECT * FROM timezone");
 
     while ($row = mysqli_fetch_array($res))
-      $ret[] = $row;
-
+        $ret[] = $row;
+    $Memcached->cache_value($Key, $ret, 6400);
+    }
     return $ret;
 }
 

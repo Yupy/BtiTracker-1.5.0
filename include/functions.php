@@ -731,11 +731,16 @@ function sub_categories($val="")
 // this returns the category of a sub-category
 function sub_cat($sub)
 {
-    $c_q = @mysqli_fetch_array( @run_query("SELECT name FROM categories WHERE id='$sub'") );
+    global $Memcached;
+
+    $Key = 'Subcat::';
+ if (($name = $Memcached->get_value($Key)) == false) {
+    $c_q = @mysqli_fetch_array( @run_query("SELECT name FROM categories WHERE id = '".$sub."'") );
     $name = unesc($c_q["name"]);
+    $Memcached->cache_value($Key, $name, 30 * 86400);
+    }
     return $name;
 }
-
 
 function style_list()
          {

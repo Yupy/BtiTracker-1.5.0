@@ -58,6 +58,7 @@ else $pwd='';
     run_query("UPDATE users SET loginhash='".md5(getip().$row['password'])."' WHERE id=$row[id]");
     $salted = md5($GLOBALS["salting"].$row["random"].$row["password"].$row["random"]);
     logincookie($row["id"], $salted);
+    $Memcached->delete_value("OnlineUsers::");
 
     if (isset($_GET["returnto"]))
        $url=htmlsafechars(urldecode($_GET["returnto"]));

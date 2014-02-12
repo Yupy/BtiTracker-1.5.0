@@ -1,5 +1,5 @@
 <?php
-global $CURUSER;
+global $CURUSER, $Memcached;
 if (!$CURUSER || $CURUSER["view_users"]=="no")
    {
     // do nothing
@@ -16,9 +16,10 @@ else
      if (!isset($gueststr)) $gueststr = '';
 
      $users="";
-
+	  $onlineusers_key = "OnlineUsers::";
+	if (($users = $Memcached->get_value($onlineusers_key)) === false) {
      $res=run_query("SELECT username, users.id, prefixcolor, suffixcolor FROM users INNER JOIN users_level ON users.id_level=users_level.id WHERE UNIX_TIMESTAMP(lastconnect)>=".$curtime." AND users.id>1") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-     $print.=("\n<tr><td class=lista align=center>");
+
      if ($res)
         {
         while ($ruser=mysqli_fetch_row($res))
@@ -26,6 +27,8 @@ else
               $users.=(($regusers>0?", ":"")."\n<a href=userdetails.php?id=$ruser[1]&returnto=".urlencode($_SERVER['REQUEST_URI']).">".StripSlashes($ruser[2].$ruser[0].$ruser[3])."</a>");
               $regusers++;
               }
+     }
+     $Memcached->cache_value($onlineusers_key, $users, 300);
      }
      // guest code
      $guest_ip  = explode('.', $_SERVER['REMOTE_ADDR']);
@@ -78,7 +81,7 @@ else
      else
          $gueststr.=$guest_num+$regusers." visitor".($guest_num+$regusers>1?"s":"")." (";
 
-     print($print. $gueststr . ($guest_num>0 && $regusers>0?" ".WORD_AND." ":"") . ($regusers>0?"$regusers ".MEMBER.($regusers>1?"s":"")."): ":")") . $users ."\n</td></tr>");
+     print($print."<tr><td class='lista' align='center'>" $gueststr . ($guest_num>0 && $regusers>0?" ".WORD_AND." ":"") . ($regusers>0?"$regusers ".MEMBER.($regusers>1?"s":"")."): ":")") . $users ."\n</td></tr>");
      block_end();
 
 } // end if user can view

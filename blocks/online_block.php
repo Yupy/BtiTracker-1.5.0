@@ -81,7 +81,7 @@ else
      else
          $gueststr.=$guest_num+$regusers." visitor".($guest_num+$regusers>1?"s":"")." (";
 
-     print($print."<tr><td class='lista' align='center'>" $gueststr . ($guest_num>0 && $regusers>0?" ".WORD_AND." ":"") . ($regusers>0?"$regusers ".MEMBER.($regusers>1?"s":"")."): ":")") . $users ."\n</td></tr>");
+     print($print."<tr><td class='lista' align='center'>" . $gueststr . ($guest_num>0 && $regusers>0?" ".WORD_AND." ":"") . ($regusers>0?"$regusers ".MEMBER.($regusers>1?"s":"")."): ":")") . $users ."\n</td></tr>");
      block_end();
 
 } // end if user can view

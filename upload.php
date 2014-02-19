@@ -158,6 +158,7 @@ if (!isset($array["announce"]))
       quickQuery($query);
       
       $Memcached->delete_value("torrent_count::");
+      $Memcached->delete_value("TorrentStats::");
       
       if ($status)
          {

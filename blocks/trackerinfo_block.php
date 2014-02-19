@@ -10,7 +10,9 @@ else
 
    block_begin(BLOCK_INFO);
 
-   $res=run_query("select count(*) as tot FROM namemap");
+   $torrentstats_key = "TorrentStats::";
+   if (($torrents = $Memcached->get_value($torrentstats_key)) == false) {
+   $res=run_query("SELECT count(*) AS tot FROM namemap");
    if ($res)
       {
       $row=mysqli_fetch_array($res);
@@ -18,6 +20,8 @@ else
       }
    else
        $torrents=0;
+   $Memcached->cache_value($torrentstats_key, $torrents, 3200);
+   }
 
    $res=run_query("select count(*) as tot FROM users where id>1");
    if ($res)

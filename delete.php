@@ -53,6 +53,7 @@ if (isset($_POST["action"])) {
       @run_query("DELETE FROM peers WHERE infohash=\"$hash\"");
       @run_query("DELETE FROM history WHERE infohash=\"$hash\"");
       $Memcached->delete_value("torrent_count::");
+      $Memcached->delete_value("TorrentStats::");
 
       unlink($TORRENTSDIR."/$hash.btf");
 

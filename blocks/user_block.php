@@ -58,11 +58,14 @@ global $CURUSER, $user;
                             print(" value=account_change.php?langue=".$a["id"]."&returnto=".urlencode($_SERVER['REQUEST_URI']).">".$a["language"]."</option>");
                             }
              print("</select>");
-             print("</td>\n</form></tr>\n");
-             print("\n<tr><td align=center class=blocklist><a href=usercp.php?uid=".$CURUSER["uid"].">".USER_CP."</a></td></tr>\n");
+             print("</td>\n</tr>\n");
+             print("\n<tr><td align=\"center\" class=\"blocklist\"><a href=\"usercp.php?uid=".$CURUSER["uid"]."\">".USER_CP."</a></td></tr>\n");
+						
              if ($CURUSER["admin_access"]=="yes")
-                print("\n<tr><td align=center class=blocklist><a href=admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"].">".MNU_ADMINCP."</a></td></tr>\n");
+ print("\n<tr><td align=\"center\" class=\"blocklist\"><a href=\"admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."\">".MNU_ADMINCP."</a></td></tr>\n");
+              print("</form>\n</table>");
              }
 
-         block_end();
+ block_end();
+
 ?>

@@ -67,7 +67,15 @@ function get_microtime(){
     list($usec, $sec) = explode(" ",microtime());
     return ((float)$usec + (float)$sec);
     }
+    
+function MemcachedStats($status)
+{
+    $percCacheHit = ((real)$status ["get_hits"] / (real)$status ["cmd_get"] * 100);
+    $percCacheHit = round($percCacheHit, 3);
+    $percCacheMiss = 100 - $percCacheHit;
 
+    echo "<center>[Memcached Hits ".$percCacheHit."% | Misses ".$percCacheMiss."%]</center>";
+}
 
 function print_version()
 {
@@ -80,6 +88,7 @@ function print_version()
   if ($PRINT_DEBUG)
         print("[ Execution time: ".number_format(($time_end-$time_start),4)." sec. ] - [Memory usage: ".makesize($max_mem)."] - [ GZIP: ".$gzip." ]<br />");
   print("BtiTracker ($tracker_version) by Yupy & <a href=\"http://www.btiteam.org\">Btiteam</a></p>");
+  print("<span style='font-size:8pt;'>".MemcachedStats($Memcached->getStats())."</span>");
 
 }
 

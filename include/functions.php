@@ -80,7 +80,7 @@ function MemcachedStats($status)
 function print_version()
 {
 
-  GLOBAL $time_start, $gzip, $PRINT_DEBUG,$tracker_version;
+  GLOBAL $time_start, $gzip, $PRINT_DEBUG, $tracker_version, $Memcached;
 
   $time_end = get_microtime();
   $max_mem = memory_get_peak_usage();

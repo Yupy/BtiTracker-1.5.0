@@ -6,7 +6,7 @@ if (!$CURUSER || $CURUSER["view_torrents"]=="no")
    }
 else
     {
-   global $SITENAME;
+   global $SITENAME, $Memcached;
 
    block_begin(BLOCK_INFO);
 

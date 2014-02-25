@@ -37,6 +37,7 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"]))){
    write_log("Modified torrent $fname ($torhash)","modify");
    echo "<center>".PLEASE_WAIT."</center>";
    run_query("UPDATE namemap SET filename=$fname, comment='" . AddSlashes($_POST["comment"]) . "', category=" . intval($_POST["category"]) . " WHERE info_hash='" . $torhash . "'");
+   $Memcached->delete_value("Description::".$torhash);
    print("<script LANGUAGE=\"javascript\">window.location.href=\"$link\"</script>");
    exit();
    }

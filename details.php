@@ -44,7 +44,7 @@ else {
    exit();
 }
 
-$res = run_query("SELECT namemap.info_hash, namemap.filename, namemap.url, UNIX_TIMESTAMP(namemap.data) as data, namemap.size, namemap.comment, namemap.uploader, categories.name as cat_name, summary.seeds, summary.leechers, summary.finished, summary.speed, namemap.external, namemap.announce_url,UNIX_TIMESTAMP(namemap.lastupdate) as lastupdate, namemap.anonymous, users.username FROM namemap LEFT JOIN categories ON categories.id=namemap.category LEFT JOIN summary ON summary.info_hash=namemap.info_hash LEFT JOIN users ON users.id=namemap.uploader WHERE namemap.info_hash ='" . $id . "'")
+$res = run_query("SELECT namemap.info_hash, namemap.filename, namemap.url, UNIX_TIMESTAMP(namemap.data) as data, namemap.size, namemap.uploader, categories.name as cat_name, summary.seeds, summary.leechers, summary.finished, summary.speed, namemap.external, namemap.announce_url,UNIX_TIMESTAMP(namemap.lastupdate) as lastupdate, namemap.anonymous, users.username FROM namemap LEFT JOIN categories ON categories.id=namemap.category LEFT JOIN summary ON summary.info_hash=namemap.info_hash LEFT JOIN users ON users.id=namemap.uploader WHERE namemap.info_hash ='" . $id . "'")
     or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 $row = mysqli_fetch_array($res);
 
@@ -71,8 +71,15 @@ if ($CURUSER["uid"]>1 && ($CURUSER["uid"]==$row["uploader"] || $CURUSER["delete_
 print("</td><td class=\"lista\" align=\"center\">" . $row["filename"]."</td></tr>\n");
 print("<tr><td align=\"right\" class=\"header\"> ".TORRENT.":</td><td class=\"lista\" align=\"center\"><a class \"index\" <a href=\"download.php?id=".$row["info_hash"]."&f=" . rawurlencode($row["filename"]) . ".torrent\">" . $row["filename"] . "</a></td></tr>\n");
 print("<tr><td align=\"right\" class=\"header\"> ".INFO_HASH.":</td><td class=\"lista\" align=\"center\">" . $row["info_hash"]. "</td></tr>\n");
-if (!empty($row["comment"]))
-   print("<tr><td align=\"right\" class=\"header\"> ".DESCRIPTION.":</td><td align=\"center\" class=\"lista\">" . format_comment($row["comment"]) . "</td></tr>\n");
+
+$desc_key = "Description::".$row["info_hash"];
+if (($description = $Memcached->get_value($desc_key)) === false) {
+    $description = mysqli_fetch_assoc(run_query("SELECT comment FROM namemap WHERE info_hash = ".sqlesc($id))) or sqlerr(__FILE__, __LINE__);
+    $Memcached->cache_value($desc_key, $description, 8400);
+}
+
+if (!empty($description["comment"]))
+   print("<tr><td align=\"right\" class=\"header\"> ".DESCRIPTION.":</td><td align=\"center\" class=\"lista\">" . format_comment($description["comment"]) . "</td></tr>\n");
 if (isset($row["cat_name"]))
    print("<tr><td align=\"right\" class=\"header\"> ".CATEGORY_FULL.":</td><td class=\"lista\" align=\"center\">" . unesc($row["cat_name"]). "</td></tr>\n");
 else

@@ -54,6 +54,7 @@ if (isset($_POST["action"])) {
       @run_query("DELETE FROM history WHERE infohash=\"$hash\"");
       $Memcached->delete_value("torrent_count::");
       $Memcached->delete_value("TorrentStats::");
+      $Memcached->delete_value("Description::".$hash);
 
       unlink($TORRENTSDIR."/$hash.btf");
 

@@ -39,6 +39,11 @@ if (isset($_FILES["torrent"]))
         exit();
 
        }
+       
+      //uTorrent v3.x.x fix
+      $alltorrent = preg_replace("/file-mediali(.*?)ee(.*?):/i", "file-mediali0ee$2:", $alltorrent);
+      $alltorrent = preg_replace("/file-durationli(.*?)ee(.*?):/i", "file-durationli0ee$2:", $alltorrent);
+
       $array = BDecode($alltorrent);
       if (!isset($array))
          {

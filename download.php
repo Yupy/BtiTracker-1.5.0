@@ -47,13 +47,17 @@ if ($row["external"]=="yes" || !$PRIVATE_ANNOUNCE)
     $alltorrent = fread($fd, filesize($filepath));
     fclose($fd);
     header("Content-Type: application/x-bittorrent");
-    header('Content-Disposition: attachment; filename="'.$f.'"');
+    header('Content-Disposition: attachment; filename="'.AddSlashes($f).'"');
     print($alltorrent);
    }
 else
     {
     $fd = fopen($filepath, "rb");
     $alltorrent = fread($fd, filesize($filepath));
+    //uTorrent v3.x.x fix
+    $alltorrent = preg_replace("/file-mediali(.*?)ee(.*?):/i", "file-mediali0ee$2:", $alltorrent);
+    $alltorrent = preg_replace("/file-durationli(.*?)ee(.*?):/i", "file-durationli0ee$2:", $alltorrent);
+
     $array = BDecode($alltorrent);
     fclose($fd);
     $array["announce"] = $BASEURL."/announce.php?pid=$pid";
@@ -73,7 +77,7 @@ else
     $alltorrent=BEncode($array);
 
     header("Content-Type: application/x-bittorrent");
-    header('Content-Disposition: attachment; filename="'.$f.'"');
+    header('Content-Disposition: attachment; filename="'.AddSlashes($f).'"');
     print($alltorrent);
 }
 ?>

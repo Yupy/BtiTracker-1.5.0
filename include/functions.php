@@ -37,6 +37,7 @@ require_once("$CURRENTPATH/crk_protection.php");
 require_once("$CURRENTPATH/smilies.php");
 require_once("$CURRENTPATH/defines.php");
 //Fetch classes
+require_once("classes/class.Database.php");
 require_once("classes/class.Captcha.php");
 require_once("classes/class.Memcache.php");
 
@@ -469,7 +470,9 @@ function userlogin() {
 
 function dbconn($do_clean=false) {
 
-    global $dbhost, $dbuser, $dbpass, $database, $HTTP_SERVER_VARS;
+    global $dbhost, $dbuser, $dbpass, $database, $HTTP_SERVER_VARS, $db;
+    
+    $db = new QuickDB($dbhost, $dbuser, $dbpass, $database);
 
     if ($GLOBALS["persist"])
         $conres=($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass));

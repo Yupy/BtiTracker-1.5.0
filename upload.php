@@ -249,7 +249,7 @@ function endOutput()
   ?></TD>
   </TR>
   <?php
-  print("<TR><TD colspan=\"2\"><INPUT TYPE=\"hidden\" name=\"user_id\" size=\"50\" value=\"$user_id\" /> </TD /></TR>");
+  print("<TR><TD colspan=\"2\"><INPUT TYPE=\"hidden\" name=\"user_id\" size=\"50\" value=\"$user_id\" /></TD></TR>");
   print('<TR><td class="header">'.TORRENT_ANONYMOUS.'</td><TD class="lista">&nbsp;&nbsp;'.NO.'<INPUT TYPE="radio" name="anonymous" value="false" checked />&nbsp;&nbsp;'.YES.'<INPUT TYPE="radio" name="anonymous" value="true" /></TD></TR>');
   if (function_exists("sha1"))
      echo '<TR><TD class="lista" align="center" colspan="2"><INPUT type="checkbox" name="autoset" value="enabled" disabled checked />'.TORRENT_CHECK.'</TD></TR>';

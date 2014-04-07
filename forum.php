@@ -42,20 +42,6 @@ require("include/config.php");
     }
   }
 
-  //-------- Returns the minimum read/write class levels of a forum
-
-  function get_forum_access_levels($forumid)
-  {
-    $res = run_query("SELECT minclassread, minclasswrite, minclasscreate FROM forums WHERE id=$forumid") or sqlerr(__FILE__, __LINE__);
-
-    if (mysqli_num_rows($res) != 1)
-      return false;
-
-    $arr = mysqli_fetch_assoc($res);
-
-    return array("read" => $arr["minclassread"], "write" => $arr["minclasswrite"], "create" => $arr["minclasscreate"]);
-  }
-
   //-------- Returns the forum ID of a topic, or false on error
 
   function get_topic_forum($topicid)
@@ -279,7 +265,7 @@ if (!isset($forumid)) $forumid = 0;
 
     //------ Make sure sure user has write access in forum
 
-    $arr = get_forum_access_levels($forumid) or die(BAD_FORUM_ID);
+    $arr = Forum::get_forum_access_levels($forumid) or die(BAD_FORUM_ID);
 
     if ($CURUSER["id_level"] < $arr["write"] || ($newtopic && $CURUSER["id_level"] < $arr["create"]))
       stderr(ERROR,ERR_PERM_DENIED);
@@ -677,7 +663,7 @@ if (!isset($forumid)) $forumid = 0;
 
     else
     {
-        $arr = get_forum_access_levels($forumid) or die;
+        $arr = Forum::get_forum_access_levels($forumid) or die;
 
         if ($CURUSER["id_level"] < $arr["write"])
           print("<p><i>".ERR_LEVEL_CANT_POST."</i></p>\n");
@@ -1315,7 +1301,7 @@ if (!isset($forumid)) $forumid = 0;
 
     print("</tr></table></p>\n");
 
-    $arr = get_forum_access_levels($forumid) or die;
+    $arr = Forum::get_forum_access_levels($forumid) or die;
 
     $maypost = $CURUSER["id_level"] >= $arr["write"] && $CURUSER["id_level"] >= $arr["create"];
 

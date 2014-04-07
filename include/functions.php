@@ -39,6 +39,7 @@ require_once("$CURRENTPATH/defines.php");
 //Fetch classes
 require_once("classes/class.Database.php");
 require_once("classes/class.Captcha.php");
+require_once("classes/class.Forum.php");
 require_once("classes/class.Memcache.php");
 
 $Memcached = new Memcached();

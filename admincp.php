@@ -1400,6 +1400,9 @@ else
                 {
                run_query("INSERT INTO forums SET name=$name,description=$description,minclassread=$minclassread,minclasswrite=$minclasswrite,minclasscreate=$minclasscreate") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
                 }
+				
+			Forum::delete_access_levels_cache($id);
+				
             redirect("admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."&do=forum&action=read");
             }
      elseif ($do=="forum" && $action=="delete")

@@ -579,7 +579,7 @@ else
 
            block_begin(CHANGE_PID);
            $result=run_query("SELECT pid FROM users WHERE id=".$CURUSER['uid']);
-           $row = mysql_fetch_Assoc($result);
+           $row = mysqli_fetch_assoc($result);
            $pid=$row["pid"];
            if (!$pid)
            {$pid=md5($CURUSER['uid']+$CURUSER['username']+$CURUSER['password']+$CURUSER['lastconnect']);

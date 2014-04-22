@@ -24,7 +24,7 @@ if ($CURUSER["delete_torrents"]!="yes" && $CURUSER["uid"]!=$row["uploader"])
 $scriptname = htmlsafechars($_SERVER["PHP_SELF"]);
 
 $link = urlencode($_GET["returnto"]);
-$hash = AddSlashes($_GET["info_hash"]);
+$hash = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_GET["info_hash"]) : ((trigger_error("Error...", E_USER_ERROR)) ? "" : ""));
 
 if ($link=="")
    $link="torrents.php";
@@ -82,8 +82,8 @@ if (!empty($row["comment"]))
 if (isset($row["cat_name"]))
    print("<tr><td align=right class=\"header\">".CATEGORY_FULL.":</td><td class=\"lista\" >" . $row["cat_name"]. "</td></tr>");
 else
-    print("<tr><td align=right class=\"header\">".CATEGORY_FULL.":</td><td class=\"lista\" >(nessuno)</td></tr>");
-print("<tr><td align=right class=\"header\">".SIZE.":</td><td class=\"lista\" >" . $row["size"]. "</td></tr>");
+    print("<tr><td align=right class=\"header\">".CATEGORY_FULL.":</td><td class=\"lista\" >(None)</td></tr>");
+print("<tr><td align=right class=\"header\">".SIZE.":</td><td class=\"lista\" >" . makesize($row["size"]) . "</td></tr>");
 print("<tr><td align=right class=\"header\">".ADDED.":</td><td class=\"lista\" >" . date("d/m/Y",$row["data"]). "</td></tr>");
 if ($row["speed"] < 0) {
   $speed = "N/D";

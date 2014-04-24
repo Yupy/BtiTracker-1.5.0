@@ -99,9 +99,10 @@ header("Pragma: no-cache");
 
 // Error: no web browsers allowed
 $agent = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_SERVER["HTTP_USER_AGENT"]) : ((trigger_error("Error...", E_USER_ERROR)) ? "" : ""));
-// Deny access made with a browser...
 
-if (ereg("^Mozilla\\/", $agent) || ereg("^Opera\\/", $agent) || ereg("^Links ", $agent) || ereg("^Lynx\\/", $agent))
+// Deny access made with a browser...
+if (stripos($agent, 'Mozilla') !== false || stripos($agent, 'Opera') !== false || stripos($agent, 'Links') !== false ||
+stripos($agent, 'Lynx') !== false || stripos($agent, 'Wget') !== false || strpos($peer_id, 'OP') === 0)
 {
     header("HTTP/1.0 500 Bad Request");
     die("This a a bittorrent application and can't be loaded into a browser");

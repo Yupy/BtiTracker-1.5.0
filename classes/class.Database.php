@@ -510,6 +510,11 @@
         { 
             return mysqli_fetch_object($result); 
         } 
+		
+        public function fetch_row($result) 
+        { 
+            return mysqli_fetch_row($result); 
+        } 
          
         // Gets table name 
         public function table_name($result, $i) 
@@ -577,27 +582,6 @@
             } 
         } 
 
-        // Returns single fetched row 
-        public function fetch_row($command) 
-        { 
-
-            if (!$command) 
-            { 
-                exit("No Query Command Specified !!"); 
-            } 
-
-            $this->query = $command; 
-            $this->result = mysqli_query($GLOBALS["___mysqli_ston"], $command) or $this->setError(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)), ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false))); 
-
-            if ($this->result) 
-            { 
-                $this->rows = intval(mysqli_num_rows($this->result)); 
-                $this->row = mysqli_fetch_object($this->result); 
-                return $this->row; 
-            } 
-        } 
-         
-         
         // Returns single field value 
         public function fetch_value($table, $field, $condition = null) 
         { 

@@ -2,7 +2,7 @@
 
 class Forum {
     const ACCESS_TIME = 10800;
-	const GET_TOPIC_TIME = 300;
+    const GET_TOPIC_TIME = 300;
 
     public static function get_forum_access_levels($forumid)
     {
@@ -20,7 +20,7 @@ class Forum {
         $arr['minclasswrite'] = 0 + (int)$arr['minclasswrite'];
         $arr['minclasscreate'] = 0 + (int)$arr['minclasscreate'];
 	
-    	$Memcached->cache_value("ForrumAccess::".$forumid, $arr, self::ACCESS_TIME);
+    	$Memcached->cache_value("ForumAccess::".$forumid, $arr, self::ACCESS_TIME);
         }
         return array("read" => $arr["minclassread"], "write" => $arr["minclasswrite"], "create" => $arr["minclasscreate"]);
     }

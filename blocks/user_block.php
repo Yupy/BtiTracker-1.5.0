@@ -63,7 +63,7 @@ global $CURUSER, $user;
 						
              if ($CURUSER["admin_access"]=="yes")
  print("\n<tr><td align=\"center\" class=\"blocklist\"><a href=\"admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"]."\">".MNU_ADMINCP."</a></td></tr>\n");
-              print("</form>\n</table>");
+              print("</form>");
              }
 
  block_end();

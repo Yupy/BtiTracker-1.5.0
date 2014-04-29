@@ -11,8 +11,11 @@ Installation
 
 Requirements
 ================
+
 1: Memcache extension.
-2: Memcache server.
+<br />
+2: Memcached server.
+
 ================
 
 How to install the Depencies...

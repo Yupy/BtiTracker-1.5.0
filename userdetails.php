@@ -154,7 +154,7 @@ if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
    if (($posts = $Memcached->get_value('user::posts::'.$id)) === false) {
    $sql = $db->execute("SELECT * FROM posts INNER JOIN users ON posts.userid = users.id WHERE users.id = " . $id) or $db->display_errors();
    $posts = $db->count_select($sql);
-   $Memcached->cache_value('user::posts::'.$id, $user_posts, 3 * 86400);
+   $Memcached->cache_value('user::posts::'.$id, $posts, 3 * 86400);
    }
 
    $memberdays = max(1, round( ( $db->get_time() - $row['joined'] ) / 86400 ));

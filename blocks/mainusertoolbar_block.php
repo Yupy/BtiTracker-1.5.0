@@ -11,12 +11,22 @@ $style=style_list();
 $langue=language_list();
 $resuser=run_query("SELECT * FROM users WHERE id=".$CURUSER["uid"]);
 $rowuser=mysqli_fetch_array($resuser);
+
+if (($user_stats = $Memcached->get_value('curuser::stats::'.$CURUSER['uid'])) === false) {
+    $stats_sql = $db->execute('SELECT uploaded, downloaded FROM users WHERE id = '.$db->escape_string($CURUSER['uid'])) or $db->display_errors();
+    $user_stats = $db->fetch_assoc($stats_sql);
+
+    $user_stats['uploaded'] = (float)$user_stats['uploaded'];
+    $user_stats['downloaded'] = (float)$user_stats['downloaded'];
+    $Memcached->cache_value('curuser::stats::'.$CURUSER['uid'], $user_stats, 3600);
+}
+
 //print("<td class=lista align=center>".WELCOME_BACK." ".$CURUSER['username']." (<a href=logout.php>".LOGOUT."</a>)</td>\n");
 print("<td class=lista align=center>".USER_LEVEL.": ".$CURUSER["level"]."</td>\n");
-print("<td class=green align=center>&#8593&nbsp;".makesize($rowuser['uploaded']));
-print("</td><td class=red align=center>&#8595&nbsp;".makesize($rowuser['downloaded']));
-print("</td><td class=lista align=center>(SR ".($rowuser['downloaded']>0?number_format($rowuser['uploaded']/$rowuser['downloaded'],2):"---").")</td>\n");
-if ($CURUSER["admin_access"]=="yes")
+print("<td class=green align=center>&#8593&nbsp;".makesize($user_stats['uploaded']));
+print("</td><td class=red align=center>&#8595&nbsp;".makesize($user_stats['downloaded']));
+print("</td><td class=lista align=center>(SR ".($user_stats['downloaded'] > 0 ? number_format($user_stats['uploaded'] / $user_stats['downloaded'], 2) : "&infin;").")</td>\n");
+if ($CURUSER["admin_access"]=="yes") 
    print("\n<td align=center class=lista><a href=admincp.php?user=".$CURUSER["uid"]."&code=".$CURUSER["random"].">".MNU_ADMINCP."</a></td>\n");
 
 print("<td class=lista align=center><a href=usercp.php?uid=".$CURUSER["uid"].">".USER_CP."</a></td>\n");

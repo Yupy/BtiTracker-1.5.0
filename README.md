@@ -12,7 +12,7 @@ Installation
 Requirements
 ================
 1: Memcache extension.
-2: Memcached server.
+2: Memcache server.
 ================
 
 How to install the Depencies...
@@ -23,6 +23,7 @@ Linux:
 <br />
 <code>sudo apt-get install memcached</code>
 <br />
+<code>sudo /etc/init.d/apache2 reload</code>
 <br />
 How to increase Memcache Memory on Linux:
 <br />

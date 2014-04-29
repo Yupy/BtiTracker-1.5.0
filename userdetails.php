@@ -31,8 +31,6 @@ if ($id>1)
 								users.email, 
 								users.cip, 
 								users.username, 
-								users.downloaded, 
-								users.uploaded, 
 								UNIX_TIMESTAMP(users.joined) 
 							AS 
 							    joined, 
@@ -78,6 +76,15 @@ if ($id>1)
 
 $utorrents = intval($CURUSER["torrentsperpage"]);
 
+if (($user_stats = $Memcached->get_value('user::stats::'.$id)) === false) {
+    $stats_sql = $db->execute('SELECT uploaded, downloaded FROM users WHERE id = '.$db->escape_string($id)) or $db->display_errors();
+    $user_stats = $db->fetch_assoc($stats_sql);
+
+    $user_stats['uploaded'] = (float)$user_stats['uploaded'];
+    $user_stats['downloaded'] = (float)$user_stats['downloaded'];
+    $Memcached->cache_value('user::stats::'.$id, $user_stats, 3600);
+}
+
 print("<table class='lista' width='100%'>\n");
 print("<tr>\n<td class='header'>".USER_NAME."</td>\n<td class='lista'>".unesc($row["username"])."&nbsp;&nbsp;&nbsp;");
 if ($CURUSER["uid"]>1 && $id!=$CURUSER["uid"])
@@ -118,11 +125,11 @@ if ($db->get_date('I', $db->get_time()) == 1)
 $offsetu = $tzu-($row["time_offset"]*3600);
 print("<tr>\n<td class='header'>".USER_LOCAL_TIME."</td>\n<td class='lista' colspan='2'>".$db->get_date("d/m/Y H:i:s", $db->get_time()-$offsetu)."&nbsp;(GMT".($row["time_offset"]>0?" +".$row["time_offset"]:($row["time_offset"]==0?"":" ".$row["time_offset"])).")</td></tr>\n");
 // end user's local time
-print("<tr>\n<td class='header'>".DOWNLOADED."</td>\n<td class='lista' colspan='2'>".makesize($row["downloaded"])."</td></tr>\n");
-print("<tr>\n<td class='header'>".UPLOADED."</td>\n<td class='lista' colspan='2'>".makesize($row["uploaded"])."</td></tr>\n");
-if (intval($row["downloaded"])>0)
+print("<tr>\n<td class='header'>".DOWNLOADED."</td>\n<td class='lista' colspan='2'>".makesize($user_stats["downloaded"])."</td></tr>\n");
+print("<tr>\n<td class='header'>".UPLOADED."</td>\n<td class='lista' colspan='2'>".makesize($user_stats["uploaded"])."</td></tr>\n");
+if (intval($user_stats["downloaded"])>0)
  {
-   $sr = $row["uploaded"]/$row["downloaded"];
+   $sr = $user_stats["uploaded"] / $user_stats["downloaded"];
    if ($sr >= 4)
      $s = "images/smilies/thumbsup.gif";
    else if ($sr >= 2)

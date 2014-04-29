@@ -1,22 +1,42 @@
-BtiTracker-1.5.0
-================
-BitTorrent Tracker Source
-================
+<h1>BtitTracker v.1.5.0</h1>
 
 Installation
 ================
 
 1: Upload you files to server root.
-2: Point your browser to your http://youdomain.something or just http://localhost and follow the installation steps.
+<br />
+2: Point your browse to http://www.yourdomain.ro and follow the installation steps (yourdomain.ro change it to your real domain). 
+
 ================
 
 Requirements
 ================
 1: Memcache extension.
 2: Memcached server.
+================
 
 How to install the Depencies...
 
-Linux: https://www.digitalocean.com/community/articles/how-to-install-and-use-memcache-on-ubuntu-12-04
+Linux:
+
+<code>sudo apt-get install php5-memcache</code>
+<br />
+<code>sudo apt-get install memcached</code>
+<br />
+<br />
+How to increase Memcache Memory on Linux:
+<br />
+Write in terminal:
+
+<code>nano /etc/memcached.conf</code>
+<br />
+
+And change:
+
+<code>-m 64</code> Wich is the default memory allocated to what your needs are for ex...
+<br />
+<code>-m 512</code> Wich equals 512Mb....
+
+================
 
 Windows: http://ghita.org/tipoftheday/xamp-with-memcache-on-windows

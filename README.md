@@ -20,17 +20,19 @@ Requirements
 <br />
 4: phpMyAdmin.
 <br />
-5: Memcache extension.
+5: Memcache Extension.
 <br />
-6: Memcached server.
+6: Memcached Server.
 <br />
 7: GD2 Extension (if not available).
+<br />
+8: MySqli Extension (if not available).
 
 ================
 
-How to install the Depencies...
+<h1>How to install the Depencies...</h1>
 
-Linux:
+<b>Linux:</b>
 
 <code>sudo apt-get install php5-memcache</code>
 <br />
@@ -53,4 +55,4 @@ And change:
 
 ================
 
-Windows: http://ghita.org/tipoftheday/xamp-with-memcache-on-windows
+<b>Windows:</b> http://ghita.org/tipoftheday/xamp-with-memcache-on-windows

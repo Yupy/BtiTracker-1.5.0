@@ -614,9 +614,19 @@ else
           block_end();
           block_begin(CURRENT_DETAILS);
 // ------------------------
-          $id = $CURUSER["uid"];
-          $res=run_query("SELECT users.lip,users.username,users.downloaded,users.uploaded, UNIX_TIMESTAMP(users.joined) as joined, users.flag, countries.name, countries.flagpic FROM users LEFT JOIN countries ON users.flag=countries.id WHERE users.id=$id") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+          $id = intval($CURUSER["uid"]);
+          $res=run_query("SELECT users.lip,users.username, UNIX_TIMESTAMP(users.joined) as joined, users.flag, countries.name, countries.flagpic FROM users LEFT JOIN countries ON users.flag=countries.id WHERE users.id=$id") or die(((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
           $row = mysqli_fetch_array($res);
+		  
+        if (($user_stats = $Memcached->get_value('usercp::stats::'.$CURUSER['uid'])) === false) {
+            $stats_sql = $db->execute('SELECT uploaded, downloaded FROM users WHERE id = '.$db->escape_string($CURUSER['uid'])) or $db->display_errors();
+            $user_stats = $db->fetch_assoc($stats_sql);
+
+            $user_stats['uploaded'] = (float)$user_stats['uploaded'];
+            $user_stats['downloaded'] = (float)$user_stats['downloaded'];
+            $Memcached->cache_value('usercp::stats::'.$CURUSER['uid'], $user_stats, 3600);
+        }
+		  
           print("<table class=lista width=100%>\n");
           print("<tr>\n<td class=header>".USER_NAME."</td>\n<td class=lista>".unesc($CURUSER["username"])."</td>\n");
           if ($CURUSER["avatar"] && $CURUSER["avatar"]!="")
@@ -637,11 +647,11 @@ else
           print("<tr>\n<td class=header>".USER_JOINED."</td>\n<td class=lista$colspan>".($CURUSER["joined"]==0 ? "N/A" : get_date_time($CURUSER["joined"]))."</td></tr>\n");
           print("<tr>\n<td class=header>".USER_LASTACCESS."</td>\n<td class=lista$colspan>".($CURUSER["lastconnect"]==0 ? "N/A" : get_date_time($CURUSER["lastconnect"]))."</td></tr>\n");
           print("<tr>\n<td class=header>".PEER_COUNTRY."</td>\n<td class=lista colspan=2>".($row["flag"]==0 ? "":unesc($row['name']))."&nbsp;&nbsp;<img src=images/flag/".(!$row["flagpic"] || $row["flagpic"]==""?"unknown.gif":$row["flagpic"])." alt=".($row["flag"]==0 ? "unknow":unesc($row['name']))." /></td></tr>\n");
-          print("<tr>\n<td class=header>".DOWNLOADED."</td>\n<td class=lista colspan=2>".makesize($row["downloaded"])."</td></tr>\n");
-          print("<tr>\n<td class=header>".UPLOADED."</td>\n<td class=lista colspan=2>".makesize($row["uploaded"])."</td></tr>\n");
-          if (intval($row["downloaded"])>0)
+          print("<tr>\n<td class=header>".DOWNLOADED."</td>\n<td class=lista colspan=2>".makesize($user_stats["downloaded"])."</td></tr>\n");
+          print("<tr>\n<td class=header>".UPLOADED."</td>\n<td class=lista colspan=2>".makesize($user_stats["uploaded"])."</td></tr>\n");
+          if (intval($user_stats["downloaded"])>0)
            {
-             $sr = $row["uploaded"]/$row["downloaded"];
+             $sr = $user_stats["uploaded"] / $user_stats["downloaded"];
              if ($sr >= 4)
                $s = "images/smilies/thumbsup.gif";
              else if ($sr >= 2)

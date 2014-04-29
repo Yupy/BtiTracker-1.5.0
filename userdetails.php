@@ -151,17 +151,11 @@ print("<tr>\n<td class=\"header\">".RATIO."</td>\n<td class=\"lista\" colspan=\"
 // Only show if forum is internal
 if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
 {
-   $sql = $db->execute("
-                            SELECT 
-							    * 
-							FROM 
-							    posts 
-							INNER JOIN 
-						        users 
-							ON 
-							    posts.userid = users.id 
-							WHERE users.id = " . $id) or $db->display_errors();
+   if (($posts = $Memcached->get_value('user::posts::'.$id)) === false) {
+   $sql = $db->execute("SELECT * FROM posts INNER JOIN users ON posts.userid = users.id WHERE users.id = " . $id) or $db->display_errors();
    $posts = $db->count_select($sql);
+   $Memcached->cache_value('user::posts::'.$id, $user_posts, 3 * 86400);
+   }
 
    $memberdays = max(1, round( ( $db->get_time() - $row['joined'] ) / 86400 ));
    $posts_per_day = number_format(round($posts / $memberdays,2),2);

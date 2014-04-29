@@ -673,8 +673,11 @@ else
           // Only show if forum is internal
           if ( $GLOBALS["FORUMLINK"] == '' || $GLOBALS["FORUMLINK"] == 'internal' )
              {
+             if (($posts = $Memcached->get_value('curuser::posts::'.$CURUSER['uid'])) === false) {
              $sql = run_query("SELECT * FROM posts INNER JOIN users ON posts.userid = users.id WHERE users.id = " . $CURUSER["uid"]);
              $posts = mysqli_num_rows($sql);
+             $Memcached->cache_value('curuser::posts::'.$CURUSER['uid'], $posts, 3 * 86400);
+             }
              $memberdays = max(1, round( ( time() - $row['joined'] ) / 86400 ));
              $posts_per_day = number_format(round($posts / $memberdays,2),2);
              print("<tr>\n<td class=header><b>".FORUM." ".POSTS.":</b></td>\n<td class=lista colspan=2>" . $posts . " &nbsp; [" . sprintf(POSTS_PER_DAY, $posts_per_day) . "]</td></tr>\n");

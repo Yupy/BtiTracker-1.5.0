@@ -12,9 +12,19 @@ Installation
 Requirements
 ================
 
-1: Memcache extension.
+1: PHP 5.4 > Above.
 <br />
-2: Memcached server.
+2: Apache Server 2 > Above.
+<br />
+3: Mysql Server.
+<br />
+4: phpMyAdmin.
+<br />
+5: Memcache extension.
+<br />
+6: Memcached server.
+<br />
+7: GD2 Extension (if not available).
 
 ================
 

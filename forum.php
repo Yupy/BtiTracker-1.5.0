@@ -511,9 +511,19 @@ if (!isset($forumid)) $forumid = 0;
 
       //---- Get poster details
 
-      $res2 = run_query("SELECT username, level, avatar, uploaded, downloaded, name, flagpic FROM users INNER JOIN users_level ON users.id_level=users_level.id LEFT JOIN countries ON users.flag = countries.id WHERE users.id=$posterid") or sqlerr(__FILE__, __LINE__);
+      $res2 = run_query("SELECT username, level, avatar, name, flagpic FROM users INNER JOIN users_level ON users.id_level=users_level.id LEFT JOIN countries ON users.flag = countries.id WHERE users.id=$posterid") or sqlerr(__FILE__, __LINE__);
 
       $arr2 = mysqli_fetch_assoc($res2);
+      
+      if (($user_stats = $Memcached->get_value('forum::user::stats::'.$posterid)) === false) {
+           $stats_sql = $db->execute('SELECT uploaded, downloaded FROM users WHERE id = '.$db->escape_string($posterid)) or $db->display_errors();
+
+           $user_stats = $db->fetch_assoc($stats_sql);
+
+           $user_stats['uploaded'] = (float)$user_stats['uploaded'];
+           $user_stats['downloaded'] = (float)$user_stats['downloaded'];
+           $Memcached->cache_value('forum::user::stats::'.$posterid, $user_stats, 3600);
+      }
 
       $postername = $arr2["username"];
 
@@ -535,13 +545,13 @@ if (!isset($forumid)) $forumid = 0;
         if (!$flagpic || $flagpic=="")
            $flagpic="unknown.gif";
 
-        if ( intval( $arr2['downloaded']) > 0 )
+        if ( intval( $user_stats['downloaded']) > 0 )
                {
-                $ratio = number_format($arr2['uploaded'] / $arr2['downloaded'], 2);
+                $ratio = number_format($user_stats['uploaded'] / $user_stats['downloaded'], 2);
                }
                else
                {
-                $ratio = '--';
+                $ratio = '&infin;';
                }
 
         $sql = run_query("SELECT * FROM posts INNER JOIN users ON posts.userid = users.id WHERE users.id = " . $posterid);

@@ -313,6 +313,8 @@ if (!isset($forumid)) $forumid = 0;
 
     run_query("INSERT INTO posts (topicid, userid, added, body) " .
     "VALUES($topicid, $userid, $added, $body)") or sqlerr(__FILE__, __LINE__);
+    
+    $Memcached->delete_value('user::posts::'.$CURUSER['uid']);
 
     $postid = ((is_null($___mysqli_res = mysqli_insert_id($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res) or die(ERR_POST_ID_NA);
 
@@ -554,8 +556,11 @@ if (!isset($forumid)) $forumid = 0;
                 $ratio = '&infin;';
                }
 
+        if (($posts = $Memcached->get_value('user::posts::'.$posterid)) === false) {
         $sql = run_query("SELECT * FROM posts INNER JOIN users ON posts.userid = users.id WHERE users.id = " . $posterid);
-        $posts = 0+@mysqli_num_rows($sql);
+        $posts = 0 + @mysqli_num_rows($sql);
+        $Memcached->cache_value('user::posts::'.$posterid, $posts, 3 * 86400);
+        }
 
         $by = "<a href=userdetails.php?id=$posterid><b>$postername</b></a> ($title)";
       }
@@ -807,6 +812,7 @@ if (!isset($forumid)) $forumid = 0;
     run_query("DELETE FROM topics WHERE id=$topicid") or sqlerr(__FILE__, __LINE__);
     $numtopic=mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
     run_query("DELETE FROM posts WHERE topicid=$topicid") or sqlerr(__FILE__, __LINE__);
+    $Memcached->delete_value('user::posts::'.$CURUSER['uid']);
     $numposts=mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
 
     run_query("UPDATE forums SET topiccount=topiccount-$numtopic,postcount=postcount-$numposts WHERE id=$forumid");
@@ -956,6 +962,7 @@ if (!isset($forumid)) $forumid = 0;
     //------- Delete post
 
     run_query("DELETE FROM posts WHERE id=$postid") or sqlerr(__FILE__, __LINE__);
+    $Memcached->delete_value('user::posts::'.$CURUSER['uid']);
     $numposts=mysqli_affected_rows($GLOBALS["___mysqli_ston"]);
 
     run_query("UPDATE forums SET postcount=postcount-$numposts WHERE id=$forumid");

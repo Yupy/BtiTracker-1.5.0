@@ -81,7 +81,9 @@ if ($action == "post")
         //---- Create topic
         $subject = sqlesc(htmlsafechars($subject));
 
-        $db->execute("UPDATE forums SET topiccount=topiccount + 1 WHERE id = ".$forumid) or $db->display_errors();
+        $db->execute("UPDATE forums SET topiccount = topiccount + 1 WHERE id = ".$forumid) or $db->display_errors();
+        
+        $Memcached->delete_value('Total::Topics::');
 
         $db->execute("INSERT INTO topics (userid, forumid, subject) VALUES(".$userid.", ".$forumid.", ".$subject.")") or $db->display_errors();
 
@@ -114,6 +116,7 @@ if ($action == "post")
     update_topic_last_post($topicid);
 
     $db->execute("UPDATE forums SET postcount = postcount + 1 WHERE id = ".$forumid) or $db->display_errors();
+    $Memcached->delete_value('Total::Posts::');
     //------ All done, redirect user to the post
 
     //---- Get reply count

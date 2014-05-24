@@ -497,6 +497,9 @@ function dbconn($do_clean=false) {
     ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database"))
         or die(ERR_CANT_OPEN_DB." $database - ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
 
+    run_query("SET NAMES UTF8");
+    run_query("SET collation_connection = 'utf8_general_ci'");
+
     userlogin();
 
     if ($do_clean)
@@ -1143,7 +1146,7 @@ function print_news($limit=0)
                $output = preg_replace("/{admin_menu}/", $adm_menu, $output);
                $output = preg_replace("/{news_date}/", date("d/m/Y H:i",$rows["news_date"]-$offset), $output);
                $output = preg_replace("/{news_title}/", unesc($rows["title"]), $output);
-               $output = preg_replace("/{news}/", $news, $output);
+               $output = preg_replace("/{news}/", str_replace('\r\n', "<br />", $news), $output);
                print $output;
                }
                if ($output=="")
@@ -1467,7 +1470,7 @@ function BBTag(opentag, closetag, textarea)
 
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
-      <td colspan=2>
+      <td colspan="2">
       <table cellpadding="0" cellspacing="1">
       <tr>
       <td><input style="font-weight: bold;" type="button" name="bold" value="B " onclick="javascript: BBTag('[b]','[/b]',<?php echo "document.forms.".$form.".".$name; ?>)" /></td>
@@ -1515,7 +1518,7 @@ function BBTag(opentag, closetag, textarea)
     </tr>
     <tr>
       <td>
-      <textarea name="<?php echo $name; ?>" rows="10" cols="40" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onchange="storeCaret(this);"><?php echo $content; ?></textarea>
+      <textarea name="<?php echo $name; ?>" rows="10" cols="40" onselect="storeCaret(this);" onclick="storeCaret(this);" onkeyup="storeCaret(this);" onchange="storeCaret(this);"><?php echo str_replace('\r\n', "\n", $content); ?></textarea>
       </td>
       <td>
       <table width="100%" cellpadding="1" cellspacing="1">

@@ -1,5 +1,5 @@
 <?php
-global $CURUSER;
+global $CURUSER, $Memcached, $db;
 
   if (isset($CURUSER) && $CURUSER && $CURUSER["uid"]>1)
   {

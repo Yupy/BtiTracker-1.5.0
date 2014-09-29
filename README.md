@@ -12,47 +12,16 @@ Installation
 Requirements
 ================
 
-1: PHP 5.4 > Above.
+1: PHP 5.3 > Above
 <br />
-2: Apache Server 2 > Above.
+2: Apache Web Server 2 > Above or NGINX
 <br />
-3: Mysql Server.
+3: MySql Server
 <br />
-4: phpMyAdmin.
+4: MySqli Extension
 <br />
-5: Memcache Extension.
+5: zlib
 <br />
-6: Memcached Server.
+6: mbstring
 <br />
-7: GD2 Extension (if not available).
-<br />
-8: MySqli Extension (if not available).
-
-================
-
-<h1>How to install the Depencies...</h1>
-
-<b>Linux:</b>
-
-<code>sudo apt-get install php5-memcache</code>
-<br />
-<code>sudo apt-get install memcached</code>
-<br />
-<code>sudo /etc/init.d/apache2 reload</code>
-<br />
-How to increase Memcache Memory on Linux:
-<br />
-Write in terminal:
-
-<code>nano /etc/memcached.conf</code>
-<br />
-
-And change:
-
-<code>-m 64</code> Wich is the default memory allocated to what your needs are for ex...
-<br />
-<code>-m 512</code> Wich equals 512Mb....
-
-================
-
-<b>Windows:</b> http://ghita.org/tipoftheday/xamp-with-memcache-on-windows
+7: gd2

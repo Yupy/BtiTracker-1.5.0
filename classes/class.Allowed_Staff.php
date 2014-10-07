@@ -13,6 +13,7 @@ class allowed_staff {
 	var $staff = array(
         #Owners, Admins, Mods id's
 		# Yupy = 2
+		# Others, can be added as an array(2, 3, 4) - 2, 3, 4 is the staff id's (members id's)
 
 		'admincp'	=> array(2)
 	);

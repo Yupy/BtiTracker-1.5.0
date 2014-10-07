@@ -26,7 +26,7 @@ $GLOBALS["peer_id"] = '';
 $summaryupdate = array();
 $BASEPATH = dirname(__FILE__);
 
-require_once('include/defines.php');
+require($BASEPATH . '/include/defines.php');
 require($BASEPATH . '/include/config.php');
 require($BASEPATH . '/include/common.php');
 require($BASEPATH . '/include/ann_vars.php');

@@ -164,7 +164,7 @@
         <img class="bb_icon" src="images/bbcode/strike.png" onclick="tag('s')" title="Strike" alt="S" /> 
         <img class="bb_icon" src="images/bbcode/link.png" onclick="clink()" title="Link" alt="Link" /> 
         <img class="bb_icon" src="images/bbcode/picture.png" onclick="cimage()" title="Add image" alt="Image"/> 
-        <img class="bb_icon" src="images/bbcode/script.png" onclick="tag('code')" title="Add code" alt="Code" /> <img class="bb_icon" src="images/bbcode/email.png" onclick="mail()" title="Add email" alt="Email" /> 
+        <img class="bb_icon" src="images/bbcode/script.png" onclick="tag('code')" title="Add code" alt="Code" />
    </div>
       <div style="float:right;padding:4px 2px 0px 0px;"> 
       	<img class="bb_icon" src="images/bbcode/align_center.png" onclick="wrap('align','','center')" title="Align - center" alt="Center" /> 		        <img class="bb_icon" src="images/bbcode/align_left.png" onclick="wrap('align','','left')" title="Align - left" alt="Left" /> 

@@ -80,6 +80,8 @@ class user {
 			$user['delete_torrents'] = $user['delete_torrents'];
 		if (isset($user['random']))
 			$user['random'] = (int)$user['random'];
+		if (isset($user['flags']))
+			$user['flags'] = (int)$user['flags'];
 	}
 
 }

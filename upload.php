@@ -183,68 +183,61 @@ if (isset($_FILES["torrent"])) {
 function endOutput()
 {
     global $BASEURL, $user_id, $TRACKER_ANNOUNCEURLS;
-?>
-  </CENTER>
-  <?php
-    echo "<center>" . INSERT_DATA . "<BR><BR>";
-    echo " " . ANNOUNCE_URL . "<br /><b>";
-    foreach ($TRACKER_ANNOUNCEURLS as $taurl)
-        echo "$taurl<br />";
-    echo "</b><BR></center>";
-?>
-  <FORM name="upload" method="post" ENCTYPE="multipart/form-data">
-  <TABLE class="lista" align="center">
-  <TR><TD class="header"><?php
-    echo TORRENT_FILE;
-?>:</TD><TD class="lista" align="left">
-  <?php
+    ?>
+    </center>
+    <?php
+      echo "<center>" . INSERT_DATA . "<br /><br />";
+      echo " " . ANNOUNCE_URL . "<br /><b>";
+      foreach ($TRACKER_ANNOUNCEURLS as $taurl)
+          echo $taurl . '<br />';
+      echo "</b><br /></center>";
+    ?>
+    <form name='upload' method='post' enctype='multipart/form-data'>
+    <table class='lista' align='center'>
+    <tr>
+       <td class='header'><?php echo TORRENT_FILE; ?></td>
+       <td class='lista' align='left'>
+    <?php
     if (function_exists("sha1"))
-        echo '<INPUT TYPE="file" NAME="torrent">';
+       echo "<input type='file' name='torrent'>";
     else
-        echo "<I>" . NO_SHA_NO_UP . "</I>";
-?>
-  </TD>
-  </TR>
-  <?php
-    echo "<TR><TD class=\"header\" >" . CATEGORY_FULL . " : </TD><TD class=\"lista\" align=\"left\">";
-    
-    categories($category[0]);
-    
-    echo "</TD></TR>";
-?>
-  <TR>
-  <TD class="header"><?php
-    echo FILE_NAME;
-?>(<?php
-    echo FACOLTATIVE;
-?>): </TD>
-  <TD class="lista"  align="left"><INPUT TYPE="text" name="filename" size="50" maxlength="200" /></TD>
-  </TR>
-  <TR>
-  <TD class="header" valign="top"><?php
-    echo DESCRIPTION;
-?>: </TD>
-  <TD class="lista"  align="left"><?php
-    textbbcode("upload", "info");
-?></TD>
-  </TR>
-  <?php
-    print("<TR><TD colspan=\"2\"><INPUT TYPE=\"hidden\" name=\"user_id\" size=\"50\" value=\"$user_id\" /> </TD /></TR>");
-    print('<TR><td class="header">' . TORRENT_ANONYMOUS . '</td><TD class="lista">&nbsp;&nbsp;' . NO . '<INPUT TYPE="radio" name="anonymous" value="false" checked />&nbsp;&nbsp;' . YES . '<INPUT TYPE="radio" name="anonymous" value="true" /></TD></TR>');
+       echo "<i>" . NO_SHA_NO_UP . "</i>";
+    ?>
+       </td>
+    </tr>
+    <?php
+       echo "<tr><td class='header'>" . CATEGORY_FULL . "</td><td class='lista' align='left'>";
+       categories($category[0]);
+       echo "</td></tr>";
+    ?>
+    <tr>
+       <td class='header'><?php echo FILE_NAME; ?></td>
+       <td class='lista' align='left'><input type='text' name='filename' size='50' maxlength='200' /></td>
+    </tr>
+    <tr>
+       <td class='header' valign='top'><?php echo DESCRIPTION; ?></td>
+       <td class='lista' align='left'><?php textbbcode("upload", "info"); ?></td>
+    </tr>
+    <?php
+    print("<tr>
+       <td colspan='2'><input type='hidden' name='user_id' size='50' value='" . $user_id . "' /></td>
+    </tr>");
+    print("<tr>
+       <td class='header'>" . TORRENT_ANONYMOUS . "</td>
+       <td class='lista'>&nbsp;&nbsp;" . NO . "<input type='radio' name='anonymous' value='false' checked />&nbsp;&nbsp;" . YES . "<input type='radio' name='anonymous' value='true' /></td>
+    </tr>");
     if (function_exists("sha1"))
-        echo '<TR><TD class="lista" align="center" colspan="2"><INPUT type="checkbox" name="autoset" value="enabled" disabled checked />' . TORRENT_CHECK . '</TD></TR>';
-?>
-  <TR>
-  <TD align="right"><INPUT type="submit" value="<?php
-    echo FRM_SEND;
-?>" /></TD>
-  <TD align="left"><INPUT type="reset" value="<?php
-    echo FRM_RESET;
-?>" /></TD>
-  </TR>
-  </TABLE>
-  </FORM>
-  <?php
+        echo "<tr>
+          <td class='lista' align='center' colspan='2'><input type='checkbox' name='autoset' value='enabled' disabled checked />" . TORRENT_CHECK . "</td>
+        </tr>";
+    ?>
+    <tr>
+       <td align='right'><input type='submit' value='<?php echo FRM_SEND; ?>' /></td>
+       <td align='left'><input type='reset' value='<?php echo FRM_RESET; ?>' /></td>
+    </tr>
+    </table>
+    </form>
+    <?php
     print("</td></tr></table>");
     block_end();
 }

@@ -44,7 +44,7 @@ require_once(INCL_PATH . 'crk_protection.php');
 // protection against sql injection, xss attack
 require_once(INCL_PATH . 'theme_functions.php');
 require_once(CLASS_PATH . 'class.Captcha.php');
-require_once(CLASS_PATH . 'class.Cookies.php');
+require_once(CLASS_PATH . 'class.Cookie.php');
 require_once(CLASS_PATH . 'class.Text.php');
 require_once(CLASS_PATH . 'class.Template.php');
 require_once(CLASS_PATH . 'class.Misc.php');

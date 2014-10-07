@@ -49,15 +49,15 @@ $GLOBALS['maxleech'] = 5;
 /////////// End of User Configuration ///////////
 $dbhost = 'localhost';
 $dbuser = 'root';
-$dbpass = 'yupynell';
-$database = 'midnightxpress';
+$dbpass = '';
+$database = 'BtiTracker';
 //Tracker's name
 $SITENAME='BtitTracker Test';
 //Tracker's Base URL
-$BASEURL='http://188.173.174.233';
+$BASEURL='http://localhost';
 // tracker's announce urls, can be more than one
 $TRACKER_ANNOUNCEURLS=array();
-$TRACKER_ANNOUNCEURLS[]='http://188.173.174.233/announce.php';
+$TRACKER_ANNOUNCEURLS[]='http://localhost/announce.php';
 //Tracker's email (owner email)
 $SITEEMAIL='your@email.com';
 //Torrent's DIR
@@ -68,7 +68,7 @@ $VALIDATION='none';
 //Use or not the image code for new users' registration
 $USE_IMAGECODE=true;
 // interval for sanity check (good = 10 minutes)
-$clean_interval='300';
+$clean_interval='1800';
 // interval for updating external torrents (depending of how many external torrents)
 $update_interval='100';
 // forum link or internal (empty = internal) or none

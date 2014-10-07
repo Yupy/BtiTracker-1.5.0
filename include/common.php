@@ -9,8 +9,8 @@
 if (!function_exists("bcsub")) {
     function bcsub($first_num, $second_num)
     {
-        $fn = max(0, $first_num);
-        $sn = max(0, $second_num);
+        $fn = max(0, (int)$first_num);
+        $sn = max(0, (int)$second_num);
         return $fn - $sn;
     }
 }

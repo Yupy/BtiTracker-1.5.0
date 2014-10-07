@@ -883,7 +883,7 @@ function print_users()
     $row   = $res->fetch_row();
     $count = (int)$row[0];
 	
-    list($pagertop, $pagerbottom, $limit) = misc::pager(20, $count, "users.php?" . $addparams . "order=" . $order_param . "&by=" . $by_param . "&");
+    list($pagertop, $limit) = misc::pager(20, $count, "users.php?" . $addparams . "order=" . $order_param . "&by=" . $by_param . "&");
     
     if ($by == "ASC")
         $mark = "&nbsp;&#8593";

@@ -60,7 +60,7 @@ if ($row["external"] == "yes" || !$PRIVATE_ANNOUNCE) {
     $alltorrent = preg_replace("/file-mediali(.*?)ee(.*?):/i", "file-mediali0ee$2:", $alltorrent);
     $alltorrent = preg_replace("/file-durationli(.*?)ee(.*?):/i", "file-durationli0ee$2:", $alltorrent);
 	
-    $array = BDecode($alltorrent);
+    $array = Bencode::decode($alltorrent);
     fclose($fd);
     $array["announce"] = $BASEURL . "/announce.php?pid=" . $pid;
 	
@@ -74,7 +74,7 @@ if ($row["external"] == "yes" || !$PRIVATE_ANNOUNCE) {
             }
         }
     }
-    $alltorrent = BEncode($array);
+    $alltorrent = Bencode::encode($array);
     
     header("Content-Type: application/x-bittorrent");
     header('Content-Disposition: attachment; filename="' . AddSlashes($f) . '"');

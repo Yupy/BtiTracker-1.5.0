@@ -2137,6 +2137,15 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
         } else
             print("<br />\nTorrent's folder " . $TORRENTSDIR . " <span style='color:#FF0000; font-weight: bold;'>NOT FOUND!</span><br />\n");
         
+        #Check cache dir.
+        if (file_exists('cache')) {
+            if (is_writable('cache'))
+                print("cache directory <span style='color:#00FF00; font-weight: bold;'>is writable</span><br />\n");
+            else
+                print("cache directory is <span style='color:#FF0000; font-weight: bold;'>NOT writable</span> (Cannot write tracker's cache files)<br />\n");
+        } else
+            print("<br />\ncache directory <span style='color:#FF0000; font-weight: bold;'>NOT FOUND!</span><br />\n");
+        
         // check config.php
         if (file_exists(INCL_PATH . 'config.php')) {
             if (is_writable(INCL_PATH . 'config.php'))

@@ -6,8 +6,7 @@
 * Copyright (C) 2004-2014 Btiteam.org
 */
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'functions.php');
-require_once(INCL_PATH . 'BDecode.php');
-require_once(INCL_PATH . 'BEncode.php');
+require_once(CLASS_PATH . 'class.Bencode.php');
 
 dbconn();
 

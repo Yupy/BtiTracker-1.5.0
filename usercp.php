@@ -752,7 +752,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
         $numtorrent = $resuploaded->num_rows;
 
         if ($numtorrent > 0) {
-            list($pagertop, $pagerbottom, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $numtorrent, $_SERVER["PHP_SELF"] . "?uid=" . $uid . "&");
+            list($pagertop, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $numtorrent, $_SERVER["PHP_SELF"] . "?uid=" . $uid . "&");
 
             print($pagertop);
 

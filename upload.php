@@ -6,8 +6,7 @@
 * Copyright (C) 2004-2014 Btiteam.org
 */
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'functions.php');
-require_once(INCL_PATH . 'BDecode.php');
-require_once(INCL_PATH . 'BEncode.php');
+require_once(CLASS_PATH . 'class.Bencode.php');
 
 function_exists("sha1") or die('<font color="red">' . NOT_SHA . '</font></body></html>');
 
@@ -39,7 +38,7 @@ if (isset($_FILES["torrent"])) {
             exit();
             
         }
-        $array = BDecode($alltorrent);
+        $array = Bencode::decode($alltorrent);
         if (!isset($array)) {
             echo "<font color='red'>" . ERR_PARSER . "</FONT>";
             endOutput();
@@ -53,9 +52,9 @@ if (isset($_FILES["torrent"])) {
 
         if (in_array($array["announce"], $TRACKER_ANNOUNCEURLS) && $DHT_PRIVATE) {
             $array["info"]["private"] = 1;
-            $hash  = sha1(BEncode($array["info"]));
+            $hash  = sha1(Bencode::encode($array["info"]));
         } else {
-            $hash = sha1(BEncode($array["info"]));
+            $hash = sha1(Bencode::encode($array["info"]));
         }
         fclose($fd);
     }
@@ -157,7 +156,7 @@ if (isset($_FILES["torrent"])) {
             write_log("Uploaded new torrent $filename - EXT ($hash)", "add");
         } else {
             if ($DHT_PRIVATE) {
-                $alltorrent = bencode($array);
+                $alltorrent = Bencode::encode($array);
                 $fd         = fopen($TORRENTSDIR . "/" . $hash . ".btf", "rb+");
                 fwrite($fd, $alltorrent);
                 fclose($fd);

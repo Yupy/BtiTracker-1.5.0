@@ -160,7 +160,7 @@ function ShowHide(id,id1) {
 </script>
 <?php
 
-require_once(INCL_PATH . 'BDecode.php');
+require_once(CLASS_PATH . 'class.Bencode.php');
 if (file_exists($row["url"])) {
     print("
     <tr>
@@ -176,7 +176,7 @@ if (file_exists($row["url"])) {
     $ffile = fopen($row["url"], "rb");
     $content = fread($ffile, filesize($row["url"]));
     fclose($ffile);
-    $content  = BDecode($content);
+    $content  = Bencode::decode($content);
     $numfiles = 0;
     if (isset($content["info"]) && $content["info"]) {
         $thefile = $content["info"];

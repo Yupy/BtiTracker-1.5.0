@@ -44,6 +44,7 @@ require_once(INCL_PATH . 'crk_protection.php');
 // protection against sql injection, xss attack
 require_once(INCL_PATH . 'theme_functions.php');
 require_once(CLASS_PATH . 'class.Captcha.php');
+require_once(CLASS_PATH . 'class.Cookies.php');
 require_once(CLASS_PATH . 'class.Text.php');
 require_once(CLASS_PATH . 'class.Template.php');
 require_once(CLASS_PATH . 'class.Misc.php');
@@ -394,16 +395,16 @@ function hashit($var, $addtext = '')
 
 function logincookie($id, $passhash, $expires = 0x7fffffff)
 {
-    setcookie("uid", $id, $expires, "/");
-    setcookie("pass", $passhash, $expires, "/");
-    setcookie("hashx", hashit($id, $passhash), $expires, "/");
+    Cookie::set("uid", $id, $expires, "/");
+    Cookie::set("pass", $passhash, $expires, "/");
+    Cookie::set("hashx", hashit($id, $passhash), $expires, "/");
 }
 
 function logoutcookie()
 {
-    setcookie("uid", "", 0x7fffffff, "/");
-    setcookie("pass", "", 0x7fffffff, "/");
-    setcookie("hashx", "", 0x7fffffff, "/");
+    Cookie::set("uid", "", 0x7fffffff, "/");
+    Cookie::set("pass", "", 0x7fffffff, "/");
+    Cookie::set("hashx", "", 0x7fffffff, "/");
 }
 
 function hash_pad($hash)
@@ -475,9 +476,9 @@ function userlogin()
         "Owner" => 8
     ); // Staff ID level's 
     
-   // $ip = ($row["id_level"] <> $hide_ips["Moderator"]) ? $ip : "127.0.0.1";
-   // $ip = ($row["id_level"] <> $hide_ips["Administrator"]) ? $ip : "127.0.0.1";
-   // $ip = ($row["id_level"] <> $hide_ips["Owner"]) ? $ip : "127.0.0.1";
+    $ip = ($row["id_level"] <> $hide_ips["Moderator"]) ? $ip : "127.0.0.1";
+    $ip = ($row["id_level"] <> $hide_ips["Administrator"]) ? $ip : "127.0.0.1";
+    $ip = ($row["id_level"] <> $hide_ips["Owner"]) ? $ip : "127.0.0.1";
     
     if ($id > 1)
         $db->query("UPDATE users SET lastconnect = NOW(), lip = " . $nip . ", cip = '" . AddSlashes($ip) . "' WHERE id = " . $id);

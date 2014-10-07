@@ -5,9 +5,8 @@
  * Updated and Maintained by Yupy.
  * Copyright (C) 2004-2014 Btiteam.org
  */
-
 require_once(INCL_PATH . 'functions.php');
-require_once(INCL_PATH . 'BDecode.php');
+require_once(CLASS_PATH . 'class.Bencode.php');
 
 ignore_user_abort(1);
 
@@ -99,7 +98,7 @@ function scrape($url, $infohash = "")
             }
         }
         
-        $array = BDecode($stream);
+        $array = Bencode::decode($stream);
         if (!isset($array)) {
             $ret = $db->query("UPDATE namemap SET lastupdate = NOW() WHERE announce_url = '" . $url . "'" . ($infohash == "" ? "" : " AND namemap.info_hash IN ('" . $infohash . "')"));
             write_log("FAILED update external torrent " . ($infohash == "" ? "" : "(infohash: " . $infohash . ")") . " from " . $url . " tracker (not bencode data)", "");

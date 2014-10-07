@@ -602,7 +602,7 @@ class text {
 					$Str .= '<strong class="important_text">'.self::to_html($Block['Val']).'</strong>';
 					break;
 				case 'user':
-					$Str .= '<a href="user.php?action=search&amp;search='.urlencode($Block['Val']).'">'.$Block['Val'].'</a>';
+					$Str .= '<a href="users.php?searchtext='.urlencode($Block['Val']).'">'.$Block['Val'].'</a>';
 					break;
 				case 'plain':
 					$Str .= $Block['Val'];

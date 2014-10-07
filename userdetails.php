@@ -144,7 +144,7 @@ $numtorrent = $resuploaded->num_rows;
 
 if ($numtorrent > 0)
 {
-    list($pagertop, $pagerbottom, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $numtorrent, $_SERVER["PHP_SELF"]."?id=".$id."&");
+    list($pagertop, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $numtorrent, $_SERVER["PHP_SELF"]."?id=".$id."&");
     print($pagertop);
 
     $resuploaded = $db->query("SELECT namemap.info_hash, namemap.filename, UNIX_TIMESTAMP(namemap.data) AS added, namemap.size, summary.seeds, summary.leechers, summary.finished FROM namemap INNER JOIN summary ON namemap.info_hash = summary.info_hash WHERE uploader = ".$id." AND namemap.anonymous = 'false' ORDER BY data DESC ".$limit);
@@ -170,7 +170,7 @@ if ($resuploaded && $resuploaded->num_rows > 0)
     {
         print("\n<tr>\n<td class='lista'><a href='details.php?id=".$rest{"info_hash"}."'>".security::html_safe(unesc($rest["filename"]))."</td>");
 	
-        include("include/offset.php");
+        include(INCL_PATH . 'offset.php');
         print("\n<td class='lista' align='center'>".date("d/m/Y H:m:s", $rest["added"] - $offset)."</td>");
         print("\n<td class='lista' align='center'>".misc::makesize((int)$rest["size"])."</td>");
         print("\n<td align='center' class='".linkcolor($rest["seeds"])."'><a href='peers.php?id=".$rest{"info_hash"}."'>".(int)$rest['seeds']."</td>");
@@ -216,7 +216,7 @@ else
 
 if ($anq->num_rows > 0)
 {
-    list($pagertop, $pagerbottom, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $anq->num_rows, $_SERVER["PHP_SELF"]."?id=".$id."&", array("pagename" => "activepage"));
+    list($pagertop, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $anq->num_rows, $_SERVER["PHP_SELF"]."?id=".$id."&", array("pagename" => "activepage"));
 
 	if ($PRIVATE_ANNOUNCE)
         $anq = $db->query("SELECT peers.ip, peers.infohash, namemap.filename, namemap.size, peers.status, peers.downloaded, peers.uploaded, summary.seeds, summary.leechers, summary.finished
@@ -284,7 +284,7 @@ $anq = $db->query("SELECT history.uid FROM history INNER JOIN namemap ON history
 
 if ($anq->num_rows > 0)
 {
-    list($pagertop, $pagerbottom, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $anq->num_rows, $_SERVER["PHP_SELF"]."?id=".$id."&", array("pagename" => "historypage"));
+    list($pagertop, $limit) = misc::pager(($utorrents == 0 ? 15 : $utorrents), $anq->num_rows, $_SERVER["PHP_SELF"]."?id=".$id."&", array("pagename" => "historypage"));
  
 	$anq = $db->query("SELECT namemap.filename, namemap.size, namemap.info_hash, history.active, history.agent, history.downloaded, history.uploaded, summary.seeds, summary.leechers, summary.finished
     FROM history INNER JOIN namemap ON history.infohash = namemap.info_hash INNER JOIN summary ON summary.info_hash = namemap.info_hash WHERE history.uid = ".$id." AND history.date IS NOT NULL ORDER BY date DESC ".$limit);

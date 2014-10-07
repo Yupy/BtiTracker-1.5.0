@@ -21,6 +21,14 @@ p {
     font-size: 10pt;
 }
 
+strong.quoteheader {color: #000;}
+
+blockquote {
+margin: 10px;
+padding: 10px;
+border: 1px dashed #666;
+}
+
 /* Pager */
 a.g_bblink { color: #000000; font-weight: bold;		}
 

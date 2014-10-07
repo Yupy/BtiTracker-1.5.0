@@ -70,14 +70,14 @@ function isWriteable ( $canContinue, $file, $mode, $desc )
 $canContinue = 1;
 
 //check PHP version
-$good = phpversion() >= '4.1.2' ? 1 : 0;
+$good = phpversion() >= '5.3.0' ? 1 : 0;
 $canContinue = $canContinue && $good;
-CMessage ( 'PHP version >= 4.1.2: ', $good );
+CMessage ( 'PHP version >= 5.3.0: ', $good );
 
 // check PHP 5 compatibility
-if(substr(phpversion(), 1, 0) >= '5')
+if(substr(phpversion(), 1, 1) >= '5')
 {
-    $good = ini_set('zend.ze1_compatibility_mode', '0') === false ? 0 : 1;
+    $good = ini_set('zend.ze1_compatibility_mode', '0') === false ? 1 : 0;
     $canContinue = $canContinue && $good;
     CMessage ( 'PHP 5 compatibility mode: ', $good );
 }
@@ -101,7 +101,7 @@ $canContinue = $canContinue && $good;
 CMessage ( 'PHP session support - Check 2 (recommended): ', $good );
 
 //check mySQL
-$good = function_exists( 'mysqli_connect' ) ? 1 : 0;
+$good = function_exists( 'mysql_connect' ) ? 1 : 0;
 $canContinue = $canContinue && $good;
 CMessage ( 'MySQL support exists - Check 1: ', $good );
 
@@ -120,6 +120,7 @@ CMessage ( 'GD2 support exists: ', $good );
 
 $canContinue = isWriteable ( $canContinue, ''.ROOT_PATH.'include/config.php', 0777, '/include/config.php/' );
 $canContinue = isWriteable ( $canContinue, ''.ROOT_PATH.'torrents/', 0777, '/torrents/' );
+$canContinue = isWriteable ( $canContinue, ''.ROOT_PATH.'cache/', 0777, '/cache/' );
 $canContinue = isWriteable ( $canContinue, ''.ROOT_PATH.'chat.php', 0777, 'chat.php/' );
 $canContinue = isWriteable ( $canContinue, ''.ROOT_PATH.'addons/guest.dat', 0777, 'addons/guest.dat' );
 $canContinue = isWriteable ( $canContinue, ''.ROOT_PATH.'badwords.txt', 0777, 'badwords.txt' );

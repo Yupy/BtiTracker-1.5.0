@@ -21,6 +21,25 @@ p {
     font-size: 10pt;
 }
 
+/* Pager */
+a.g_bblink { color: #000000; font-weight: bold;		}
+
+a:visited.g_bblink {	color: #000000;	font-weight: bold;		}		/*black bold link*/
+
+a:hover.g_bblink {	color: #a8d3ff; font-weight: bold;		}
+
+a.g_bllink {	color: #000000;		}
+
+a:visited.g_bllink {	color: #000000;		}		/*black link*/
+
+a:hover.g_bllink 	{	color: #a8d3ff;		}
+
+p.browse_changepage
+{
+	text-align: center;
+	padding: 0 !important;
+}
+/* Pager End */
 
 table.lista {
     background-color: #FAFCFE;

@@ -1,0 +1,19 @@
+mbstring
+
+exif
+
+apache
+
+php 5.3 +
+
+mysql server
+
+mysqli extension
+
+gd2
+
+Freetype
+
+zlib
+
+A 64bit OS + Processor

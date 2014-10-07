@@ -163,8 +163,8 @@ if ($action == 'save_db'){
 }elseif ($action == 'save_admin') {
     dbconn ();
     step("Administrator Setup (DONE!)","Admin Setup","4");
-    $pwd=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["wantpassword"]) : ((trigger_error("Error...", E_USER_ERROR)) ? "" : ""));
-    $pwd1=((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST["passwagain"]) : ((trigger_error("Error...", E_USER_ERROR)) ? "" : ""));
+    $pwd=mysql_real_escape_string($_POST["wantpassword"]);
+    $pwd1=mysql_real_escape_string($_POST["passwagain"]);
     if (!mkglobal("wantusername:wantpassword:passagain:email"))
         die('Error, Please try again!');
     $email = htmlspecialchars(trim($email));
@@ -194,14 +194,14 @@ if (!validemail($email))
 
 if (!validusername($wantusername))
     bark("Invalid username.");
-    $a = (@mysqli_fetch_row(@mysqli_query($GLOBALS["___mysqli_ston"], "select count(*) from users where email='$email'"))) or sqlerr(__FILE__, __LINE__);
+    $a = (@mysql_fetch_row(@mysql_query("select count(*) from users where email='$email'"))) or sqlerr(__FILE__, __LINE__);
     if ($a[0] != 0)
     bark("The e-mail address ".htmlspecialchars($email)." is already in use.");
-    $res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT COUNT(*) FROM users") or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_row($res);
-    $ret = mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO users (username, password, random, id_level, email, joined, lastconnect, lip, pid, time_offset) VALUES ('$wantusername', '" . md5($pwd) . "', '437747', '8', '$email', NOW(), NOW(), '1409937172','db5830162cd732c59efba163abc76507', '0')");
+    $res = mysql_query("SELECT COUNT(*) FROM users") or sqlerr(__FILE__, __LINE__);
+    $arr = mysql_fetch_row($res);
+    $ret = mysql_query("INSERT INTO users (username, password, random, id_level, email, joined, lastconnect, lip, pid, time_offset) VALUES ('$wantusername', '" . md5($pwd) . "', '437747', '8', '$email', NOW(), NOW(), '1409937172','db5830162cd732c59efba163abc76507', '0')");
     if (!$ret) {
-    if (((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062)
+    if (mysql_errno() == 1062)
         bark("Username already exists!");
     bark("borked");
     }else {
@@ -231,7 +231,6 @@ if (!validusername($wantusername))
     print ("$msg");
     @chmod("../install.me",0777);
     @unlink("../install.me");
-
 }elseif ($action == 'step0') {
     step("Welcome to the installation wizard for ".TRACKER_VERSION.".","Welcome Screen","0");
 ?>
@@ -249,16 +248,18 @@ if (!validusername($wantusername))
                 <li>/include/config.php,</li>
                 <li>/addons/guest.dat,</li>
                 <li>/torrents/,</li>
+				<li>/cache/,</li>
                 <li>/badwords.txt,</li>
                 <li>/chat.php</li>
             </ul>
 
-<?php echo TRACKER_VERSION;?>  requires PHP 5.3 or better and an MYSQL database.<br><br>
+<?php echo TRACKER_VERSION;?>  requires PHP 5.3.0 or better and an MYSQL database.<br><br>
 
 <b>You will also need the following information that your webhost can provide:</b><br>
-MYSQL 5.x.x or greater.<br>
-PHP version 5.3 or greater.<br>
-The Apache webserver version 2 or similar webservers<br>
+MySQL 5 or Above.<br>
+PHP 5.3.0 and Above.<br>
+Apache2 or NGINX.<br>
+A 64 bit OS + Processor.<br>
 The ability to change directory permissions to 777 or to change ownership of directories to be owned by the webserver process.<br><br>
 <br />
 <br />
@@ -288,8 +289,8 @@ print ("<form method='post' action='".$_SERVER["SCRIPT_NAME"]."?action=step3' na
             <tr><td class="header">Database Name :</td><td class="lista"><input type="text" name="dbname" value="<?php echo $database;?>" size="40" /></td></tr>
             <tr><td class="header">Database User :</td><td class="lista"><input type="text" name="dbuser" value="<?php echo $dbuser;?>" size="40" /></td></tr>
             <tr><td class="header">Database Password :</td><td class="lista"><input type="text" name="dbpwd" value="<?php echo $dbpass;?>" size="40" /></td></tr>
-			<tr><td class="header">User Salt :</td><td class="lista"><input type="text" name="salting" value="<?php echo $salting;?>" size="40" /><br /><small><font color="red">IMPORTANT!</font> Add a random text of 32 characters</small></td></tr>
-            <tr><td class="header" align="center" colspan="2">Tracker's general settings</td></tr>
+            <tr><td class="header">User Salt :</td><td class="lista"><input type="text" name="salting" value="<?php echo $salting;?>" size="40" /><br /><small><font color="red">IMPORTANT!</font> Add a random text of 32 characters</small></td></tr>
+			<tr><td class="header" align="center" colspan="2">Tracker's general settings</td></tr>
             <tr><td class="header">Tracker's Name:</td><td class="lista"><input type="text" name="trackername" value="<?php echo $SITENAME;?>" size="40" /></td></tr>
             <tr><td class="header">Base Tracker's URL (without last /):</td><td class="lista"><input type="text" name="trackerurl" value="<?php echo $BASEURL; ?>" size="40" /></td></tr>
             <tr><td class="header">Tracker's Announce URLS (one url per row):</td><td class="lista"><textarea name="tracker_announceurl" rows="5" cols="40"><?php echo $BASEURL."/announce.php";?></textarea></td></tr>
@@ -305,8 +306,9 @@ print ("<form method='post' action='".$_SERVER["SCRIPT_NAME"]."?action=step3' na
             <tr><td class="header">Private Announce:</td><td class="lista"> true <input type="radio" name="p_announce" value="true" <?php if ($PRIVATE_ANNOUNCE==true) echo "checked" ?> />&nbsp;&nbsp; false <input type="radio" name="p_announce" value="false" <?php if ($PRIVATE_ANNOUNCE==false) echo "checked" ?> /></td></tr>
             <tr><td class="header">Private Scrape:</td><td class="lista"> true <input type="radio" name="p_scrape" value="true" <?php if ($PRIVATE_SCRAPE==true) echo "checked" ?> />&nbsp;&nbsp; false <input type="radio" name="p_scrape" value="false" <?php if ($PRIVATE_SCRAPE==false) echo "checked" ?> /></td></tr>
             <tr><td class="header">Show Uploaders nick:</td><td class="lista"> true <input type="radio" name="show_uploader" value="true" <?php if ($SHOW_UPLOADER==true) echo "checked" ?> />&nbsp;&nbsp; false <input type="radio" name="show_uploader" value="false" <?php if ($SHOW_UPLOADER==false) echo "checked" ?> /></td></tr>
+
             <tr><td class="header">Default Language:</td><td class="lista"><input type="text" name="default_langue" value="1" size="2" readonly />&nbsp;(1 = English)</td></tr>
-			<tr><td class="header">Character Encoding:</td><td class="lista">
+            <tr><td class="header">Character Encoding:</td><td class="lista">
             <select name="charset">
             <option <?php print($GLOBALS["charset"]=="ISO-8859-1"?"selected":""); ?>>ISO-8859-1
             <option <?php print($GLOBALS["charset"]=="ISO-8859-2"?"selected":""); ?>>ISO-8859-2
@@ -350,7 +352,7 @@ print ("<form method='post' action='".$_SERVER["SCRIPT_NAME"]."?action=step3' na
             <option <?php print($GLOBALS["charset"]=="VPS"?"selected":""); ?>>VPS
             <option <?php print($GLOBALS["charset"]=="TCVN-5712"?"selected":""); ?>>TCVN-5712
             </select>
-            <tr><td class="header">Default Style:</td><td class="lista"><input type="text" name="default_style" value="1" size="2" />&nbsp;(1=base, 2=green, 3=dark, 4=killbill)</td></tr>
+            <tr><td class="header">Default Style:</td><td class=lista><input type="text" name="default_style" value="1" size="2" />&nbsp;(1=base, 2=green, 3=dark, 4=killbill)</td></tr>
             <tr><td class="header">Max Users (numeric, 0 = no limits):</td><td class="lista"><input type="text" name="maxusers" value="<?php echo 0+$MAX_USERS;?>" size="40" /></td></tr>
             <tr><td class="header">Torrents per page:</td><td class="lista"><input type="text" name="ntorrents" value="<?php echo (0+$ntorrents==0?"15":$ntorrents);?>" size="40" /></td></tr>
             <tr><td class="header" align="center" colspan="2">Tracker's specific settings</td></tr>

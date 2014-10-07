@@ -69,16 +69,16 @@ if (!$error && isset($_REQUEST["delete"]) && $_REQUEST["delete"]!=basename($_SER
 }
 // Connect to the database
 if (!$error)
-{ $dbconnection = @($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost, $dbuser, $dbpass)); 
+{ $dbconnection = @mysql_connect($dbhost,$dbuser,$dbpass); 
   if ($dbconnection) 
-    $db = ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database"));
+    $db = mysql_select_db($database);
   if (!$dbconnection || !$db) 
-  { echo ("<p class=\"error\">Database connection failed due to ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))."</p>\n");
+  { echo ("<p class=\"error\">Database connection failed due to ".mysql_error()."</p>\n");
     echo ("<p>Edit the database settings in ".$_SERVER["SCRIPT_FILENAME"]." or contact your database provider</p>\n");
     $error=true;
   }
   if (!$error && $db_connection_char_set!=='')
-    @mysqli_query( $dbconnection, "SET NAMES $db_connection_char_set");
+    @mysql_query("SET NAMES $db_connection_char_set", $dbconnection);
 }
 // List uploaded files in multifile mode
 if (!$error && !isset($_REQUEST["fn"]) && $filename=="")
@@ -147,8 +147,8 @@ if (!$error && !isset($_REQUEST["fn"]) && $filename=="")
 
 if (!$error && !isset($_REQUEST["fn"]) && $filename=="")
 { 
-  $result = mysqli_query($GLOBALS["___mysqli_ston"], "SHOW VARIABLES LIKE 'character_set_connection';");
-  $row = mysqli_fetch_assoc($result);
+  $result = mysql_query("SHOW VARIABLES LIKE 'character_set_connection';");
+  $row = mysql_fetch_assoc($result);
   if ($row) 
   { $charset = $row['Value'];
     echo ("<p>Note: The current mySQL connection charset is <i>$charset</i>. Your dump file must be encoded in <i>$charset</i> in order to avoid problems with non-latin characters. You can change the connection charset using the \$db_connection_char_set variable in bigdump.php</p>\n");
@@ -307,10 +307,10 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]))
 // Execute query if end of query detected (; as last character) AND NOT in parents
 
       if (ereg(";$",trim($dumpline)) && !$inparents)
-      { if (!mysqli_query( $dbconnection, trim($query)))
+      { if (!mysql_query(trim($query), $dbconnection))
         { echo ("<p class=\"error\">Error at the line $linenumber: ". trim($dumpline)."</p>\n");
           echo ("<p>Query: ".trim($query)."</p>\n");
-          echo ("<p>MySQL: ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))."</p>\n");
+          echo ("<p>MySQL: ".mysql_error()."</p>\n");
           $error=true;
           break;
         }
@@ -369,7 +369,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]))
 if ($error)
   echo ("<p><input type=\"button\" class=\"button\" name=\"continue\" value=\"Start from the beginning\" onclick=\"javascript:document.location.href='".$_SERVER["PHP_SELF"]."?action=step3'\"> (DROP the old tables before restarting)</p>\n");
 
-if ($dbconnection) ((is_null($___mysqli_res = mysqli_close($GLOBALS["___mysqli_ston"]))) ? false : $___mysqli_res);
+if ($dbconnection) mysql_close();
 if ($file && !$gzipmode) fclose($file);
 else if ($file && $gzipmode) gzclose($file);
 ?>

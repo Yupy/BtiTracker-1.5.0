@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
+-- version 4.0.4
 -- http://www.phpmyadmin.net
 --
--- Gazda: 127.0.0.1
--- Timp de generare: 16 May 2013 la 16:06
--- Versiune server: 5.5.27
--- Versiune PHP: 5.4.7
+-- Host: 127.0.0.1
+-- Generation Time: Oct 05, 2014 at 02:16 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.16
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Structura de tabel pentru tabelul `bannedip`
+-- Table structure for table `bannedip`
 --
 
 CREATE TABLE IF NOT EXISTS `bannedip` (
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `bannedip` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `blocks`
+-- Table structure for table `blocks`
 --
 
 CREATE TABLE IF NOT EXISTS `blocks` (
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `blocks` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
--- Salvarea datelor din tabel `blocks`
+-- Dumping data for table `blocks`
 --
 
 INSERT INTO `blocks` (`blockid`, `content`, `position`, `sortid`, `status`) VALUES
@@ -73,7 +73,7 @@ INSERT INTO `blocks` (`blockid`, `content`, `position`, `sortid`, `status`) VALU
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `categories`
+-- Table structure for table `categories`
 --
 
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
--- Salvarea datelor din tabel `categories`
+-- Dumping data for table `categories`
 --
 
 INSERT INTO `categories` (`id`, `name`, `sub`, `sort_index`, `image`) VALUES
@@ -105,7 +105,7 @@ INSERT INTO `categories` (`id`, `name`, `sub`, `sort_index`, `image`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `comments`
+-- Table structure for table `comments`
 --
 
 CREATE TABLE IF NOT EXISTS `comments` (
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `countries`
+-- Table structure for table `countries`
 --
 
 CREATE TABLE IF NOT EXISTS `countries` (
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=245 ;
 
 --
--- Salvarea datelor din tabel `countries`
+-- Dumping data for table `countries`
 --
 
 INSERT INTO `countries` (`id`, `name`, `flagpic`, `domain`) VALUES
@@ -386,7 +386,7 @@ INSERT INTO `countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `forums`
+-- Table structure for table `forums`
 --
 
 CREATE TABLE IF NOT EXISTS `forums` (
@@ -406,7 +406,7 @@ CREATE TABLE IF NOT EXISTS `forums` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `history`
+-- Table structure for table `history`
 --
 
 CREATE TABLE IF NOT EXISTS `history` (
@@ -423,7 +423,7 @@ CREATE TABLE IF NOT EXISTS `history` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `language`
+-- Table structure for table `language`
 --
 
 CREATE TABLE IF NOT EXISTS `language` (
@@ -434,17 +434,16 @@ CREATE TABLE IF NOT EXISTS `language` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
--- Salvarea datelor din tabel `language`
+-- Dumping data for table `language`
 --
 
 INSERT INTO `language` (`id`, `language`, `language_url`) VALUES
-(1, 'English', 'language/english.php'),
-(2, 'Polish', 'language/polish.php');
+(1, 'English', 'language/english.php');
 
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `logs`
+-- Table structure for table `logs`
 --
 
 CREATE TABLE IF NOT EXISTS `logs` (
@@ -455,12 +454,12 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `user` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `added` (`added`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `messages`
+-- Table structure for table `messages`
 --
 
 CREATE TABLE IF NOT EXISTS `messages` (
@@ -479,7 +478,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `namemap`
+-- Table structure for table `namemap`
 --
 
 CREATE TABLE IF NOT EXISTS `namemap` (
@@ -506,7 +505,7 @@ CREATE TABLE IF NOT EXISTS `namemap` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `news`
+-- Table structure for table `news`
 --
 
 CREATE TABLE IF NOT EXISTS `news` (
@@ -521,7 +520,7 @@ CREATE TABLE IF NOT EXISTS `news` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `peers`
+-- Table structure for table `peers`
 --
 
 CREATE TABLE IF NOT EXISTS `peers` (
@@ -546,12 +545,12 @@ CREATE TABLE IF NOT EXISTS `peers` (
   UNIQUE KEY `sequence` (`sequence`),
   KEY `pid` (`pid`),
   KEY `ip` (`ip`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `polls`
+-- Table structure for table `polls`
 --
 
 CREATE TABLE IF NOT EXISTS `polls` (
@@ -568,7 +567,7 @@ CREATE TABLE IF NOT EXISTS `polls` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `poll_voters`
+-- Table structure for table `poll_voters`
 --
 
 CREATE TABLE IF NOT EXISTS `poll_voters` (
@@ -584,7 +583,7 @@ CREATE TABLE IF NOT EXISTS `poll_voters` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `posts`
+-- Table structure for table `posts`
 --
 
 CREATE TABLE IF NOT EXISTS `posts` (
@@ -604,7 +603,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `ratings`
+-- Table structure for table `ratings`
 --
 
 CREATE TABLE IF NOT EXISTS `ratings` (
@@ -618,7 +617,7 @@ CREATE TABLE IF NOT EXISTS `ratings` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `readposts`
+-- Table structure for table `readposts`
 --
 
 CREATE TABLE IF NOT EXISTS `readposts` (
@@ -634,7 +633,7 @@ CREATE TABLE IF NOT EXISTS `readposts` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `style`
+-- Table structure for table `style`
 --
 
 CREATE TABLE IF NOT EXISTS `style` (
@@ -645,19 +644,16 @@ CREATE TABLE IF NOT EXISTS `style` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
--- Salvarea datelor din tabel `style`
+-- Dumping data for table `style`
 --
 
 INSERT INTO `style` (`id`, `style`, `style_url`) VALUES
-(1, 'BtitTracker', './style/base'),
-(2, 'Green', './style/green'),
-(3, 'Dark', './style/dark'),
-(4, 'KillBill', './style/killbill');
+(1, 'BtitTracker', './style/base');
 
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `summary`
+-- Table structure for table `summary`
 --
 
 CREATE TABLE IF NOT EXISTS `summary` (
@@ -675,7 +671,7 @@ CREATE TABLE IF NOT EXISTS `summary` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `tasks`
+-- Table structure for table `tasks`
 --
 
 CREATE TABLE IF NOT EXISTS `tasks` (
@@ -685,17 +681,17 @@ CREATE TABLE IF NOT EXISTS `tasks` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Salvarea datelor din tabel `tasks`
+-- Dumping data for table `tasks`
 --
 
 INSERT INTO `tasks` (`task`, `last_time`) VALUES
-('sanity', 1368712249),
-('update', 1368712184);
+('sanity', 1412467973),
+('update', 1412468088);
 
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `timestamps`
+-- Table structure for table `timestamps`
 --
 
 CREATE TABLE IF NOT EXISTS `timestamps` (
@@ -705,12 +701,12 @@ CREATE TABLE IF NOT EXISTS `timestamps` (
   `delta` smallint(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`sequence`),
   KEY `sorting` (`info_hash`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `timezone`
+-- Table structure for table `timezone`
 --
 
 CREATE TABLE IF NOT EXISTS `timezone` (
@@ -720,7 +716,7 @@ CREATE TABLE IF NOT EXISTS `timezone` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Salvarea datelor din tabel `timezone`
+-- Dumping data for table `timezone`
 --
 
 INSERT INTO `timezone` (`difference`, `timezone`) VALUES
@@ -758,7 +754,7 @@ INSERT INTO `timezone` (`difference`, `timezone`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `topics`
+-- Table structure for table `topics`
 --
 
 CREATE TABLE IF NOT EXISTS `topics` (
@@ -779,7 +775,7 @@ CREATE TABLE IF NOT EXISTS `topics` (
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -806,24 +802,25 @@ CREATE TABLE IF NOT EXISTS `users` (
   `cip` varchar(15) DEFAULT NULL,
   `time_offset` varchar(4) NOT NULL DEFAULT '0',
   `temp_email` varchar(50) NOT NULL DEFAULT '',
+  `flags` bigint(20) unsigned NOT NULL DEFAULT '7345036',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
   KEY `pid` (`pid`),
   KEY `cip` (`cip`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
--- Salvarea datelor din tabel `users`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `loginhash`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`) VALUES
-(1, 'Guest', '', NULL, 1, 0, 'none', 1, 1, '0000-00-00 00:00:00', '2013-05-16 15:54:06', 0, 0, 0, NULL, '', 0, 10, 10, 10, NULL, '0', '');
+INSERT INTO `users` (`id`, `username`, `password`, `loginhash`, `id_level`, `random`, `email`, `language`, `style`, `joined`, `lastconnect`, `lip`, `downloaded`, `uploaded`, `avatar`, `pid`, `flag`, `topicsperpage`, `postsperpage`, `torrentsperpage`, `cip`, `time_offset`, `temp_email`, `flags`) VALUES
+(1, 'Guest', '', NULL, 1, 0, 'none', 1, 1, '0000-00-00 00:00:00', '2014-10-05 03:12:52', 0, 0, 0, NULL, '', 0, 10, 10, 10, NULL, '0', '', 7345036);
 
 -- --------------------------------------------------------
 
 --
--- Structura de tabel pentru tabelul `users_level`
+-- Table structure for table `users_level`
 --
 
 CREATE TABLE IF NOT EXISTS `users_level` (
@@ -855,11 +852,11 @@ CREATE TABLE IF NOT EXISTS `users_level` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
--- Salvarea datelor din tabel `users_level`
+-- Dumping data for table `users_level`
 --
 
 INSERT INTO `users_level` (`id`, `id_level`, `level`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `predef_level`, `can_be_deleted`, `admin_access`, `prefixcolor`, `suffixcolor`, `WT`) VALUES
-(1, 1, 'guest', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
+(1, 1, 'guest', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'no', 'guest', 'no', 'no', '', '', 0),
 (2, 2, 'validating', 'yes', 'no', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'no', 'no', 'yes', 'no', 'no', 'validating', 'no', 'no', '', '', 0),
 (3, 3, 'Members', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'no', 'yes', 'yes', 'no', 'no', 'member', 'no', 'no', '<span style=\\''color:#000000\\''>', '</span>', 0),
 (4, 4, 'Uploader', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'yes', 'no', 'no', 'uploader', 'no', 'no', '', '', 0),

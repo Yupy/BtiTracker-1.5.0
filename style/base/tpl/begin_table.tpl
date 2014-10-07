@@ -1,0 +1,1 @@
+<table class='lista'{$width} border='1' cellspacing='0' cellpadding='{$padding}'>

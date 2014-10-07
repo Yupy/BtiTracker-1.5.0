@@ -1,4 +1,8 @@
 <?php
+
+if (!user::$current || user::$current["id"] == 1) {
+    // do nothing
+} else {
 block_begin("Donate");
 ?>
 <table align="center">
@@ -14,4 +18,6 @@ block_begin("Donate");
 </table>
 <?php
 block_end();
+}
+
 ?>

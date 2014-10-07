@@ -110,13 +110,13 @@ function dbconn($do_clean=false) {
     global $dbhost, $dbuser, $dbpass, $database, $HTTP_SERVER_VARS;
 
     if ($GLOBALS["persist"])
-        $conres=($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass));
+        $conres=mysql_pconnect($dbhost, $dbuser, $dbpass);
     else
-        $conres=($GLOBALS["___mysqli_ston"] = mysqli_connect($dbhost,  $dbuser,  $dbpass));
+        $conres=mysql_connect($dbhost, $dbuser, $dbpass);
 
     if (!$conres)
     {
-      switch (((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)))
+      switch (mysql_errno())
       {
         case 1040:
         case 2002:
@@ -125,18 +125,18 @@ function dbconn($do_clean=false) {
             else
                 die(ERR_CANT_CONNECT);
         default:
-            die("[" . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_errno($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) . "] dbconn: mysql_connect: " . ((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            die("[" . mysql_errno() . "] dbconn: mysql_connect: " . mysql_error());
       }
     }
-    ((bool)mysqli_query($GLOBALS["___mysqli_ston"], "USE $database"))
-        or die(ERR_CANT_OPEN_DB." $database - ".((is_object($GLOBALS["___mysqli_ston"])) ? mysqli_error($GLOBALS["___mysqli_ston"]) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+    mysql_select_db($database)
+        or die(ERR_CANT_OPEN_DB." $database - ".mysql_error());
 }
 function flag_list($with_unknown=false)
 {
   $ret = array();
-    $res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM countries ".(!$with_unknown?"WHERE id<>100":"")." ORDER BY name");
+    $res = mysql_query("SELECT * FROM countries ".(!$with_unknown?"WHERE id<>100":"")." ORDER BY name");
 
-    while ($row = mysqli_fetch_array($res))
+    while ($row = mysql_fetch_array($res))
       $ret[] = $row;
 
     return $ret;
@@ -144,9 +144,9 @@ function flag_list($with_unknown=false)
 function timezone_list()
 {
   $ret = array();
-    $res = mysqli_query($GLOBALS["___mysqli_ston"], "SELECT * FROM timezone");
+    $res = mysql_query("SELECT * FROM timezone");
 
-    while ($row = mysqli_fetch_array($res))
+    while ($row = mysql_fetch_array($res))
       $ret[] = $row;
 
     return $ret;

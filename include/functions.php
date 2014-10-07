@@ -412,11 +412,6 @@ function hash_pad($hash)
     return str_pad($hash, 20);
 }
 
-function format_urls($s)
-{
-    return preg_replace('/(\A|\s)((?:http|ftp|https|ftps|irc):\/\/[^()<>\s]+)/i', '$1<a href="/out.php?url=$2"' . $link . '>$2</a>', $s);
-}
-
 function userlogin()
 {
     global $db;

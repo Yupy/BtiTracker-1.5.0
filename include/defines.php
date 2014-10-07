@@ -20,7 +20,7 @@ if (ini_get('register_long_arrays') || ini_get('register_globals') || ini_get('s
 if (ini_get('mbstring.func_overload') || ini_get('mbstring.encoding_translation'))
     die('PHP is configured incorrectly. Turn off mbstring.func_overload and mbstring.encoding_translation, mult-byte function overloading, BtiTracker v1.5.0 is fully multi-byte aware.');
 
-//if (PHP_INT_SIZE < 8)
+//if (PHP_INT_SIZE < 8) #Will be required in the future when I will convert the Hacks to this version.
     //die('A 64bit OS + Processor is required.');
 
 header('X-Frame-Options: DENY');

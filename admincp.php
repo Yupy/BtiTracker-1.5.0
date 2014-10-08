@@ -1615,7 +1615,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
         echo user::$current["random"];
 ?>&do=blocks&action=write" method="post" enctype="multipart/form-data">
             <?php
-        while ($result = mysql_fetch_array($res)) {
+        while ($result = $res->fetch_array(MYSQLI_BOTH)) {
             if ($result["position"] == 'l')
                 $position = LEFT;
             if ($result["position"] == 'r')

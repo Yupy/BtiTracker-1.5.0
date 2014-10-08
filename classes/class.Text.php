@@ -766,7 +766,7 @@ class text {
 					}
 
 					else {
-						$LocalURL = self::local_url($Block['Attr']);
+						$LocalURL = $Block['Attr'];
 						if ($LocalURL) {
 							$Str .= '<a href="'.$LocalURL.'">'.substr($LocalURL,1).'</a>';
 						} else {

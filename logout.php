@@ -1,16 +1,20 @@
 <?php
+/*
+* BtiTracker v1.5.0 is a php tracker system for BitTorrent, easy to setup and configure.
+* This tracker is a frontend for DeHackEd's tracker, aka phpBTTracker (now heavely modified). 
+* Updated and Maintained by Yupy.
+* Copyright (C) 2004-2014 Btiteam.org
+*/
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'functions.php');
 
-require_once("include/functions.php");
-require_once("include/config.php");
+$check_hash = (isset($_GET['check_hash']) && security::html_safe($_GET['check_hash']));
+$salty = md5("SomeRandomTextYouWant" . user::$current['username']);
 
-$check_hash = (isset($_GET['check_hash']) && htmlspecialchars($_GET['check_hash']));
-$salty = md5("SomeRandomTextYouWant".user::$current['username']."");
+if (empty($check_hash)) 
+    die("No Hash, your up to no good...");
 
-//if (empty($check_hash)) 
- //   die("No Hash, your up to no good...");
-
-//if ($check_hash != $salty) 
-  //  die("Unsecure Logout, Hash mismatch please contact the Staff !");
+if ($check_hash != $salty) 
+    die("Unsecure Logout, Hash mismatch please contact the Staff !");
 
 logoutcookie();
 

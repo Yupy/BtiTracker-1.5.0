@@ -579,7 +579,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
                 
                 // Reverify Mail Hack by Petr1fied - Start --->
                 // If they've tried to change their e-mail, give them a message telling them as much
-                if (($email != "") && ($VALIDATION == "user") && ($email != $CURUSER["email"])) {
+                if (($email != "") && ($VALIDATION == "user") && ($email != user::$current["email"])) {
                     block_begin(EMAIL_VERIFY_BLOCK);
                     print(EMAIL_VERIFY_SENT1 . " " . $email . " " . EMAIL_VERIFY_SENT2 . "<a href='" . $BASEURL . "'>" . MNU_INDEX . "</a><br /><br /></center>");
                     block_end();

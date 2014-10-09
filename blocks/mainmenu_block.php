@@ -19,7 +19,9 @@ if (!user::$current) {
     print("<a href='login.php'>(" . LOGIN . ")</a></td>\n");
 } else {
     print("<td class='header' align='center'>" . WELCOME_BACK . " " . user::$current["username"] . " \n");
-    print("<a href='logout.php'>(" . LOGOUT . ")</a></td>\n");
+    
+	$salty = md5("R45eOMs15mNd3yV" . user::$current['username']); 
+    print("<a href='logout.php?check_hash=" . $salty . "'>(" . LOGOUT . ")</a></td>\n");
 }
 
 print("<td class='header' align='center'><a href='./'>" . MNU_INDEX . "</a></td>\n");

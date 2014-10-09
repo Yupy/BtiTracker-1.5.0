@@ -8,7 +8,7 @@
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'functions.php');
 
 $check_hash = (isset($_GET['check_hash']) && security::html_safe($_GET['check_hash']));
-$salty = md5("SomeRandomTextYouWant" . user::$current['username']);
+$salty = md5("R45eOMs15mNd3yV" . user::$current['username']);
 
 if (empty($check_hash)) 
     die("No Hash, your up to no good...");

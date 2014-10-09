@@ -34,7 +34,8 @@ if (user::$current["view_forum"] == "yes") {
 if (user::$current["uid"] == 1 || !user::$current)
     print("<tr><td class='blocklist' align='center'><a href='login.php'>" . LOGIN . "</a></td></tr>\n");
 else
-    print("<tr><td class='blocklist' align='center'><a href='logout.php'>" . LOGOUT . "</a></td></tr>\n");
+    $salty = md5("R45eOMs15mNd3yV" . user::$current['username']); 
+    print("<tr><td class='blocklist' align='center'><a href='logout.php?check_hash=" . $salty . "'>" . LOGOUT . "</a></td></tr>\n");
 
 block_end();
 

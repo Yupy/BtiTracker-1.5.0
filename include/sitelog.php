@@ -21,7 +21,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
     $num     = (int)$lognum[0];
     $perpage = (max(0, user::$current["postsperpage"]) > 0 ? user::$current["postsperpage"] : 20);
     
-	list($pagertop, $pagerbottom, $limit) = pager($perpage, $num, "admincp.php?user=" . user::$current["uid"] . "&code=" . user::$current["random"] . "&do=logview&");
+	list($pagertop, $limit) = misc::pager($perpage, $num, "admincp.php?user=" . user::$current["uid"] . "&code=" . user::$current["random"] . "&do=logview&");
     print $pagertop;
     print("\n<table class='lista' width='100%' align='center'><tr>");
     print("\n<td class='header'>" . DATE . "</td>");
@@ -43,13 +43,13 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
             include(INCL_PATH . 'offset.php');
             print("\n<tr><td class='lista' " . $bgcolor . ">" . date("d/m/Y H:i:s", $logview["added"] - $offset) . "</td>
             <td class='lista' " . $bgcolor . ">" . security::html_safe($logview["user"]) . "</td>
-            <td class='lista' " . $bgcolor . ">" . security::html_safe($logview["txt"]) . "</td></tr>");
+            <td class='lista' " . $bgcolor . ">" . unesc($logview["txt"]) . "</td></tr>");
         }
     } else
         print("<tr><td colspan='3' align='center'>No log to view...</tr>");
 	
     print("</table>");
-    print $pagerbottom;
+    print $pagertop;
     block_end();
     print("<br />");
 

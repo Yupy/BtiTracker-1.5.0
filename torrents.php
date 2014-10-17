@@ -200,7 +200,7 @@ if ($SHOW_UPLOADER && user::$current["WT"] > 0)
 elseif ($SHOW_UPLOADER || user::$current["WT"] > 0)
     echo "<td colspan='14' class='lista'></td>";
 else
-    echo "<td colspan='13\' class='lista'></td>";
+    echo "<td colspan='13' class='lista'></td>";
 ?>
 </tr>
 <?php

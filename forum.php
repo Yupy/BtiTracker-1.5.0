@@ -918,7 +918,7 @@ if ($action == "setlocked") {
     $locked = sqlesc($_POST["locked"]);
     $db->query("UPDATE topics SET locked = " . $locked . " WHERE id = " . $topicid) or sqlerr(__FILE__, __LINE__);
     
-    redirect(security::html_safe($_POST['returnto']));
+    redirect(addslashes($_POST['returnto']));
     die;
 }
 
@@ -932,7 +932,7 @@ if ($action == "setsticky") {
     $sticky = sqlesc($_POST["sticky"]);
     $db->query("UPDATE topics SET sticky = " . $sticky . " WHERE id = " . $topicid) or sqlerr(__FILE__, __LINE__);
     
-    redirect(security::html_safe($_POST['returnto']));
+    redirect(addslashes($_POST['returnto']));
     die;
 }
 
@@ -955,7 +955,7 @@ if ($action == 'renametopic') {
     
     $db->query("UPDATE topics SET subject = " . $subject . " WHERE id = " . $topicid) or sqlerr();
     
-    $returnto = $_POST['returnto'];
+    $returnto = addslashes($_POST['returnto']);
     
     if ($returnto)
         redirect($returnto);

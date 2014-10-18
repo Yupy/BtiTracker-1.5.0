@@ -2001,7 +2001,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
             $id = intval($_GET["id"]);
             $db->query("UPDATE forums SET name = " . $name . ", description = " . $description . ", minclassread = " . $minclassread . ", minclasswrite = " . $minclasswrite . ", minclasscreate = " . $minclasscreate . " WHERE id = " . $id);
         } else {
-            $db->query("INSERT INTO forums SET name=$name,description=$description,minclassread=$minclassread,minclasswrite=$minclasswrite,minclasscreate=$minclasscreate");
+            $db->query("INSERT INTO forums SET name = " . $name . ", description = " . $description . ", minclassread = " . $minclassread . ", minclasswrite = " . $minclasswrite . ", minclasscreate = " . $minclasscreate);
         }
 
         redirect("admincp.php?user=" . user::$current["uid"] . "&code=" . user::$current["random"] . "&do=forum&action=read");

@@ -107,7 +107,6 @@ function get_forum_last_post($forumid)
     
     if ($postid)
         return $postid;
-    
     else
         return 0;
 }

@@ -399,7 +399,7 @@ if ($action == "viewtopic") {
     $postcount = (int)$arr[0];
     
     //------ Make page menu
-    $pagemenu = "<p align=center>\n";
+    $pagemenu = "<p align='center'>\n";
     
     $perpage = $postsperpage;
     

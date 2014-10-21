@@ -32,6 +32,8 @@ function comment_form()
 
     block_begin(NEW_COMMENT);
     
+    $comment = str_replace('\r\n', "\n", $comment);
+    
     ?>
     <center>
     <form enctype='multipart/form-data' name='comment' method='post'>
@@ -76,7 +78,9 @@ if (isset($_POST["info_hash"]))
     #############################
     if ($_POST["confirm"] == FRM_PREVIEW) {
         block_begin(COMMENT_PREVIEW);
-		
+        
+	$comment = str_replace('\r\n', "\n", $comment);
+	
         print("<table width='100%' align='center' class='lista'><tr><td class='lista' align='center'>" . text::full_format($comment) . "</td></tr>\n");
         print("</table>");
 		

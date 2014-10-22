@@ -75,10 +75,10 @@ if (!empty($row["comment"]))
 if (isset($row["cat_name"]))
     print("<tr><td align='right' class='header'>" . CATEGORY_FULL . ":</td><td class='lista'>" . security::html_safe($row["cat_name"]) . "</td></tr>");
 else
-    print("<tr><td align='right' class='header'>" . CATEGORY_FULL . ":</td><td class='lista' >(None)</td></tr>");
+    print("<tr><td align='right' class='header'>" . CATEGORY_FULL . ":</td><td class='lista'>(None)</td></tr>");
 
-print("<tr><td align='right' class='header'>" . SIZE . ":</td><td class='lista' >" . misc::makesize((int)$row["size"]) . "</td></tr>");
-print("<tr><td align='right' class='header'>" . ADDED . ":</td><td class='lista' >" . date("d/m/Y H:m:s", $row["data"]) . "</td></tr>");
+print("<tr><td align='right' class='header'>" . SIZE . ":</td><td class='lista'>" . misc::makesize((int)$row["size"]) . "</td></tr>");
+print("<tr><td align='right' class='header'>" . ADDED . ":</td><td class='lista'>" . date("d/m/Y H:m:s", $row["data"]) . "</td></tr>");
 
 if ($row["speed"] < 0) {
     $speed = "N/D";

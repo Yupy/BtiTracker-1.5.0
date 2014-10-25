@@ -1066,7 +1066,7 @@ function write_log($text, $reason = "add")
     if ($LOG_ACTIVE) {
         $text   = sqlesc($text);
         $reason = sqlesc($reason);
-        $db->query("INSERT INTO logs (added, txt, type, user) VALUES(UNIX_TIMESTAMP(), " . $text . ", " . $reason . ", '" . user::$current["username"] . "')") or sqlerr(__FILE__, __LINE__);
+        $db->query("INSERT LOW_PRIORITY INTO logs (added, txt, type, user) VALUES(UNIX_TIMESTAMP(), " . $text . ", " . $reason . ", '" . user::$current["username"] . "')") or sqlerr(__FILE__, __LINE__);
     }
 }
 

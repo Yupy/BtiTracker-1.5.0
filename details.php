@@ -73,7 +73,7 @@ print("<tr><td align='right' class='header'> " . TORRENT . ":</td><td class='lis
 print("<tr><td align='right' class='header'> " . INFO_HASH . ":</td><td class='lista' align='center'>" . security::html_safe($row["info_hash"]) . "</td></tr>\n");
 
 if (!empty($row["comment"]))
-    print("<tr><td align='right' class='header'> " . DESCRIPTION . ":</td><td align='center' class='lista'>" . text::full_format($row["comment"]) . "</td></tr>\n");
+    print("<tr><td align='right' class='header'> " . DESCRIPTION . ":</td><td align='center' class='lista'>" . format_comment(unesc($row["comment"])) . "</td></tr>\n");
 
 if (isset($row["cat_name"]))
     print("<tr><td align='right' class='header'> " . CATEGORY_FULL . ":</td><td class='lista' align='center'>" . security::html_safe(unesc($row["cat_name"])) . "</td></tr>\n");

@@ -81,7 +81,7 @@ if (isset($_POST["info_hash"]))
         
 	$comment = str_replace('\r\n', "\n", $comment);
 	
-        print("<table width='100%' align='center' class='lista'><tr><td class='lista' align='center'>" . text::full_format($comment) . "</td></tr>\n");
+        print("<table width='100%' align='center' class='lista'><tr><td class='lista' align='center'>" . format_comment(unesc($comment)) . "</td></tr>\n");
         print("</table>");
 		
         block_end();

@@ -147,9 +147,9 @@ for ($i = 0; $i < 10 && $i < count($msg2); ++$i) {
     $result = $res->fetch_assoc();
     // user or level don't exit in db
     if (!$result)
-        echo '<b>' . '</b>&nbsp;&nbsp;&nbsp;[' . date("d/m/y H:i", $msg2[$i]['date'] - $offset) . ']' . '&nbsp;&nbsp;<b>' . security::html_safe($msg2[$i]['pseudo']) . '</b>:&nbsp;&nbsp;&nbsp;' . text::full_format($msg2[$i]['texte']) . '<hr>';
+        echo '<b>' . '</b>&nbsp;&nbsp;&nbsp;[' . date("d/m/y H:i", $msg2[$i]['date'] - $offset) . ']' . '&nbsp;&nbsp;<b>' . security::html_safe($msg2[$i]['pseudo']) . '</b>:&nbsp;&nbsp;&nbsp;' . format_comment(security::html_safe($msg2[$i]['texte'])) . '<hr>';
     else {
-        echo '<b>' . '</b>&nbsp;&nbsp;&nbsp;[' . date("d/m/y H:i", $msg2[$i]['date'] - $offset) . ']' . "&nbsp;&nbsp;<a style='text-decoration:none' href='userdetails.php?id=" . (int)$result["uid"] . "'>" . unesc($result['prefixcolor']) . security::html_safe($msg2[$i]['pseudo']) . unesc($result['suffixcolor']) . '</a>:&nbsp;&nbsp;&nbsp;' . text::full_format($msg2[$i]['texte']) . '<hr>';
+        echo '<b>' . '</b>&nbsp;&nbsp;&nbsp;[' . date("d/m/y H:i", $msg2[$i]['date'] - $offset) . ']' . "&nbsp;&nbsp;<a style='text-decoration:none' href='userdetails.php?id=" . (int)$result["uid"] . "'>" . unesc($result['prefixcolor']) . security::html_safe($msg2[$i]['pseudo']) . unesc($result['suffixcolor']) . '</a>:&nbsp;&nbsp;&nbsp;' . format_comment(security::html_safe($msg2[$i]['texte'])) . '<hr>';
         unset($result);
     }
     $res->free();

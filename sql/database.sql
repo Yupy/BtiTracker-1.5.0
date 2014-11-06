@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `bannedip` (
   `last` bigint(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `first_last` (`first`,`last`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `info_hash` varchar(40) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `info_hash` (`info_hash`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -401,7 +401,7 @@ CREATE TABLE IF NOT EXISTS `forums` (
   `minclasscreate` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `sort` (`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -454,7 +454,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `user` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `added` (`added`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -473,7 +473,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`),
   KEY `sender` (`sender`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -482,25 +482,25 @@ CREATE TABLE IF NOT EXISTS `messages` (
 --
 
 CREATE TABLE IF NOT EXISTS `namemap` (
-  `info_hash` varchar(40) NOT NULL DEFAULT '',
-  `filename` varchar(250) NOT NULL DEFAULT '',
-  `url` varchar(250) NOT NULL DEFAULT '',
-  `info` varchar(250) NOT NULL DEFAULT '',
+  `info_hash` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `filename` varchar(250) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `url` varchar(250) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `info` varchar(250) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `data` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `size` bigint(20) NOT NULL DEFAULT '0',
-  `comment` text,
+  `comment` mediumtext COLLATE utf8_unicode_ci,
   `category` int(10) unsigned NOT NULL DEFAULT '6',
-  `external` enum('yes','no') NOT NULL DEFAULT 'no',
-  `announce_url` varchar(100) NOT NULL DEFAULT '',
+  `external` enum('yes','no') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no',
+  `announce_url` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `uploader` int(10) NOT NULL DEFAULT '1',
   `lastupdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `anonymous` enum('true','false') NOT NULL DEFAULT 'false',
+  `anonymous` enum('true','false') COLLATE utf8_unicode_ci NOT NULL DEFAULT 'false',
   `lastsuccess` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`info_hash`),
   KEY `filename` (`filename`),
   KEY `category` (`category`),
   KEY `uploader` (`uploader`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 -- --------------------------------------------------------
 
@@ -515,7 +515,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `title` varchar(40) NOT NULL DEFAULT '',
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -562,7 +562,7 @@ CREATE TABLE IF NOT EXISTS `polls` (
   `poll_question` varchar(255) DEFAULT NULL,
   `status` enum('true','false') NOT NULL DEFAULT 'false',
   PRIMARY KEY (`pid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -591,14 +591,14 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `topicid` int(10) unsigned NOT NULL DEFAULT '0',
   `userid` int(10) unsigned NOT NULL DEFAULT '0',
   `added` int(10) DEFAULT NULL,
-  `body` text,
+  `body` mediumtext COLLATE utf8_unicode_ci,
   `editedby` int(10) unsigned NOT NULL DEFAULT '0',
   `editedat` int(10) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -628,7 +628,7 @@ CREATE TABLE IF NOT EXISTS `readposts` (
   PRIMARY KEY (`id`),
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -770,7 +770,7 @@ CREATE TABLE IF NOT EXISTS `topics` (
   KEY `userid` (`userid`),
   KEY `subject` (`subject`),
   KEY `lastpost` (`lastpost`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -780,12 +780,12 @@ CREATE TABLE IF NOT EXISTS `topics` (
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(40) NOT NULL DEFAULT '',
-  `password` varchar(40) NOT NULL DEFAULT '',
-  `loginhash` varchar(32) DEFAULT NULL,
+  `username` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `password` varchar(40) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `loginhash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `id_level` int(10) NOT NULL DEFAULT '1',
   `random` int(10) DEFAULT '0',
-  `email` varchar(30) NOT NULL DEFAULT '',
+  `email` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `language` tinyint(4) NOT NULL DEFAULT '1',
   `style` tinyint(4) NOT NULL DEFAULT '1',
   `joined` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -793,22 +793,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `lip` bigint(11) DEFAULT '0',
   `downloaded` bigint(20) DEFAULT '0',
   `uploaded` bigint(20) DEFAULT '0',
-  `avatar` varchar(100) DEFAULT NULL,
-  `pid` varchar(32) NOT NULL DEFAULT '',
+  `avatar` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `pid` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `flag` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `topicsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
   `postsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
   `torrentsperpage` tinyint(3) unsigned NOT NULL DEFAULT '15',
-  `cip` varchar(15) DEFAULT NULL,
-  `time_offset` varchar(4) NOT NULL DEFAULT '0',
-  `temp_email` varchar(50) NOT NULL DEFAULT '',
+  `cip` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `time_offset` varchar(4) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `temp_email` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `flags` bigint(20) unsigned NOT NULL DEFAULT '7345036',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   KEY `id_level` (`id_level`),
   KEY `pid` (`pid`),
   KEY `cip` (`cip`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `users`

@@ -212,7 +212,7 @@ if ($row["anonymous"] == "true") {
 print("<tr><td align='right' class='header'>" . UPLOADER . ":</td><td class='lista' align='center'>" . $uploader . "</td></tr>\n");
 
 if ($row["speed"] < 0) {
-    $speed = "N/D";
+    $speed = "N/A";
 } else if ($row["speed"] > 2097152) {
     $speed = round((int)$row["speed"] / 1048576, 2) . " MiB per sec";
 } else {
@@ -258,7 +258,7 @@ if (!$subres || $subres->num_rows == 0) {
         if (user::$current["delete_torrents"] == "yes")
             $s .= "<td class='header' align='right'><a onclick='return confirm('" . str_replace("'", "\'", DELETE_CONFIRM) . "')' href='comment.php?id=$id&cid=" . $subrow["id"] . "&action=delete'>" . image_or_link($STYLEPATH . "/delete.png", "", DELETE) . "</a></td>\n";
         $s .= "</tr>\n";
-        $s .= "<tr><td colspan='3' class='lista' align='center'>" . text::full_format($subrow["text"]) . "</td></tr>\n";
+        $s .= "<tr><td colspan='3' class='lista' align='center'>" . format_comment(unesc($subrow["text"])) . "</td></tr>\n";
     }
     $s .= "</table>\n";
 }

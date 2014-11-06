@@ -96,7 +96,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
                     print("\n<tr><td class='lista' align='center'>" . unesc($result["readed"]) . "</td>
                               <td class='lista' align='center'><a href='userdetails.php?id=" . (int)$result["receiver"] . "'>" . security::html_safe(unesc($result["receivername"])) . "</a></td>
                               <td class='lista' align='center'>" . get_date_time($result["added"]) . "</td>
-                              <td class='lista' align='center'><a href='usercp.php?do=pm&action=read&uid=" . $uid . "&id=" . (int)$result['id'] . "&what=outbox'>" . text::full_format(unesc($result["subject"])) . "</a></td>
+                              <td class='lista' align='center'><a href='usercp.php?do=pm&action=read&uid=" . $uid . "&id=" . (int)$result['id'] . "&what=outbox'>" . format_comment(unesc($result["subject"])) . "</a></td>
                               <td class='lista' align='center'><input type='checkbox' name='msg[]' value='" . (int)$result["id"] . "' /></td>
                               </tr>");
                 print("\n<tr>\n<td class='lista' align='right' colspan='5'><input type='submit' name='action' value='Delete' /></td></tr>");
@@ -122,7 +122,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
                               <td class='lista' align='center'>" . unesc($result["readed"]) . "</td>
                               <td class='lista' align='center'><a href='userdetails.php?id=" . (int)$result["sender"] . "'>" . security::html_safe(unesc($result["sendername"])) . "</a></td>
                               <td class='lista' align='center'>" . get_date_time($result["added"]) . "</a></td>
-                              <td class='lista' align='center'><a href='usercp.php?do=pm&action=read&uid=" . $uid . "&id=" . (int)$result['id'] . "&what=inbox'>" . text::full_format(unesc($result["subject"])) . "</a></td>
+                              <td class='lista' align='center'><a href='usercp.php?do=pm&action=read&uid=" . $uid . "&id=" . (int)$result['id'] . "&what=inbox'>" . format_comment(unesc($result["subject"])) . "</a></td>
                               <td class='lista' align='center'><input type='checkbox' name='msg[]' value='" . (int)$result["id"] . "' /></td>
                               </tr>");
                 print("\n<tr>\n<td class='lista' align='right' colspan='5'><input type='submit' name='action' value='Delete' /></td></tr>");
@@ -151,8 +151,8 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
             $result = $res->fetch_array(MYSQLI_BOTH);
 
             print("\n<tr><td width='30%' rowspan='2' class='lista'><a href='userdetails.php?id=" . (int)$result["userid"] . "'>" . security::html_safe(unesc($result["sendername"])) . "</a><br />" . get_date_time($result["added"]) . "<br />(" . get_elapsed_time($result["added"]) . " ago)</td>");
-            print("\n<td class='header'>" . SUBJECT . ": " . text::full_format(unesc($result["subject"])) . "</td></tr>");
-            print("\n<tr><td>" . text::full_format(unesc($result["msg"])) . "</td></tr>");
+            print("\n<td class='header'>" . SUBJECT . ": " . format_comment(unesc($result["subject"])) . "</td></tr>");
+            print("\n<tr><td>" . format_comment(unesc($result["msg"])) . "</td></tr>");
             print("\n</table>");
             print("<br />");
 
@@ -260,7 +260,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
 
             block_begin(FRM_PREVIEW);
 
-            print("<table width='100%' align='center' class='lista'><tr><td class='lista' align='center'>" . text::full_format(unesc($_POST["msg"])) . "</td></tr>\n");
+            print("<table width='100%' align='center' class='lista'><tr><td class='lista' align='center'>" . format_comment(unesc($_POST["msg"])) . "</td></tr>\n");
             print("</table>");
             block_end();
             print("<br />");

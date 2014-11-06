@@ -253,7 +253,7 @@ if (!$subres || $subres->num_rows == 0) {
         $s = "<br /><br />\n<table width='95%' class='lista'>\n";
 
     while ($subrow = $subres->fetch_array(MYSQLI_BOTH)) {
-        $s .= "<tr><td class='header'><a href='userdetails.php?id=" . (int)$subrow["uid"] . "'>" . security::html_safe($subrow["user"]) . "</td><td class='header'>" . date("d/m/Y H.i.s", $subrow["data"] - $offset) . "</td>\n";
+        $s .= "<tr><td class='header'><a href='userdetails.php?id=" . (int)$subrow["uid"] . "'>" . security::html_safe($subrow["user"]) . "</a></td><td class='header'>" . date("d/m/Y H.i.s", $subrow["data"] - $offset) . "</td>\n";
         // only users able to delete torrents can delete comments...
         if (user::$current["delete_torrents"] == "yes")
             $s .= "<td class='header' align='right'><a onclick='return confirm('" . str_replace("'", "\'", DELETE_CONFIRM) . "')' href='comment.php?id=$id&cid=" . $subrow["id"] . "&action=delete'>" . image_or_link($STYLEPATH . "/delete.png", "", DELETE) . "</a></td>\n";

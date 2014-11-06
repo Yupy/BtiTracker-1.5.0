@@ -211,7 +211,7 @@ function insert_compose_frame($id, $newtopic = true, $quote = false)
             
             begin_table(true);
             
-            print("<tr valign='top'><td width='150' align='center' style='padding: 0px'>#" . (int)$post["id"] . " by " . security::html_safe($user["username"]) . "<br />" . get_date_time($post["added"]) . ($avatar != "" ? "<br /><img width='80' src='" . $avatar . "'>" : "") . "</td><td class='lista'>" . text::full_format($post["body"]) . "</td></tr><br>\n");
+            print("<tr valign='top'><td width='150' align='center' style='padding: 0px'>#" . (int)$post["id"] . " by " . security::html_safe($user["username"]) . "<br />" . get_date_time($post["added"]) . ($avatar != "" ? "<br /><img width='80' src='" . $avatar . "'>" : "") . "</td><td class='lista'>" . format_comment(unesc($post["body"])) . "</td></tr><br>\n");
             
             end_table();
         }
@@ -543,7 +543,7 @@ if ($action == "viewtopic") {
         
         begin_table(true);
         
-        $body = text::full_format($arr["body"]);
+        $body = format_comment(unesc($arr["body"]));
         
         if (is_valid_id($arr['editedby'])) {
             $res2 = $db->query("SELECT username FROM users WHERE id = " . (int)$arr['editedby']);

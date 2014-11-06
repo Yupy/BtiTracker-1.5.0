@@ -70,7 +70,7 @@ print("<tr><td align='right' class='header'>" . FILE_NAME . ":</td><td class='li
 print("<tr><td align='right' class='header'>" . INFO_HASH . ":</td><td class='lista'>" . security::html_safe($row["info_hash"]) . "</td></tr>");
 
 if (!empty($row["comment"]))
-    print("<tr><td align='right' class='header'>" . DESCRIPTION . ":</td><td align='left' class='lista'>" . text::full_format($row["comment"]) . "</td></tr>");
+    print("<tr><td align='right' class='header'>" . DESCRIPTION . ":</td><td align='left' class='lista'>" . format_comment(unesc($row["comment"])) . "</td></tr>");
 
 if (isset($row["cat_name"]))
     print("<tr><td align='right' class='header'>" . CATEGORY_FULL . ":</td><td class='lista'>" . security::html_safe($row["cat_name"]) . "</td></tr>");
@@ -81,7 +81,7 @@ print("<tr><td align='right' class='header'>" . SIZE . ":</td><td class='lista'>
 print("<tr><td align='right' class='header'>" . ADDED . ":</td><td class='lista'>" . date("d/m/Y H:m:s", $row["data"]) . "</td></tr>");
 
 if ($row["speed"] < 0) {
-    $speed = "N/D";
+    $speed = "N/A";
 } else if ($row["speed"] > 2097152) {
     $speed = round((int)$row["speed"] / 1048576, 2) . " MiB per sec";
 } else {

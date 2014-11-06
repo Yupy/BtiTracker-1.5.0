@@ -204,7 +204,7 @@ if ($action == "post") {
     print("\n<table class='lista' width='100%' align='center' cellpadding='2'>");
     print("\n<tr><td>" . MASS_SENT . "</td></tr>");
     print("\n<tr><td class='header'>" . SUBJECT . ":</td><td class='lista'>" . unesc($subject) . "</td></tr>");
-    print("\n<tr><td class='header'>" . BODY . ":</td><td class='lista'>" . text::full_format(security::html_safe(unesc($msg))) . "</td></tr><tr><td class='header'>info</td><td><b>" . $i . "</b> " . USERS_FOUND . " " . $usr_lev . " " . $ratio_details . " !!<br /><br />" . USERS_PMED . "<br />" . $l_users . "<br /><br />Mass PM by vibes</td></tr>");
+    print("\n<tr><td class='header'>" . BODY . ":</td><td class='lista'>" . format_comment(security::html_safe(unesc($msg))) . "</td></tr><tr><td class='header'>info</td><td><b>" . $i . "</b> " . USERS_FOUND . " " . $usr_lev . " " . $ratio_details . " !!<br /><br />" . USERS_PMED . "<br />" . $l_users . "<br /><br />Mass PM by vibes</td></tr>");
     print("\n</table>");
     print("<br />");
     block_end();

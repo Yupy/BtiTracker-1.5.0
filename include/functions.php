@@ -45,7 +45,6 @@ require_once(INCL_PATH . 'crk_protection.php');
 require_once(INCL_PATH . 'theme_functions.php');
 require_once(CLASS_PATH . 'class.Captcha.php');
 require_once(CLASS_PATH . 'class.Cookie.php');
-require_once(CLASS_PATH . 'class.Text.php');
 require_once(CLASS_PATH . 'class.Template.php');
 require_once(CLASS_PATH . 'class.Misc.php');
 require_once(CLASS_PATH . 'class.Security.php');
@@ -725,36 +724,6 @@ function timezone_list()
     return $ret;
 }
 
-function format_quote($s)
-{
-    while ($old_s != $s) {
-        $old_s = $s;
-        
-        //find first occurrence of [/quote]
-        $close = utf8::stripos($s, '[/quote]');
-        if ($close === false)
-            return $s;
-        
-        // find last [quote] before first [/quote]
-        // note that there is no check for correct syntax
-        $open = utf8::strripos(utf8::substr($s, 0, $close), '[quote');
-        if ($open === false)
-            return $s;
-        
-        $quote = utf8::substr($s, $open, $close - $open + 8);
-        
-        //[quote]Text[/quote]
-        $quote = preg_replace('/\[quote\]\s*(.+?)\s*\[\/quote\]\s*/is', $bbcode['quote'][0] . 'Quote:' . $bbcode['quote'][1] . $bbcode['quote'][2] . '$1' . $bbcode['quote'][3], $quote);
-        
-        //[quote=Author]Text[/quote]
-        $quote = preg_replace('/\[quote=([ \S]+?)\]\s*(.+?)\s*\[\/quote\]\s*/is', $bbcode['quote'][0] . '$1 wrote:' . $bbcode['quote'][1] . $bbcode['quote'][2] . '$2' . $bbcode['quote'][3], $quote);
-        
-        $s = utf8::substr($s, 0, $open) . $quote . utf8::substr($s, $close + 8);
-    }
-    
-    return $s;
-}
-
 function sqlesc($x)
 {
     global $db;
@@ -785,7 +754,7 @@ function print_news($limit = 0)
             $adm_menu .= "";
         
         include(INCL_PATH . 'offset.php');
-        $news   = text::full_format($rows["news"]);
+        $news   = format_comment($rows["news"]);
         $output = preg_replace("/{user_name}/", security::html_safe(unesc($rows["username"])), $model);
         $output = preg_replace("/{admin_menu}/", $adm_menu, $output);
         $output = preg_replace("/{news_date}/", date("d/m/Y H:i", $rows["news_date"] - $offset), $output);

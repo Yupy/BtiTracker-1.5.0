@@ -386,7 +386,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
             if ($langue["id"] == user::$current["language"])
                 $option .= "selected='selected' ";
 
-            $option .= "value='" . $langue["id"] . "'>" . security::html_safe(unesc($langue["language"])) . "</option>";
+            $option .= "value='" . (int)$langue["id"] . "'>" . security::html_safe(unesc($langue["language"])) . "</option>";
             print($option);
         }
 
@@ -401,7 +401,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
             if ($style["id"] == user::$current["style"])
                 $option .= "selected='selected' ";
 
-            $option .= "value='" . $style["id"] . "'>" . security::html_safe(unesc($style["style"])) . "</option>";
+            $option .= "value='" . (int)$style["id"] . "'>" . security::html_safe(unesc($style["style"])) . "</option>";
             print($option);
         }
 
@@ -416,7 +416,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
             if ($flag["id"] == user::$current["flag"])
                 $option .= "selected='selected' ";
 
-            $option .= "value='" . $flag["id"] . "'>" . security::html_safe(unesc($flag["name"])) . "</option>";
+            $option .= "value='" . (int)$flag["id"] . "'>" . security::html_safe(unesc($flag["name"])) . "</option>";
             print($option);
         }
 
@@ -430,7 +430,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
             $option = "\n<option ";
             if ($timezone["difference"] == user::$current["time_offset"])
                 $option .= "selected=selected ";
-            $option .= "value=" . $timezone["difference"] . ">" . security::html_safe(unesc($timezone["timezone"])) . "</option>";
+            $option .= "value=" . unesc($timezone["difference"]) . ">" . security::html_safe(unesc($timezone["timezone"])) . "</option>";
             print($option);
         }
 

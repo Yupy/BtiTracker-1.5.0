@@ -342,7 +342,7 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
            <!--avatar-->
            <?php
         if (user::$current["avatar"] && user::$current["avatar"] != "")
-            print("<td class='lista' align='center' valign='top' rowspan='3'><img border='0' src='" . unesc(user::$current["avatar"]) . "' /></td>");
+            print("<td class='lista' align='center' valign='top' rowspan='3'><img border='0' src='" . unesc(user::$current["avatar"]) . "' width='138' /></td>");
 ?>
         </tr>
         <tr>

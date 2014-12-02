@@ -69,6 +69,7 @@ function standardheader($title, $normalpage = true, $idlang = 0)
         $style     = $resstyle["style_url"] . "/torrent.css";
     }
     print("<link rel='stylesheet' href='" . $style . "' type='text/css' />");
+	print("<link rel='stylesheet' href='style/base/ui.css' type='text/css' />");
     ?>
     </head>
     <body>
@@ -202,6 +203,305 @@ function redirect($redirecturl)
 	
 	$redirect_url = $tpl->draw( 'style/base/tpl/redirect', $return_string = true );
     echo $redirect_url;
+}
+
+$smilies = array(
+	':angry:'			=> 'angry.gif',
+	':D'				=> 'biggrin.gif',
+	':|'				=> 'blank.gif',
+	':blush:'			=> 'blush.gif',
+	':cool:'			=> 'cool.gif',
+	':(('			=> 'crying.gif',
+	':<<:'			=> 'eyesright.gif',
+	':frown:'			=> 'frown.gif',
+	'<3'				=> 'heart.gif',
+	':unsure:'			=> 'hmm.gif',
+	':lol:'				=> 'laughing.gif',
+	':ninja:'			=> 'ninja.gif',
+	':no:'				=> 'no.gif',
+	':nod:'				=> 'nod.gif',
+	':ohno:'			=> 'ohnoes.gif',
+	':omg:'				=> 'omg.gif',
+	':O'				=> 'ohshit.gif',
+	':paddle:'			=> 'paddle.gif',
+	':('				=> 'sad.gif',
+	':shifty:'			=> 'shifty.gif',
+	':sick:'			=> 'sick.gif',
+	':)'				=> 'smile.gif',
+	':sorry:'			=> 'sorry.gif',
+	':thanks:'			=> 'thanks.gif',
+	':P'				=> 'tongue.gif',
+	':wave:'			=> 'wave.gif',
+	';)'				=> 'wink.gif',
+	':creepy:'			=> 'creepy.gif',
+	':worried:'			=> 'worried.gif',
+	':wtf:'				=> 'wtf.gif',
+	':wub:'				=> 'wub.gif',
+);
+
+function format_urls($s)
+{
+    return preg_replace("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i","\\1<a target='_blank' href='redir.php?url=\\2'>\\2</a>", $s);
+}
+
+function format_quotes($s)
+{
+    $old_s = '';
+
+    while ($old_s != $s)
+    {
+        $old_s = $s;
+
+        //-- Find First Occurrence Of [/quote]
+        $close = strpos($s, "[/quote]");
+
+        if ($close === false)
+        {
+            return $s;
+        }
+
+        //-- Find Last [quote] Before First [/quote] --//
+        //-- Note That There Is No Check For Correct Syntax --//
+        $open = strripos(utf8::substr($s, 0, $close), "[quote");
+
+        if ($open === false)
+        {
+            return $s;
+        }
+
+        $quote = utf8::substr($s, $open, $close - $open + 8);
+
+        //-- [quote]Text[/quote] --//
+        $quote = preg_replace("/\[quote\]\s*((\s|.)+?)\s*\[\/quote\]\s*/i", "<span class='sub'><strong>Quote:</strong></span><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>\\1</td></tr></table><br />", $quote);
+
+        //-- [quote=Author]Text[/quote] --//
+        $quote = preg_replace("/\[quote=(.+?)\]\s*((\s|.)+?)\s*\[\/quote\]\s*/i", "<span class='sub'><strong>\\1 wrote:</strong></span><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>\\2</td></tr></table><br />", $quote);
+
+        $s = utf8::substr($s, 0, $open).$quote.utf8::substr($s, $close + 8);
+    }
+    return $s;
+}
+
+
+function format_comment($text, $strip_html = true)
+{
+    global $smilies;
+
+    $s = $text;
+
+    unset($text);
+
+    $s = str_replace(";)", ":wink:", $s);
+
+    if ($strip_html)
+    {
+        $s = htmlentities($s, ENT_QUOTES, 'UTF-8');
+    }
+	
+    $f = @fopen("badwords.txt", "r");
+    if ($f && filesize ("badwords.txt") != 0)
+    {
+        $bw = fread($f, filesize("badwords.txt"));
+        $badwords = explode("\n", $bw);
+        for ($i = 0; $i < count($badwords); ++$i)
+           $badwords[$i] = trim($badwords[$i]);
+        $s = str_replace($badwords, "*Censored*", $s);
+    }
+    @fclose($f);
+
+    if (preg_match("#function\s*\((.*?)\|\|#is", $s))
+    {
+        $s = str_replace(":", "&#58;", $s);
+        $s = str_replace("[", "&#91;", $s);
+        $s = str_replace("]", "&#93;", $s);
+        $s = str_replace(")", "&#41;", $s);
+        $s = str_replace("(", "&#40;", $s);
+        $s = str_replace("{", "&#123;", $s);
+        $s = str_replace("}", "&#125;", $s);
+        $s = str_replace("$", "&#36;", $s);
+    }
+
+    //-- [*] --//
+    if (utf8::stripos($s, '[*]') !== false)
+    {
+        $s = preg_replace("/\[\*\]/", "<img src=\"images/list.gif\" alt=\"List\" title=\"List\" class=\"listitem\" />", $s);
+    }
+
+    //-- [b]Bold[/b] --//
+    if (utf8::stripos($s, '[b]') !== false)
+    {
+        $s = preg_replace('/\[b\](.+?)\[\/b\]/is', "<span style='font-weight:bold;'>\\1</span>", $s);
+    }
+
+    //-- [i]Italic[/i] --//
+    if (utf8::stripos($s, '[i]') !== false)
+    {
+        $s = preg_replace('/\[i\](.+?)\[\/i\]/is', "<span style='font-style: italic;'>\\1</span>", $s);
+    }
+
+    //-- [u]Underline[/u] --//
+    if (utf8::stripos($s, '[u]') !== false)
+    {
+        $s = preg_replace('/\[u\](.+?)\[\/u\]/is', "<span style='text-decoration:underline;'>\\1</span>", $s);
+    }
+
+    //-- [color=blue]Text[/color] --//
+    if (utf8::stripos($s, '[color=') !== false)
+    {
+        $s = preg_replace('/\[color=([a-zA-Z]+)\](.+?)\[\/color\]/is', '<span style="color: \\1">\\2</span>', $s);
+
+        //-- [color=#ffcc99]Text[/color] --//
+        $s = preg_replace('/\[color=(#[a-f0-9]{6})\](.+?)\[\/color\]/is', '<span style="color: \\1">\\2</span>', $s);
+    }
+
+    //-- Media Tag --//
+    if (utf8::stripos($s, '[media=') !== false)
+    {
+        $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
+        $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
+    }
+
+    //-- Img Using Lightbox --//
+    //-- [img=http://www/image.gif] --//
+    if (utf8::stripos($s, '[img') !== false)
+    {
+        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpg|gif|png|bmp|jpeg)))\[\/img\]/i", "<img src=\"\\1\" alt=\"\" />", $s);
+        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]+(\.(gif|jpg|png|bmp|jpeg)))\]/i", "<img src=\"\\1\" alt=\"\" />", $s);
+    }
+
+    //-- [size=4]Text[/size] --//
+    if (utf8::stripos($s, '[size=') !== false)
+    {
+        $s = preg_replace("/\[size=([1-7])\]((\s|.)+?)\[\/size\]/i", "<font size=\\1>\\2</font>", $s);
+    }
+
+    //-- [font=Arial]Text[/font] --//
+    if (utf8::stripos($s, '[face=') !== false)
+    {
+        $s = preg_replace('/\[face=([a-zA-Z ,]+)\](.+?)\[\/face\]/is', '<span style="font-family: \\1">\\2</span>', $s);
+    }
+
+    //-- [s]Stroke[/s] --//
+    if (utf8::stripos($s, '[s]') !== false)
+    {
+        $s = preg_replace("/\[s\](.+?)\[\/s\]/is", "<s>\\1</s>", $s);
+    }
+
+     //-- Dynamic Vars --//
+
+    //-- [Spoiler]TEXT[/Spoiler] --//
+    if (utf8::stripos($s, '[spoiler]') !== false)
+    {
+        $s = preg_replace("/\[spoiler\](.+?)\[\/spoiler\]/is", "<div class=\"smallfont\" align=\"left\"><input type=\"button\" value=\"Show\" style=\"width:75px;font-size:10px;margin:0px;padding:0px;\" onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') {this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show'; }\" /><div style=\"margin: 10px; padding: 10px; border: 1px inset;\" align=\"left\"><div style=\"display: none;\">\\1</div></div></div>", $s);
+    }
+
+    //-- [mcom]Text[/mcom] --//
+    if (utf8::stripos($s, '[mcom]') !== false)
+    {
+        $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", "<div style=\"font-size: 18pt; line-height: 50%;\"><div style=\"border-color: red; background-color: red; color: white; text-align: center; font-weight: bold; font-size: large;\"><strong>\\1</strong></div></div>", $s);
+    }
+
+    //-- The [you] Tag --//
+    if (utf8::stripos($s, '[you]') !== false)
+    {
+        $s = preg_replace("/\[you\]/i", user::$current['username'], $s);
+    }
+
+    //-- [mail]Mail[/mail] --//
+    if (stripos($s, '[mail]') !== false)
+    {
+        $s = preg_replace("/\[mail\](.+?)\[\/mail\]/is", "<a href=\"mailto:\\1\" target=\"_blank\">\\1</a>", $s);
+    }
+
+    //--[Align=(center|left|right|justify)]Text[/align] --//
+    if (utf8::stripos($s, '[align=') !== false)
+    {
+        $s = preg_replace("/\[align=([a-zA-Z]+)\](.+?)\[\/align\]/is", "<div style=\"text-align:\\1\">\\2</div>", $s);
+    }
+
+    //-- Quotes --//
+    $s = format_quotes($s);
+
+    //-- URLs --//
+    $s = format_urls($s);
+
+    if (utf8::stripos($s, '[url') !== false)
+    {
+        //-- [url=http://www.example.com]Text[/url] --//
+        $s = preg_replace("/\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]/i","<a target=_blank href=redir.php?url=\\1>\\2</a>", $s);
+        //-- [url]http://www.example.com[/url] --//
+        $s = preg_replace("/\[url\]([^()<>\s]+?)\[\/url\]/i","<a target=_blank href=redir.php?url=\\1>\\1</a>", $s);
+    }
+
+    //-- Linebreaks --//
+    $s = nl2br($s);
+
+    //-- [pre]Preformatted[/pre] --//
+    if (utf8::stripos($s, '[pre]') !== false)
+    {
+        $s = preg_replace("/\[pre\](.+?)\[\/pre\]/is", "<tt><span style=\"white-space: nowrap;\">\\1</span></tt>", $s);
+    }
+
+    //-- [nfo]NFO-preformatted[/nfo] --//
+    if (utf8::stripos($s, '[nfo]') !== false)
+    {
+        $s = preg_replace("/\[nfo\](.+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height: "."10pt'>\\1</font></span></tt>", $s);
+    }
+
+    //-- Maintain Spacing --//
+    $s = str_replace("  ", " &nbsp;", $s);
+
+    reset($smilies);
+    while (list($code, $url) = each($smilies))
+    {
+        $s = str_replace($code, "<img src='images/smilies/{$url}' border='0' alt='".security::html_safe($code)."' title='".security::html_safe($code)."' />", $s);
+    }
+
+    return $s;
+}
+
+function _MediaTag ($content, $type)
+{
+    if ($content == '' or $type == '')
+    {
+        return;
+    }
+
+    $return = '';
+
+    switch ($type)
+    {
+        case 'youtube':
+            $return = preg_replace("#^http://(?:|www\.)youtube\.com/watch\?v=([\-_a-zA-Z0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            break;
+
+        case 'liveleak':
+            $return = preg_replace("#^http://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            break;
+
+        case 'GameTrailers':
+            $return = preg_replace("#^http://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='http://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
+            break;
+
+        case 'imdb':
+            $return = preg_replace("#^http://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9]+)+?$#i", "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<strong>Imdb Trailer: </strong><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='http://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
+            break;
+
+        case 'vimeo':
+            $return = preg_replace("#^http://(?:|www\.)vimeo\.com/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' width='425' height='355' data='http://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1'>
+            <param name='allowFullScreen' value='true' />
+            <param name='allowScriptAccess' value='sameDomain' />
+            <param name='movie' value='http://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1' />
+            <param name='quality' value='high' />
+            </object>", $content);
+            break;
+
+        default:
+
+            $return = 'Not Found !';
+    }
+
+    return $return;
 }
 
 function textbbcode($form, $text, $content = "")

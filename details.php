@@ -120,7 +120,7 @@ if ($row["username"] != user::$current["username"] && user::$current["uid"] > 1)
         1 => ONE_STAR
     );
 
-    $xres = $db->query("SELECT rating, added FROM ratings WHERE infohash = '$id' AND userid = " . $CURUSER["uid"]);
+    $xres = $db->query("SELECT rating, added FROM ratings WHERE infohash = '" . $id . "' AND userid = " . user::$current["uid"]);
     $xrow = @$xres->fetch_array(MYSQLI_BOTH);
     if ($xrow)
         $s = $totrate . " (" . YOU_RATE . " '" . $ratings[$xrow["rating"]] . "')";

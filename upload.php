@@ -36,8 +36,12 @@ if (isset($_FILES["torrent"])) {
             block_end();
             stdfoot();
             exit();
-            
         }
+        
+        //uTorrent v3.x.x fix
+        $alltorrent = preg_replace("/file-mediali(.*?)ee(.*?):/i", "file-mediali0ee$2:", $alltorrent);
+        $alltorrent = preg_replace("/file-durationli(.*?)ee(.*?):/i", "file-durationli0ee$2:", $alltorrent);
+        
         $array = Bencode::decode($alltorrent);
         if (!isset($array)) {
             echo "<font color='red'>" . ERR_PARSER . "</FONT>";

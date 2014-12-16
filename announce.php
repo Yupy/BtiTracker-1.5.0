@@ -170,7 +170,7 @@ if ($PRIVATE_ANNOUNCE)
 		{
 			$wait = 0;
 			if (intval($rowpid['downloaded']) > 0)
-			    $ratio = number_format((int)$rowpid['uploaded'] / (int)$rowpid['downloaded'], 2);
+			    $ratio = number_format((float)$rowpid['uploaded'] / (float)$rowpid['downloaded'], 2);
 			else
 			    $ratio = 0.0;
 
@@ -217,7 +217,7 @@ else
 		{
 			$wait = 0;
 			if (intval($rowpid['downloaded']) > 0)
-			    $ratio = number_format($rowpid['uploaded'] / $rowpid['downloaded'], 2);
+			    $ratio = number_format((float)$rowpid['uploaded'] / (float)$rowpid['downloaded'], 2);
 			else
 			    $ratio = 0.0;
 

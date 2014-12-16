@@ -101,7 +101,7 @@ print("<tr>\n<td class='header'>".UPLOADED."</td>\n<td class='lista' colspan='2'
 
 if (intval($row["downloaded"]) > 0)
 {
-    $sr = (int)$row["uploaded"] / (int)$row["downloaded"];
+    $sr = (float)$row["uploaded"] / (float)$row["downloaded"];
 
     if ($sr >= 4)
         $s = "images/smilies/thumbsup.gif";

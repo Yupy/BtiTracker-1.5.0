@@ -508,7 +508,7 @@ if ($action == "viewtopic") {
                 $flagpic = "unknown.gif";
             
             if (intval($arr2['downloaded']) > 0) {
-                $ratio = number_format((int)$arr2['uploaded'] / (int)$arr2['downloaded'], 2);
+                $ratio = number_format((float)$arr2['uploaded'] / (float)$arr2['downloaded'], 2);
             } else {
                 $ratio = '&infin;';
             }

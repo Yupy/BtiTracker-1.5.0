@@ -950,7 +950,7 @@ function print_users()
             print("<td class='lista' align='center'>" . ($row_user["flag"] == 0 ? "<img src='images/flag/unknown.gif' alt='" . UNKNOWN . "' title='" . UNKNOWN . "' />" : "<img src='images/flag/" . $row_user['flagpic'] . "' alt='" . security::html_safe($row_user['name']) . "' title='" . security::html_safe($row_user['name']) . "' />") . "</td>");
             //user ratio
             if (max(0, (int)$row_user["downloaded"]) > 0)
-                $ratio = number_format((int)$row_user["uploaded"] / (int)$row_user["downloaded"], 2);
+                $ratio = number_format((float)$row_user["uploaded"] / (float)$row_user["downloaded"], 2);
             else
                 $ratio = "&infin;";
             print("<td class='lista' align='center'>" . $ratio . "</td>");

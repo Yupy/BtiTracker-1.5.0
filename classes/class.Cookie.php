@@ -73,7 +73,7 @@ class Cookie
       if ($expiry === -1)
         $expiry = 1893456000; // Lifetime = 2030-01-01 00:00:00
       elseif (is_numeric($expiry))
-        $expiry += time();
+        $expiry += vars::$timestamp;
       else
         $expiry = strtotime($expiry);
 
@@ -100,7 +100,7 @@ class Cookie
     {
       if ($domain === false)
         $domain = $_SERVER['HTTP_HOST'];
-      $retval = setcookie($name, '', time() - 3600, $path, $domain);
+      $retval = setcookie($name, '', vars::$timestamp - 3600, $path, $domain);
 
       if ($remove_from_global)
         unset($_COOKIE[$name]);

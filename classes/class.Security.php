@@ -7,6 +7,10 @@
 */
 
 class security {
+	const REPLACE_COMPAT = ENT_COMPAT;
+	const REPLACE_XHTML = ENT_XHTML;
+	const CHARSET = 'UTF-8';
+	
 	private static $valid_tlds = array(
 		'ac','ad','ae','af','ag','ai','al','am','an','ao','aq',
 		'ar','as','at','au','aw','az','ax','ba','bb','bd','be',
@@ -36,22 +40,9 @@ class security {
 		#'aero','gov','travel','pro','int','mil','jobs','mobi' #Example of Domains we don't want to see on our Tracker =]
 	);
 
-	public static function html_safe($data, $onlyspecialchars = true, $strip_invalid = true) {
-		if (!is_scalar($data))
-			return '';
-
-		$invalid_chars = array("\x00","\x01","\x02","\x03","\x04","\x05","\x06","\x07","\x08","\x0b","\x0c",
-			"\x0e","\x0f","\x10","\x11","\x12","\x13","\x14","\x15","\x16","\x17","\x18","\x19","\x1a","\x1b",
-			"\x1c","\x1d","\x1e","\x1f", "\x7f");
-
-		if ($strip_invalid)
-			$data = str_replace($invalid_chars, '', $data);
-
-		if ($onlyspecialchars)
-			return htmlspecialchars($data, ENT_QUOTES, 'UTF-8', true);
-		else
-			return htmlentities($data, ENT_QUOTES, 'UTF-8', true);
-	}
+        public static function html_safe($string) {
+                return htmlspecialchars($string, self::REPLACE_COMPAT | self::REPLACE_XHTML, self::CHARSET);
+        }
 
 	public static function valid_email($email) {
 		if (preg_match('/^[\w.+-]+@(?:[\w.-]+\.)+([a-z]{2,6})$/isD', $email, $m)) {

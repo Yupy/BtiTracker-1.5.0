@@ -31,10 +31,10 @@ if (!user::$current || user::$current["uid"] == 1) {
 }
 
 if (isset($_GET["style"]))
-    @$db->query("UPDATE users SET style = " . $style . " WHERE id = " . user::$current["uid"]);
+    @$db->query("UPDATE users SET style = " . $style . " WHERE id = " . $db->real_escape_string(user::$current["uid"]));
 
 if (isset($_GET["langue"]))
-    @$db->query("UPDATE users SET language = " . $langue . " WHERE id = " . user::$current["uid"]);
+    @$db->query("UPDATE users SET language = " . $langue . " WHERE id = " . $db->real_escape_string(user::$current["uid"]));
 
 redirect($url);
 

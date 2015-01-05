@@ -26,10 +26,10 @@ if (preg_match("/([<>'\"]|&#039|&#33;|&#34|%27|%22|%3E|%3C|&#x27|&#x22|&#x3E|&#x
 $i = strpos($url, "&url=");
 
 if ($i !== false) {
-    $url = utf8::substr($url, $i + 5);
+    $url = substr($url, $i + 5);
 }
 
-if (utf8::substr($url, 0, 4) == "www.") {
+if (substr($url, 0, 4) == "www.") {
     $url = "http://" . $url;
 }
 

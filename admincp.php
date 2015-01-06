@@ -2081,7 +2081,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
                 err_msg(ERROR, IP_ERROR);
             else {
                 $comment = sqlesc($comment);
-                $added   = sqlesc(time());
+                $added   = sqlesc(vars::$timestamp);
 
                 $db->query("INSERT INTO bannedip (added, addedby, first, last, comment) VALUES(" . $added . ", " . user::$current['uid'] . ", " . $firstip . ", " . $lastip . ", " . $comment . ")");
                 

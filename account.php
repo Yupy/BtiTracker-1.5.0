@@ -371,7 +371,7 @@ function tabella($action, $dati = array())
     <?php
 
         $lres = language_list();
-        print("<tr>\n\t<td align=left class='header'>" . USER_LANGUE . ":</td>");
+        print("<tr>\n\t<td align='left' class='header'>" . USER_LANGUE . ":</td>");
         print("\n\t<td align='left' class='lista'><select name='language'>");
         foreach ($lres as $langue) {
             $option = "\n<option ";
@@ -383,7 +383,7 @@ function tabella($action, $dati = array())
         print("</select></td>\n</tr>");
         
         $sres = style_list();
-        print("<tr>\n\t<td align=left class='header'>" . USER_STYLE . ":</td>");
+        print("<tr>\n\t<td align='left' class='header'>" . USER_STYLE . ":</td>");
         print("\n\t<td align='left' class='lista'><select name='style'>");
         foreach ($sres as $style) {
             $option = "\n<option ";
@@ -395,8 +395,8 @@ function tabella($action, $dati = array())
         print("</select></td>\n</tr>");
         $fres = flag_list();
         
-        print("<tr>\n\t<td align=left class='header'>" . PEER_COUNTRY . ":</td>");
-        print("\n\t<td align=left class='lista'><select name=flag>\n<option value='0'>---</option>");
+        print("<tr>\n\t<td align='left' class='header'>" . PEER_COUNTRY . ":</td>");
+        print("\n\t<td align='left' class='lista'><select name='flag'>\n<option value='0'>---</option>");
         
         $thisip    = vars::$realip;
         $remotedns = gethostbyaddr($thisip);
@@ -432,7 +432,7 @@ function tabella($action, $dati = array())
             $dati["time_offset"] = $timeoff;
         
         $tres = timezone_list();
-        print("<tr>\n\t<td align=left class='header'>" . TIMEZONE . ":</td>");
+        print("<tr>\n\t<td align='left' class='header'>" . TIMEZONE . ":</td>");
         print("\n\t<td align='left' class='lista' colspan='2'>\n<select name='timezone'>");
         foreach ($tres as $timezone) {
             $option = "\n<option ";
@@ -448,7 +448,7 @@ function tabella($action, $dati = array())
         // -----------------------------
         // if set to use secure code: try to display imagecode
         if (user::$current['edit_users'] == 'yes' && $action == "mod" && user::$current["uid"] != $dati["id"]) {
-            print("<tr>\n\t<td align=left class='header'>" . USER_LEVEL . ":</td><td align='left' class='lista'>");
+            print("<tr>\n\t<td align='left' class='header'>" . USER_LEVEL . ":</td><td align='left' class='lista'>");
             print("<select name='level'>");
 
             $res = $db->query("SELECT level FROM users_level WHERE id_level <= " . user::$current["id_level"] . " ORDER BY id_level");

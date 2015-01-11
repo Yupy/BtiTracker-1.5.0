@@ -366,7 +366,7 @@ function tabella($action, $dati = array())
     </tr>
     <tr>
     <td align="left" class="header"><?php echo USER_EMAIL; ?>:</td>
-    <td align="left" class="lista"><input type="text" size="30" name="email" value="<?php if ($action == "mod") echo $dati['email']; ?>"/></td>
+    <td align="left" class="lista"><input type="text" size="30" name="email" value="<?php if ($action == "mod") echo security::html_safe($dati['email']); ?>"/></td>
     </tr>
     <?php
 
@@ -584,7 +584,7 @@ function aggiungiutente()
         }
     }
 
-    $bannedchar = array("\\", "/", ":", "*", "?", "\"", "@", "$", "'", "`", ",", ";", ".", "<", ">", "!", "£", "%", "^", "&", "(", ")", "+", "=", "#", "~");
+    $bannedchar = array("\\", "/", ":", "*", "?", "\"", "@", "$", "'", "`", ",", ";", ".", "<", ">", "!", "Â£", "%", "^", "&", "(", ")", "+", "=", "#", "~");
 
     if (straipos($db->real_escape_string($utente), $bannedchar) == true) {
         return -8;

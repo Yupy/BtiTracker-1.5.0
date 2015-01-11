@@ -119,10 +119,10 @@ global $news, $title;
   <tr>
   </tr>
   <tr>
-     <td align='left' class='header' >
+     <td align='left' class='header'>
          <input type='submit' name='conferma' value='<?php echo FRM_CONFIRM ?>' />
      </td>
-     <td align='left' class='header' >
+     <td align='left' class='header'>
          <input type='submit' name='conferma' value='<?php echo FRM_CANCEL ?>' />
      </td>
   </tr>

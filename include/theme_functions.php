@@ -449,7 +449,8 @@ function format_comment($text, $strip_html = true)
     }
 
     //-- Maintain Spacing --//
-    $s = str_replace("  ", " &nbsp;", $s);
+    $s = str_replace(utf8::NBSP, ' ', $s);
+    $s = str_replace(' ', ' ' . utf8::NBSP, $s);
 
     reset($smilies);
     while (list($code, $url) = each($smilies))

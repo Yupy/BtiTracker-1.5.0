@@ -42,7 +42,7 @@ class misc {
 		
                 //intervals in seconds
                 $intervals = array (
-                       'year' => selft::YEAR, 'month' => self::MONTH, 'week' => self::WEEK, 'day' => self::DAY, 'hour' => self::HOUR, 'minute'=> self::MINUTE
+                       'year' => self::YEAR, 'month' => self::MONTH, 'week' => self::WEEK, 'day' => self::DAY, 'hour' => self::HOUR, 'minute'=> self::MINUTE
                 );
 		
                 //now we just find the difference

@@ -9,7 +9,14 @@
 require_once(INCL_PATH . 'define_bits.php');
 
 class misc {
-    const MB = 1024;
+        const MB = 1024;
+        
+	const MINUTE = 60;
+	const HOUR = 3600;
+	const DAY = 86400;
+	const WEEK = 604800;
+	const MONTH = 2629744;
+	const YEAR = 31556926;
 	
 	const PAGER_SHOW_PAGES = BIT_1;
 	const PAGER_NO_SEPARATOR = BIT_2;
@@ -28,27 +35,77 @@ class misc {
 		return number_format($Size, $Levels) . $Units[$Steps];
 	}
 	
-    public static function make_utf8($Str) {
-	    if ($Str != '') {
-		    if (self::is_utf8($Str)) {
-			    $Encoding = 'UTF-8';
-		    }
-		    if (empty($Encoding)) {
-			    $Encoding = mb_detect_encoding($Str, 'UTF-8, ISO-8859-1');
-		    }
-		    if (empty($Encoding)) {
-			    $Encoding = 'ISO-8859-1';
-		    }
-		    if ($Encoding == 'UTF-8') {
-			    return $Str;
-		    } else {
-			    return @mb_convert_encoding($Str, 'UTF-8', $Encoding);
-		    }
-	    }
-    }
+        public static function time_ago($timestamp) {
+                $timestamp = (int)$timestamp;
+                $current_time = vars::$timestamp;
+                $diff = $current_time - $timestamp;
+		
+                //intervals in seconds
+                $intervals = array (
+                       'year' => selft::YEAR, 'month' => self::MONTH, 'week' => self::WEEK, 'day' => self::DAY, 'hour' => self::HOUR, 'minute'=> self::MINUTE
+                );
+		
+                //now we just find the difference
+                if ($diff == 0) {
+                       return 'just now';
+                }
+		
+                if ($diff < self::MINUTE) {
+                        return $diff == 1 ? $diff . ' second ago' : $diff . ' seconds ago';
+                }
+		
+                if ($diff >= self::MINUTE && $diff < $intervals['hour']) {
+                        $diff = floor($diff / $intervals['minute']);
+                        return $diff == 1 ? $diff . ' minute ago' : $diff . ' minutes ago';
+                }
+		
+                if ($diff >= $intervals['hour'] && $diff < $intervals['day']) {
+                        $diff = floor($diff / $intervals['hour']);
+                        return $diff == 1 ? $diff . ' hour ago' : $diff . ' hours ago';
+                }
+		
+                if ($diff >= $intervals['day'] && $diff < $intervals['week']) {
+                        $diff = floor($diff / $intervals['day']);
+                        return $diff == 1 ? $diff . ' day ago' : $diff . ' days ago';
+                }
+		
+                if ($diff >= $intervals['week'] && $diff < $intervals['month']) {
+                        $diff = floor($diff / $intervals['week']);
+                        return $diff == 1 ? $diff . ' week ago' : $diff . ' weeks ago';
+                }
+		
+                if ($diff >= $intervals['month'] && $diff < $intervals['year']) {
+                       $diff = floor($diff / $intervals['month']);
+                       return $diff == 1 ? $diff . ' month ago' : $diff . ' months ago';
+                }
+		
+                if ($diff >= $intervals['year']) {
+                        $diff = floor($diff / $intervals['year']);
+                        return $diff == 1 ? $diff . ' year ago' : $diff . ' years ago';
+                }
+        }
 	
-    public static function is_utf8($Str) {
-	    return preg_match('%^(?:
+        public static function make_utf8($Str) {
+	        if ($Str != '') {
+		         if (self::is_utf8($Str)) {
+			          $Encoding = 'UTF-8';
+		         }
+		         if (empty($Encoding)) {
+			          $Encoding = mb_detect_encoding($Str, 'UTF-8, ISO-8859-1');
+		         }
+		         if (empty($Encoding)) {
+			          $Encoding = 'ISO-8859-1';
+		         }
+		         if ($Encoding == 'UTF-8') {
+			          return $Str;
+		         } else {
+			          return @mb_convert_encoding($Str, 'UTF-8', $Encoding);
+		         }
+	        }
+        }
+	
+        public static function is_utf8($Str) {
+	        return preg_match('%^(?:
 		    [\x09\x0A\x0D\x20-\x7E]			 // ASCII
 		    | [\xC2-\xDF][\x80-\xBF]			// non-overlong 2-byte
 		    | \xE0[\xA0-\xBF][\x80-\xBF]		// excluding overlongs
@@ -58,8 +115,8 @@ class misc {
 		    | [\xF1-\xF3][\x80-\xBF]{3}		 // planes 4-15
 		    | \xF4[\x80-\x8F][\x80-\xBF]{2}	 // plane 16
 		    )*$%xs', $Str
-	    );
-    }
+	       );
+        }
 	
 	public static function pager($rpp, $count, $href, $options = 0, $pagename = 'page') {
 		$show_pages		= (bool)($options & self::PAGER_SHOW_PAGES);

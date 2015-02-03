@@ -514,7 +514,7 @@ if ($action == "viewtopic") {
             }
             
             $sql   = $db->query("SELECT * FROM posts INNER JOIN users ON posts.userid = users.id WHERE users.id = " . $posterid);
-            $posts = 0 + @$sql->num_rows;
+            $posts = intval(0 + @$sql->num_rows);
             
             $by = "<a href='userdetails.php?id=" . $posterid . "'><b>" . $postername . "</b></a> (" . $title . ")";
         }

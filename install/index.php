@@ -259,7 +259,7 @@ if (!validusername($wantusername))
 MySQL 5 or Above.<br>
 PHP 5.3.0 and Above.<br>
 Apache2 or NGINX.<br>
-A 64 bit OS + Processor.<br>
+A 64 bit OS + Processor (Optional).<br>
 The ability to change directory permissions to 777 or to change ownership of directories to be owned by the webserver process.<br><br>
 <br />
 <br />

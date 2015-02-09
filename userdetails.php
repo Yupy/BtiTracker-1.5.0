@@ -96,8 +96,8 @@ if (date('I', vars::$timestamp) == 1) {
 $offsetu = $tzu - ($row["time_offset"] * 3600);
 
 print("<tr>\n<td class='header'>".USER_LOCAL_TIME."</td>\n<td class='lista' colspan='2'>".date("d/m/Y H:i:s", vars::$timestamp - $offsetu)."&nbsp;(GMT".($row["time_offset"] > 0 ? " + ".$row["time_offset"] : ($row["time_offset"] == 0 ? "" : " ".$row["time_offset"])).")</td></tr>\n");
-print("<tr>\n<td class='header'>".DOWNLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((int)$row["downloaded"])."</td></tr>\n");
-print("<tr>\n<td class='header'>".UPLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((int)$row["uploaded"])."</td></tr>\n");
+print("<tr>\n<td class='header'>".DOWNLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((float)$row["downloaded"])."</td></tr>\n");
+print("<tr>\n<td class='header'>".UPLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((float)$row["uploaded"])."</td></tr>\n");
 
 if (intval($row["downloaded"]) > 0)
 {

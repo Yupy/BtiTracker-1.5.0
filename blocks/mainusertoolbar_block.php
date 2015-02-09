@@ -20,8 +20,8 @@ if (isset(user::$current) && user::$current && user::$current["uid"] > 1) {
     $rowuser = $resuser->fetch_array(MYSQLI_BOTH);
 	
     print("<td class='lista' align='center'>" . USER_LEVEL . ": " . security::html_safe(user::$current["level"]) . "</td>\n");
-    print("<td class='green' align='center'>&#8593&nbsp;" . misc::makesize((int)$rowuser['uploaded']));
-    print("</td><td class='red' align='center'>&#8595&nbsp;" . misc::makesize((int)$rowuser['downloaded']));
+    print("<td class='green' align='center'>&#8593&nbsp;" . misc::makesize((float)$rowuser['uploaded']));
+    print("</td><td class='red' align='center'>&#8595&nbsp;" . misc::makesize((float)$rowuser['downloaded']));
     print("</td><td class='lista' align='center'>(SR " . ((int)$rowuser['downloaded'] > 0 ? number_format((float)$rowuser['uploaded'] / (float)$rowuser['downloaded'], 2) : "&infin;") . ")</td>\n");
     
 	if (user::$current["admin_access"] == "yes")

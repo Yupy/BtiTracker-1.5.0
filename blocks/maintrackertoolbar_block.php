@@ -44,8 +44,8 @@ if (!user::$current || user::$current["view_torrents"] == "no") {
     
     $res     = $db->query("SELECT SUM(downloaded) AS dled, SUM(uploaded) AS upld FROM users");
     $row     = $res->fetch_array(MYSQLI_BOTH);
-    $dled    = 0 + (int)$row["dled"];
-    $upld    = 0 + (int)$row["upld"];
+    $dled    = 0 + (float)$row["dled"];
+    $upld    = 0 + (float)$row["upld"];
     $traffic = misc::makesize($dled + $upld);
 
     ?>

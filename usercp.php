@@ -709,8 +709,8 @@ if (user::$current["uid"] != $uid || user::$current["uid"] == 1) {
         print("<tr>\n<td class='header'>" . USER_JOINED . "</td>\n<td class='lista'" . $colspan . ">" . (user::$current["joined"] == 0 ? "N/A" : get_date_time(user::$current["joined"])) . "</td></tr>\n");
         print("<tr>\n<td class='header'>" . USER_LASTACCESS . "</td>\n<td class='lista'" . $colspan . ">" . (user::$current["lastconnect"] == 0 ? "N/A" : get_date_time(user::$current["lastconnect"])) . "</td></tr>\n");
         print("<tr>\n<td class='header'>" . PEER_COUNTRY . "</td>\n<td class='lista' colspan='2'>" . ($row["flag"] == 0 ? "" : unesc($row['name'])) . "&nbsp;&nbsp;<img src='images/flag/" . (!$row["flagpic"] || $row["flagpic"] == "" ? "unknown.gif" : $row["flagpic"]) . "' alt='" . ($row["flag"] == 0 ? "Unknown" : unesc($row['name'])) . "' /></td></tr>\n");
-        print("<tr>\n<td class='header'>" . DOWNLOADED . "</td>\n<td class='lista' colspan='2'>" . misc::makesize((int)$row["downloaded"]) . "</td></tr>\n");
-        print("<tr>\n<td class='header'>" . UPLOADED . "</td>\n<td class='lista' colspan='2'>" . misc::makesize((int)$row["uploaded"]) . "</td></tr>\n");
+        print("<tr>\n<td class='header'>" . DOWNLOADED . "</td>\n<td class='lista' colspan='2'>" . misc::makesize((float)$row["downloaded"]) . "</td></tr>\n");
+        print("<tr>\n<td class='header'>" . UPLOADED . "</td>\n<td class='lista' colspan='2'>" . misc::makesize((float)$row["uploaded"]) . "</td></tr>\n");
 
         if (intval($row["downloaded"]) > 0) {
             $sr = (float)$row["uploaded"] / (float)$row["downloaded"];

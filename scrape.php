@@ -47,7 +47,7 @@ if ($db->connect_error)
 }
 
 if (isset($_GET["pid"]))
-    $pid = $_GET["pid"];
+    $pid = $db->real_escape_string($_GET["pid"]);
 else
     $pid = '';
 

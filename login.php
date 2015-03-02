@@ -76,14 +76,14 @@ dbconn();
 
 if (!user::$current || user::$current["uid"] == 1) {
     if (isset($_POST["uid"]) && $_POST["uid"])
-        $user = $_POST["uid"];
+        $user = security::html_safe($_POST["uid"]);
     else
-	    $user = '';
+	$user = '';
 
     if (isset($_POST["pwd"]) && $_POST["pwd"])
         $pwd = $_POST["pwd"];
     else
-	    $pwd='';
+	$pwd='';
 
     if (isset($_POST["uid"]) && isset($_POST["pwd"]))
     {
@@ -102,7 +102,7 @@ if (!user::$current || user::$current["uid"] == 1) {
             print("<br /><br /><div align='center'><font size='2' color='#FF0000'>" . ERR_PASSWORD_INCORRECT . "</font></div>");
             login();
         } else {
-            $db->query("UPDATE users SET loginhash = '" . md5(ip::get_ip().$row['password'])."' WHERE id = " . (int)$row['id']);
+            $db->query("UPDATE users SET loginhash = '" . md5(ip::get_ip().$row['password']) . "' WHERE id = " . (int)$row['id']);
             $salted = md5($GLOBALS["salting"].$row["random"].$row["password"].$row["random"]);
             logincookie((int)$row["id"], $salted);
 

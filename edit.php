@@ -41,8 +41,10 @@ if ((isset($_POST["comment"])) && (isset($_POST["name"])))
         echo "<center>".PLEASE_WAIT."</center>";
 
         $db->query("UPDATE namemap SET filename = " . $fname . ", comment = '" . $db->real_escape_string(AddSlashes($_POST["comment"])) . "', category = " . intval($_POST["category"]) . " WHERE info_hash = '" . $torhash . "'");
-
-		print("<script language='javascript'>window.location.href='" . $link . "'</script>");
+        
+        @unlink(CACHE_PATH . 'torrent_details_' . $torhash . '.txt');
+	
+	print("<script language='javascript'>window.location.href='" . $link . "'</script>");
         exit();
     } else {
         print("<script language='javascript'>window.location.href='" . $link . "'</script>");

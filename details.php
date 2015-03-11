@@ -45,8 +45,21 @@ if (isset($_GET["vote"]) && $_GET["vote"] == VOTE) {
     exit();
 }
 
-$res = $db->query("SELECT namemap.info_hash, namemap.filename, namemap.url, UNIX_TIMESTAMP(namemap.data) AS data, namemap.size, namemap.comment, namemap.uploader, categories.name AS cat_name, summary.seeds, summary.leechers, summary.finished, summary.speed, namemap.external, namemap.announce_url, UNIX_TIMESTAMP(namemap.lastupdate) AS lastupdate, namemap.anonymous, users.username FROM namemap LEFT JOIN categories ON categories.id = namemap.category LEFT JOIN summary ON summary.info_hash = namemap.info_hash LEFT JOIN users ON users.id = namemap.uploader WHERE namemap.info_hash = '" . $id . "'");
+$res = $db->query("SELECT namemap.info_hash, namemap.url, UNIX_TIMESTAMP(namemap.data) AS data, namemap.uploader, categories.name AS cat_name, summary.seeds, summary.leechers, summary.finished, summary.speed, namemap.external, namemap.announce_url, UNIX_TIMESTAMP(namemap.lastupdate) AS lastupdate, namemap.anonymous, users.username FROM namemap LEFT JOIN categories ON categories.id = namemap.category LEFT JOIN summary ON summary.info_hash = namemap.info_hash LEFT JOIN users ON users.id = namemap.uploader WHERE namemap.info_hash = '" . $id . "'");
 $row = $res->fetch_array(MYSQLI_BOTH);
+
+#Cached filename, size and description...
+$cache_details = CACHE_PATH . 'torrent_details_' . $id . '.txt';
+$cache_details_expire = 7 * 3600;
+if (file_exists($cache_details) && is_array(unserialize(file_get_contents($cache_details))) && (vars::$timestamp - filemtime($cache_details)) < $cache_details_expire) {
+    $cache = unserialize(@file_get_contents($cache_details));
+} else {
+    $cached = $db->query("SELECT filename, size, comment FROM namemap WHERE info_hash = '" . $id . "'");
+    $cache = $cached->fetch_assoc();
+    $handle = fopen($cache_details, "w+");
+    fwrite($handle, serialize($cache));
+    fclose($handle);
+}
 
 if (!$row)
     die("Bad ID!");
@@ -68,12 +81,12 @@ if (user::$current["uid"] > 1 && (user::$current["uid"] == $row["uploader"] || u
     print("<a href='delete.php?info_hash=" . $row["info_hash"] . "&amp;returnto=" . urlencode("torrents.php") . "'>" . image_or_link($STYLEPATH . "/delete.gif", "", DELETE) . "</a>");
 }
 
-print("</td><td class='lista' align='center'>" . security::html_safe($row["filename"]) . "</td></tr>\n");
-print("<tr><td align='right' class='header'> " . TORRENT . ":</td><td class='lista' align='center'><a href='download.php?id=" . $row["info_hash"] . "&f=" . rawurlencode($row["filename"]) . ".torrent'>" . security::html_safe($row["filename"]) . "</a></td></tr>\n");
+print("</td><td class='lista' align='center'>" . security::html_safe($cache["filename"]) . "</td></tr>\n");
+print("<tr><td align='right' class='header'> " . TORRENT . ":</td><td class='lista' align='center'><a href='download.php?id=" . $row["info_hash"] . "&f=" . rawurlencode($cache["filename"]) . ".torrent'>" . security::html_safe($cache["filename"]) . "</a></td></tr>\n");
 print("<tr><td align='right' class='header'> " . INFO_HASH . ":</td><td class='lista' align='center'>" . security::html_safe($row["info_hash"]) . "</td></tr>\n");
 
-if (!empty($row["comment"]))
-    print("<tr><td align='right' class='header'> " . DESCRIPTION . ":</td><td align='center' class='lista'>" . format_comment(unesc($row["comment"])) . "</td></tr>\n");
+if (!empty($cache["comment"]))
+    print("<tr><td align='right' class='header'> " . DESCRIPTION . ":</td><td align='center' class='lista'>" . format_comment(unesc($cache["comment"])) . "</td></tr>\n");
 
 if (isset($row["cat_name"]))
     print("<tr><td align='right' class='header'> " . CATEGORY_FULL . ":</td><td class='lista' align='center'>" . security::html_safe(unesc($row["cat_name"])) . "</td></tr>\n");
@@ -141,7 +154,7 @@ if ($row["username"] != user::$current["username"] && user::$current["uid"] > 1)
 }
 print $s;
 print("</td></tr>\n");
-print("<tr><td align=right class='header'> " . SIZE . ":</td><td class='lista' align='center'>" . misc::makesize((int)$row["size"]) . "</td></tr>\n");
+print("<tr><td align=right class='header'> " . SIZE . ":</td><td class='lista' align='center'>" . misc::makesize((float)$cache["size"]) . "</td></tr>\n");
 
 // files in torrent - by Lupin 20/10/05
 ?>

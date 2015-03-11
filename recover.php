@@ -92,7 +92,6 @@ EOD;
 		<td align="center" valign="middle">
 			<div id="logo">
 				<ul>
-					<li><a href="home.php">Home</a></li>
 					<li><a href="login.php">Log in</a></li>
 					<li><a href="account.php">Signup</a></li>
 				</ul>
@@ -166,7 +165,6 @@ EOD;
 		<td align="center" valign="middle">
 			<div id="logo">
 				<ul>
-					<li><a href="home.php">Home</a></li>
 					<li><a href="login.php">Log in</a></li>
 					<li><a href="account.php">Signup</a></li>
 				</ul>
@@ -198,7 +196,6 @@ EOD;
 		<td align="center" valign="middle">
 			<div id="logo">
 				<ul>
-					<li><a href="home.php">Home</a></li>
 					<li><a href="login.php">Log in</a></li>
 					<li><a href="account.php">Signup</a></li>
 				</ul>

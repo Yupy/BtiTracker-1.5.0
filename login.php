@@ -7,69 +7,25 @@
 */
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'include'.DIRECTORY_SEPARATOR.'functions.php');
 
-function login()
-{
-    if (!isset($user))
-	    $user = '';
-		
-	?>
-   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-   <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-	<title><?php echo security::html_safe($SITENAME); ?></title>
-	<meta http-equiv="X-UA-Compatible" content="chrome=1; IE=edge" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="shortcut icon" href="favicon.ico" />
-	<link href="style/home.css" rel="stylesheet" type="text/css" />
-    </head>
-    <body>
-    <!--Page by What.CD-->
-    <div id="head">
-    </div>
-    <table class="layout" id="maincontent" style="border-top: solid 1px #3399FF; border-bottom: solid 1px #3399FF;">
-	<tr>
-		<td align="center" valign="middle">
-			<div id="logo">
-				<ul>
-					<li><a href="index.php">Home</a></li>
-					<li><a href="account.php">Signup</a></li>
-					<li><a href="recover.php">Recover</a></li>
-				</ul>
-			</div>
-	<form method="post" action="login.php?returnto=<?php echo urlencode('index.php'); ?>">
-	<table class="layout">
-		<tr>
-			<td>Username&nbsp;</td>
-			<td colspan="2">
-				<input type="text" name="uid" id="uid" value="<?php $user ?>" required="required" size="40" maxlength="40" pattern="[A-Za-z0-9_?]{1,20}" autofocus="autofocus" placeholder="Username" />
-			</td>
-		</tr>
-		<tr>
-			<td>Password&nbsp;</td>
-			<td colspan="2">
-				<input type="password" name="pwd" id="pwd" required="required" size="40" maxlength="100" pattern=".{6,100}" placeholder="Password" />
-			</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>
-				<input type="checkbox" id="keeplogged" name="keeplogged" value="1" />
-				<label for="keeplogged">Remember me</label>
-			</td>
-			<td><input type="submit" name="login" value="Log in" class="submit" /></td>
-		</tr>
-	</table>
-	</form>
-		</td>
-	</tr>
-    </table>
-    <div id="foot">
-    <span><a href="http://www.btiteam.org" target="_blank">BtiTeam.org</a> | <a href="https://github.com/Yupy/BtiTracker-1.5.0" target="_blank">GitHub.com</a> | <a href="#">BtiTracker v1.5.0 by Yupy &amp; Btiteam</a></span>
-    </div>
-    </body>
-    </html>
+function login() {
+	global $PRIVATE_TRACKER, $tpl, $STYLEPATH;
 
-<?php
+        if (!isset($user))
+	     $user = '';
+
+	$var_returno = urlencode('index.php');
+	$tpl->assign('returno', $var_returno);
+
+	$var_user = $user;
+	$tpl->assign('user', $var_user);
+
+        #If...
+	$var_private_tracker = $PRIVATE_TRACKER;
+	$tpl->assign('private_tracker', $var_private_tracker);
+        #End If...
+
+	$login = $tpl->draw($STYLEPATH . '/tpl/login', $return_string = true);
+        echo $login;
 }
 
 dbconn();

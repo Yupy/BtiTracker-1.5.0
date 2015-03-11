@@ -24,9 +24,9 @@ if (user::$current["id"] == 1)
 {
     if ($_SERVER["REQUEST_URI"] == '/' || '/index.php')
     {
-        redirect('home.php');
-    } else if ($_SERVER["REQUEST_URI"] == '/home.php') {
-       redirect('home.php');
+        redirect('login.php');
+    } else if ($_SERVER["REQUEST_URI"] == '/login.php') {
+       redirect('login.php');
     }
 }
 

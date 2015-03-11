@@ -114,7 +114,7 @@ if (isset($_GET["search"])) {
     $where .= " AND " . $query_select;
 }
 
-$cache_torrents = CACHE_PATH . 'cache_torrents_' . $where . '.txt';
+$cache_torrents = CACHE_PATH . 'cache_torrents_' . sha1($where) . '.txt';
 $cache_torrents_expire = 2 * 60;
 if (file_exists($cache_torrents) && is_array(unserialize(file_get_contents($cache_torrents))) && (vars::$timestamp - filemtime($cache_torrents)) < $cache_torrents_expire) {
     $count = unserialize(@file_get_contents($cache_torrents));

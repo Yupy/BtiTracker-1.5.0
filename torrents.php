@@ -114,10 +114,18 @@ if (isset($_GET["search"])) {
     $where .= " AND " . $query_select;
 }
 
-$res = $db->query("SELECT COUNT(*) FROM summary LEFT JOIN namemap ON summary.info_hash = namemap.info_hash " . $where);
-
-$row = $res->fetch_row();
-$count = (int)$row[0];
+$cache_torrents = CACHE_PATH . 'cache_torrents_' . $where . '.txt';
+$cache_torrents_expire = 2 * 60;
+if (file_exists($cache_torrents) && is_array(unserialize(file_get_contents($cache_torrents))) && (vars::$timestamp - filemtime($cache_torrents)) < $cache_torrents_expire) {
+    $count = unserialize(@file_get_contents($cache_torrents));
+} else {
+    $res = $db->query("SELECT COUNT(*) FROM summary LEFT JOIN namemap ON summary.info_hash = namemap.info_hash " . $where);
+    $row = $res->fetch_row();
+    $count = (int)$row[0];
+    $handle = fopen($cache_torrents, "w+");
+    fwrite($handle, serialize($count));
+    fclose($handle);
+}
 
 if (!isset($search))
     $search = '';

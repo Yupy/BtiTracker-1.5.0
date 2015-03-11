@@ -53,6 +53,8 @@ if (isset($_POST["action"])) {
         @$db->query("DELETE FROM peers WHERE infohash = '" . $hash . "'");
         @$db->query("DELETE FROM history WHERE infohash = '" . $hash . "'");
         
+        @unlink(CACHE_PATH . 'torrent_details_' . $hash . '.txt');
+        
         unlink($TORRENTSDIR . "/" . $hash . ".btf");
         
         print("<script language='javascript'>window.location.href='" . $link . "'</script>");

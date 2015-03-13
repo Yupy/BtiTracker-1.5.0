@@ -174,8 +174,20 @@ if ($PRIVATE_ANNOUNCE)
 			else
 			    $ratio = 0.0;
 
-			$res2 = $db->query("SELECT UNIX_TIMESTAMP(data) AS data, uploader FROM namemap WHERE info_hash = '" . $info_hash . "'");
-			$added = $res2->fetch_array(MYSQLI_BOTH);
+            $announce_wait_time = $BASEPATH . 'cache/announce_wait_time_' . $info_hash . '.txt';
+            $announce_wait_time_expire = 5 * 60;
+
+            if (file_exists($announce_wait_time) && is_array(unserialize(file_get_contents($announce_wait_time))) && (vars::$timestamp - filemtime($announce_wait_time)) < $announce_wait_time_expire) {
+                $added = unserialize(@file_get_contents($announce_wait_time));
+            } else {
+			    $res2 = $db->query("SELECT UNIX_TIMESTAMP(data) AS data, uploader FROM namemap WHERE info_hash = '" . $info_hash . "'");
+			    $added = $res2->fetch_array(MYSQLI_BOTH);
+
+		        $handle = fopen($announce_wait_time, "w+");
+                fwrite($handle, serialize($added));
+                fclose($handle);
+            }
+
 			$vz = $added["data"];
 			$timer = floor((vars::$timestamp - $vz) / 3600);
 			if ($ratio < 1.0 && $rowpid['id'] != $added["uploader"])
@@ -221,8 +233,20 @@ else
 			else
 			    $ratio = 0.0;
 
-			$res2 = $db->query("SELECT UNIX_TIMESTAMP(data) AS data, uploader FROM namemap WHERE info_hash = '" . $info_hash . "'");
-			$added = $res2->fetch_array(MYSQLI_BOTH);
+            $announce_wait_time = $BASEPATH . 'cache/announce_wait_time_' . $info_hash . '.txt';
+            $announce_wait_time_expire = 5 * 60;
+
+            if (file_exists($announce_wait_time) && is_array(unserialize(file_get_contents($announce_wait_time))) && (vars::$timestamp - filemtime($announce_wait_time)) < $announce_wait_time_expire) {
+                $added = unserialize(@file_get_contents($announce_wait_time));
+            } else {
+			    $res2 = $db->query("SELECT UNIX_TIMESTAMP(data) AS data, uploader FROM namemap WHERE info_hash = '" . $info_hash . "'");
+			    $added = $res2->fetch_array(MYSQLI_BOTH);
+
+		        $handle = fopen($announce_wait_time, "w+");
+                fwrite($handle, serialize($added));
+                fclose($handle);
+            }
+
 			$vz = $added["data"];
 			$timer = floor((vars::$timestamp - $vz) / 3600);
 			if ($ratio < 1.0 && $rowpid['id'] != $added["uploader"])
@@ -658,16 +682,32 @@ function runSpeed($info_hash, $delta)
 	// stick in our latest data before we calc it out
 	quickQuery("INSERT IGNORE INTO timestamps (info_hash, bytes, delta, sequence) SELECT '" . $info_hash . "' AS info_hash, dlbytes, UNIX_TIMESTAMP() - lastSpeedCycle, NULL FROM summary WHERE info_hash = '" . $info_hash . "'");
 
-	$results = $db->query('SELECT (MAX(bytes) - MIN(bytes)) / SUM(delta), COUNT(*), MIN(sequence) FROM timestamps WHERE info_hash = "' . $info_hash . '"');
-	$data = $results->fetch_row();
+    $announce_bytes_ts = $BASEPATH . 'cache/announce_bytes_timestamps_' . $info_hash . '.txt';
+    $announce_bytes_ts_expire = 5 * 60;
+    
+    if (file_exists($announce_bytes_ts) && is_array(unserialize(file_get_contents($announce_bytes_ts))) && (vars::$timestamp - filemtime($announce_bytes_ts)) < $announce_bytes_ts_expire) {
+        $data = unserialize(@file_get_contents($announce_bytes_ts));
+    } else {
+	    $results = $db->query('SELECT (MAX(bytes) - MIN(bytes)) / SUM(delta), COUNT(*), MIN(sequence) FROM timestamps WHERE info_hash = "' . $info_hash . '"');
+	    $data = $results->fetch_row();
+
+		$handle = fopen($announce_bytes_ts, "w+");
+        fwrite($handle, serialize($data));
+        fclose($handle);
+    }
+
 	summaryAdd("speed", $data[0], true);
 	summaryAdd("lastSpeedCycle", "UNIX_TIMESTAMP()", true);
+	@unlink($BASEPATH . 'cache/announce_count_bytes_' . $info_hash . '.txt');
 
 	// if we have more than 20 drop the rest
-	if ($data[1] == 21)
+	if ($data[1] == 21) {
 	    quickQuery("DELETE FROM timestamps WHERE info_hash=\"$info_hash\" AND sequence = " . $data['2']);
-	else if ($data[1] > 21)
+	    @unlink($BASEPATH . 'cache/announce_bytes_timestamps_' . $info_hash . '.txt');
+	} else if ($data[1] > 21) {
 	    quickQuery('DELETE FROM timestamps WHERE info_hash = "' . $info_hash . '" ORDER BY sequence LIMIT ' . ($data['1'] - 20));
+	    @unlink($BASEPATH . 'cache/announce_bytes_timestamps_' . $info_hash . '.txt');
+	}
 }
 
 $results = $db->query("SELECT status, count(status) FROM peers WHERE " . ($PRIVATE_ANNOUNCE ? "pid = '" . $pid . "'" : "ip = '" . $ip . "'") . " AND infohash = '" . $info_hash . "' AND peer_id <> '" . $peer_id . "' GROUP BY status") or show_error("Tracker error: invalid torrent");
@@ -885,8 +925,19 @@ default:
 if ($GLOBALS["countbytes"])
 {
 	// Once every minute or so, we run the speed update checker.
-	$query = @$db->query("SELECT UNIX_TIMESTAMP() - lastSpeedCycle FROM summary WHERE info_hash = '" . $info_hash . "'");
-	$results = $query->fetch_row();
+    $announce_count_bytes = $BASEPATH . 'cache/announce_count_bytes_' . $info_hash . '.txt';
+    $announce_count_bytes_expire = 5 * 60;
+    
+    if (file_exists($announce_count_bytes) && is_array(unserialize(file_get_contents($announce_count_bytes))) && (vars::$timestamp - filemtime($announce_count_bytes)) < $announce_count_bytes_expire) {
+        $results = unserialize(@file_get_contents($announce_count_bytes));
+    } else {
+	    $query = @$db->query("SELECT UNIX_TIMESTAMP() - lastSpeedCycle FROM summary WHERE info_hash = '" . $info_hash . "'");
+	    $results = $query->fetch_row();
+
+		$handle = fopen($announce_count_bytes, "w+");
+        fwrite($handle, serialize($results));
+        fclose($handle);
+    }
 
 	if ($results[0] >= 60)
 	    @runSpeed($info_hash, $results[0]);

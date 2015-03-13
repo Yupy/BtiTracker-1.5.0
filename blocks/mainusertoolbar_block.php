@@ -15,9 +15,20 @@ if (isset(user::$current) && user::$current && user::$current["uid"] > 1) {
 <?php
     $style   = style_list();
     $langue  = language_list();
-	
-    $resuser = $db->query("SELECT * FROM users WHERE id = " . user::$current["uid"]);
-    $rowuser = $resuser->fetch_array(MYSQLI_BOTH);
+
+    $curuser_stats = CACHE_PATH . 'curuser_stats_' . user::$current['uid'] . '.txt';
+    $curuser_stats_expire = 15 * 60;
+    
+    if (file_exists($curuser_stats) && is_array(unserialize(file_get_contents($curuser_stats))) && (vars::$timestamp - filemtime($curuser_stats)) < $curuser_stats_expire) {
+        $rowuser = unserialize(@file_get_contents($curuser_stats));
+    } else {
+        $resuser = $db->query("SELECT uploaded, downloaded FROM users WHERE id = " . user::$current["uid"]);
+        $rowuser = $resuser->fetch_array(MYSQLI_BOTH);
+
+        $handle = fopen($curuser_stats, "w+");
+        fwrite($handle, serialize($rowuser));
+        fclose($handle);
+    }
 	
     print("<td class='lista' align='center'>" . USER_LEVEL . ": " . security::html_safe(user::$current["level"]) . "</td>\n");
     print("<td class='green' align='center'>&#8593&nbsp;" . misc::makesize((float)$rowuser['uploaded']));

@@ -663,6 +663,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
     } elseif ($do == "category" && $action == "delete") {
         $id = intval($_GET["id"]);
         $db->query("DELETE FROM categories WHERE id = " . $id);
+        @unlink(CACHE_PATH . 'genre_list.txt');
         redirect("admincp.php?user=" . user::$current["uid"] . "&code=" . user::$current["random"] . "&do=category&action=read");
     } elseif ($do == "category" && $action == "add") {
         block_begin(CAT_ADD_CAT);
@@ -744,6 +745,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
                 $img = $db->real_escape_string($_POST["image"]);
             }
             $db->query("INSERT INTO categories SET name = '" . $name . "', sub = '" . $sub . "', sort_index = '" . $sort . "', image = '" . $img . "'");
+            @unlink(CACHE_PATH . 'genre_list.txt');
         }
         redirect("admincp.php?user=" . user::$current["uid"] . "&code=" . user::$current["random"] . "&do=category&action=read");
     } elseif ($do == "category" && $action == "edit") {
@@ -849,6 +851,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
                 $img = $db->real_escape_string($_POST["image"]);
             
             $db->query("UPDATE categories SET name = '" . $name . "', sub = '" . $sub . "', sort_index = '" . $sort . "', image = '" . $img . "' WHERE id = " . $id);
+            @unlink(CACHE_PATH . 'genre_list.txt');
         }
         redirect("admincp.php?user=" . user::$current["uid"] . "&code=" . user::$current["random"] . "&do=category&action=read");
     } elseif ($do == "level" && $action == "read") {
@@ -1747,9 +1750,10 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
 
             $lang = $reslang["language_url"];
 
-            if (unlink("$lang")) {
+            if (unlink($lang)) {
                 $db->query("UPDATE users SET language = " . $DEFAULT_LANGUAGE . " WHERE language = " . $id);
                 $db->query("DELETE FROM language WHERE id = " . $id);
+                @unlink(CACHE_PATH . 'language_list.txt');
             } else
                 err_msg(ERROR, DELFAILED);
         }
@@ -1769,7 +1773,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
 
         foreach ($cat as $category) {
             $res = $db->query("SELECT * FROM users WHERE style = " . (int)$category["id"]);
-            $total_users = 0 + @$res->num_rows;
+            $total_users = intval(0 + @$res->num_rows);
 
             print("<tr>\n");
             print("<td class='lista' align='center'>" . security::html_safe(unesc($category["style"])) . "</td>\n");
@@ -1838,11 +1842,13 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
         if ($_POST["write"] == FRM_CONFIRM) {
             if ($_GET["what"] == "new") {
                 $db->query("INSERT INTO style SET style = '" . $db->real_escape_string($_POST["style"]) . "', style_url = '" . $_POST["style_url"] . "'");
+                @unlink(CACHE_PATH . 'style_list.txt');
                 
 				print(STYLE_ADDED);
             } else {
                 $id = intval($_GET["id"]);
                 $db->query("UPDATE style SET style = '" . $db->real_escape_string($_POST["style"]) . "', style_url='" . $_POST["style_url"] . "' WHERE id = " . $id);
+                @unlink(CACHE_PATH . 'style_list.txt');
                 
 				print(STYLE_MODIFIED);
             }
@@ -1888,6 +1894,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
         if ($id != $DEFAULT_STYLE) {
             $db->query("UPDATE users SET style = " . $DEFAULT_STYLE . " WHERE style = " . $id);
             $db->query("DELETE FROM style WHERE id = " . $id);
+            @unlink(CACHE_PATH . 'style_list.txt');
         }
 
         redirect("admincp.php?user=" . user::$current["uid"] . "&code=" . user::$current["random"] . "&do=style&action=read");
@@ -2180,16 +2187,16 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
         $sqlver = $db->query("SELECT VERSION()");
 		$sqlver = $sqlver->fetch_row();
 
-        print("\n<tr><td>MYSQLi Version:</td><td>" . $sqlver[0] . "</td></tr>");
+        print("\n<tr><td>MYSQL Version:</td><td>" . $sqlver[0] . "</td></tr>");
         $sqlver = $db->stat();
         $sqlver = explode('  ', $sqlver);
-        print("\n<tr><td valign='top' rowspan='" . (count($sqlver) + 1) . "'>MYSQLi stats: </td>\n");
+        print("\n<tr><td valign='top' rowspan='" . (count($sqlver) + 1) . "'>MYSQL stats: </td>\n");
         for ($i = 0; $i < count($sqlver); $i++)
             print(($i == 0 ? "" : "<tr>") . "<td>" . $sqlver[$i] . "</td></tr>\n");
         print("\n</table><br />\n</div>");
         block_end();
         print("<br />");
-        include("blocks/serverload_block.php");
+        include(BLOCKS_PATH . 'serverload_block.php');
     }
     block_end(); //admincp
 }

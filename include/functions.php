@@ -91,8 +91,9 @@ function print_version()
     $max_mem = memory_get_peak_usage();
 	
     print("<p align='center'>");
-    if ($PRINT_DEBUG)
+    if ($PRINT_DEBUG) {
         print("[ Execution time: ".number_format(($time_end-$time_start),4)." sec. ] - [Memory usage: ".misc::makesize($max_mem)."] - [ GZIP: ".$gzip." ]<br />");
+    }
     print("BtiTracker (" . $tracker_version . ") by <a href='https://github.com/Yupy/BtiTracker-1.5.0' target='_blank'>Yupy<a/> & <a href='http://www.btiteam.org' target='_blank'>Btiteam</a></p>");
 }
 
@@ -597,13 +598,22 @@ function updatedata()
 function genrelist()
 {
     global $db;
-	
-    $ret = array();
-    $res = $db->query("SELECT * FROM categories ORDER BY sort_index, id");
-    
-    while ($row = $res->fetch_array(MYSQLI_BOTH))
-        $ret[] = $row;
-    
+
+    $genrelist = CACHE_PATH . 'genre_list.txt';
+    $genrelist_expire = 12 * 3600;
+    if (file_exists($genrelist) && is_array(unserialize(file_get_contents($genrelist))) && (vars::$timestamp - filemtime($genrelist)) < $genrelist_expire) {
+        $ret = unserialize(@file_get_contents($genrelist));
+    } else {
+        $ret = array();
+        $res = $db->query("SELECT * FROM categories ORDER BY sort_index, id");
+
+        while ($row = $res->fetch_array(MYSQLI_BOTH))
+            $ret[] = $row;
+
+        $handle = fopen($genrelist, "w+");
+        fwrite($handle, serialize($ret));
+        fclose($handle);
+    }
     return $ret;
 }
 
@@ -675,52 +685,88 @@ function sub_cat($sub)
 function style_list()
 {
     global $db;
-	
-    $ret = array();
-    $res = $db->query("SELECT * FROM style ORDER BY id");
-    
-    while ($row = $res->fetch_array(MYSQLI_BOTH))
-        $ret[] = $row;
-    
+
+    $stylelist = CACHE_PATH . 'style_list.txt';
+    $stylelist_expire = 12 * 3600;
+    if (file_exists($stylelist) && is_array(unserialize(file_get_contents($stylelist))) && (vars::$timestamp - filemtime($stylelist)) < $stylelist_expire) {
+        $ret = unserialize(@file_get_contents($stylelist));
+    } else {
+        $ret = array();
+        $res = $db->query("SELECT * FROM style ORDER BY id");
+
+        while ($row = $res->fetch_array(MYSQLI_BOTH))
+            $ret[] = $row;
+
+        $handle = fopen($stylelist, "w+");
+        fwrite($handle, serialize($ret));
+        fclose($handle);
+    }
     return $ret;
 }
 
 function language_list()
 {
     global $db;
-	
-    $ret = array();
-    $res = $db->query("SELECT * FROM language ORDER BY language");
-    
-    while ($row = $res->fetch_array(MYSQLI_BOTH))
-        $ret[] = $row;
-    
+
+    $languagelist = CACHE_PATH . 'language_list.txt';
+    $languagelist_expire = 12 * 3600;
+    if (file_exists($languagelist) && is_array(unserialize(file_get_contents($languagelist))) && (vars::$timestamp - filemtime($languagelist)) < $languagelist_expire) {
+        $ret = unserialize(@file_get_contents($languagelist));
+    } else {
+        $ret = array();
+        $res = $db->query("SELECT * FROM language ORDER BY language");
+
+        while ($row = $res->fetch_array(MYSQLI_BOTH))
+            $ret[] = $row;
+
+        $handle = fopen($languagelist, "w+");
+        fwrite($handle, serialize($ret));
+        fclose($handle);
+    }
     return $ret;
 }
 
 function flag_list($with_unknown = false)
 {
     global $db;
-	
-    $ret = array();
-    $res = $db->query("SELECT * FROM countries " . (!$with_unknown ? "WHERE id <> 100" : "") . " ORDER BY name");
-    
-    while ($row = $res->fetch_array(MYSQLI_BOTH))
-        $ret[] = $row;
-    
+
+    $flaglist = CACHE_PATH . 'flag_list.txt';
+    $flaglist_expire = 24 * 3600;
+    if (file_exists($flaglist) && is_array(unserialize(file_get_contents($flaglist))) && (vars::$timestamp - filemtime($flaglist)) < $flaglist_expire) {
+        $ret = unserialize(@file_get_contents($flaglist));
+    } else {
+        $ret = array();
+        $res = $db->query("SELECT * FROM countries " . (!$with_unknown ? "WHERE id <> 100" : "") . " ORDER BY name");
+
+        while ($row = $res->fetch_array(MYSQLI_BOTH))
+            $ret[] = $row;
+
+        $handle = fopen($flaglist, "w+");
+        fwrite($handle, serialize($ret));
+        fclose($handle);
+    }
     return $ret;
 }
 
 function timezone_list()
 {
     global $db;
-	
-    $ret = array();
-    $res = $db->query("SELECT * FROM timezone");
-    
-    while ($row = $res->fetch_array(MYSQLI_BOTH))
-        $ret[] = $row;
-    
+
+    $timezone_list = CACHE_PATH . 'timezone_list.txt';
+    $timezone_list_expire = 24 * 3600;
+    if (file_exists($timezone_list) && is_array(unserialize(file_get_contents($timezone_list))) && (vars::$timestamp - filemtime($timezone_list)) < $timezone_list_expire) {
+        $ret = unserialize(@file_get_contents($timezone_list));
+    } else {
+        $ret = array();
+        $res = $db->query("SELECT * FROM timezone");
+
+        while ($row = $res->fetch_array(MYSQLI_BOTH))
+            $ret[] = $row;
+
+        $handle = fopen($timezone_list, "w+");
+        fwrite($handle, serialize($ret));
+        fclose($handle);
+    }
     return $ret;
 }
 

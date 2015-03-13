@@ -30,7 +30,7 @@ if (user::$current["view_users"] != "yes")
 
 if ($id > 1)
 {
-    $res = $db->query("SELECT users.avatar, users.email, users.cip, users.username, users.downloaded, users.uploaded, UNIX_TIMESTAMP(users.joined) AS joined, UNIX_TIMESTAMP(users.lastconnect) AS lastconnect, users_level.level, users.flag, countries.name, countries.flagpic, users.pid, users.time_offset FROM users INNER JOIN users_level ON users_level.id = users.id_level LEFT JOIN countries ON users.flag = countries.id WHERE users.id = " . $id);
+    $res = $db->query("SELECT users.avatar, users.email, users.cip, users.username, UNIX_TIMESTAMP(users.joined) AS joined, UNIX_TIMESTAMP(users.lastconnect) AS lastconnect, users_level.level, users.flag, countries.name, countries.flagpic, users.pid, users.time_offset FROM users INNER JOIN users_level ON users_level.id = users.id_level LEFT JOIN countries ON users.flag = countries.id WHERE users.id = " . $id);
     $num = $res->num_rows;
 
     if ($num == 0)
@@ -47,6 +47,19 @@ if ($id > 1)
     block_end();
     stdfoot();
     die();
+}
+
+$userdetails_stats = CACHE_PATH . 'userdetails_stats_' . $id . '.txt';
+$userdetails_stats_expire = 15 * 60;
+
+if (file_exists($userdetails_stats) && is_array(unserialize(file_get_contents($userdetails_stats))) && (vars::$timestamp - filemtime($userdetails_stats)) < $userdetails_stats_expire) {
+    $user_stats = unserialize(@file_get_contents($userdetails_stats));
+} else {
+    $u_stats = $db->query("SELECT downloaded, uploaded FROM users WHERE id = " . $id) or sqlerr(__FILE__, __LINE__);
+    $user_stats = $u_stats->fetch_assoc();
+    $handle = fopen($userdetails_stats, "w+");
+    fwrite($handle, serialize($user_stats));
+    fclose($handle);
 }
 
 $utorrents = user::$current["torrentsperpage"];
@@ -96,12 +109,12 @@ if (date('I', vars::$timestamp) == 1) {
 $offsetu = $tzu - ($row["time_offset"] * 3600);
 
 print("<tr>\n<td class='header'>".USER_LOCAL_TIME."</td>\n<td class='lista' colspan='2'>".date("d/m/Y H:i:s", vars::$timestamp - $offsetu)."&nbsp;(GMT".($row["time_offset"] > 0 ? " + ".$row["time_offset"] : ($row["time_offset"] == 0 ? "" : " ".$row["time_offset"])).")</td></tr>\n");
-print("<tr>\n<td class='header'>".DOWNLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((float)$row["downloaded"])."</td></tr>\n");
-print("<tr>\n<td class='header'>".UPLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((float)$row["uploaded"])."</td></tr>\n");
+print("<tr>\n<td class='header'>".DOWNLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((float)$user_stats["downloaded"])."</td></tr>\n");
+print("<tr>\n<td class='header'>".UPLOADED."</td>\n<td class='lista' colspan='2'>".misc::makesize((float)$user_stats["uploaded"])."</td></tr>\n");
 
-if (intval($row["downloaded"]) > 0)
+if (intval($user_stats["downloaded"]) > 0)
 {
-    $sr = (float)$row["uploaded"] / (float)$row["downloaded"];
+    $sr = (float)$user_stats["uploaded"] / (float)$user_stats["downloaded"];
 
     if ($sr >= 4)
         $s = "images/smilies/thumbsup.gif";

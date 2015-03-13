@@ -11,19 +11,41 @@ global $db;
 if (!user::$current || user::$current["view_torrents"] == "no") {
     // do nothing
 } else {
-    $res = $db->query("SELECT COUNT(*) AS tot FROM namemap");
-    if ($res) {
-        $row      = $res->fetch_array(MYSQLI_BOTH);
-        $torrents = (int)$row["tot"];
-    } else
-        $torrents = 0;
-    
-    $res = $db->query("SELECT COUNT(*) AS tot FROM users WHERE id > 1");
-    if ($res) {
-        $row   = $res->fetch_array(MYSQLI_BOTH);
-        $users = (int)$row["tot"];
-    } else
-        $users = 0;
+    $maintrackertoolbar_torrents = CACHE_PATH . 'maintrackertoolbar_total_torrents.txt';
+    $maintrackertoolbar_torrents_expire = 5 * 60;
+
+    if (file_exists($maintrackertoolbar_torrents) && is_array(unserialize(file_get_contents($maintrackertoolbar_torrents))) && (vars::$timestamp - filemtime($maintrackertoolbar_torrents)) < $maintrackertoolbar_torrents_expire) {
+        $torrents = unserialize(@file_get_contents($maintrackertoolbar_torrents));
+    } else {
+        $res = $db->query("SELECT COUNT(*) AS tot FROM namemap");
+        if ($res) {
+            $row      = $res->fetch_array(MYSQLI_BOTH);
+            $torrents = (int)$row["tot"];
+        } else
+            $torrents = 0;
+
+        $handle = fopen($maintrackertoolbar_torrents, "w+");
+        fwrite($handle, serialize($torrents));
+        fclose($handle);
+    }
+
+    $maintrackertoolbar_users = CACHE_PATH . 'maintrackertoolbar_total_users.txt';
+    $maintrackertoolbar_users_expire = 5 * 60;
+
+    if (file_exists($maintrackertoolbar_users) && is_array(unserialize(file_get_contents($maintrackertoolbar_users))) && (vars::$timestamp - filemtime($maintrackertoolbar_users)) < $maintrackertoolbar_users_expire) {
+        $users = unserialize(@file_get_contents($maintrackertoolbar_userss));
+    } else {
+        $res = $db->query("SELECT COUNT(*) AS tot FROM users WHERE id > 1");
+        if ($res) {
+            $row   = $res->fetch_array(MYSQLI_BOTH);
+            $users = (int)$row["tot"];
+        } else
+            $users = 0;
+
+        $handle = fopen($maintrackertoolbar_users, "w+");
+        fwrite($handle, serialize($users));
+        fclose($handle);
+    }
     
     $res = $db->query("SELECT SUM(seeds) AS seeds, SUM(leechers) AS leechs FROM summary");
     if ($res) {
@@ -41,9 +63,20 @@ if (!user::$current || user::$current["view_torrents"] == "no") {
         $percent = number_format($seeds * 100, 0);
     
     $peers = $seeds + $leechers;
+
+    $maintrackertoolbar_traffic = CACHE_PATH . 'maintrackertoolbar_total_traffic.txt';
+    $maintrackertoolbar_traffic_expire = 5 * 60;
     
-    $res     = $db->query("SELECT SUM(downloaded) AS dled, SUM(uploaded) AS upld FROM users");
-    $row     = $res->fetch_array(MYSQLI_BOTH);
+    if (file_exists($maintrackertoolbar_traffic) && is_array(unserialize(file_get_contents($maintrackertoolbar_traffic))) && (vars::$timestamp - filemtime($maintrackertoolbar_traffic)) < $maintrackertoolbar_traffic_expire) {
+        $row = unserialize(@file_get_contents($maintrackertoolbar_traffic));
+    } else {
+        $res = $db->query("SELECT SUM(downloaded) AS dled, SUM(uploaded) AS upld FROM users");
+        $row = $res->fetch_array(MYSQLI_BOTH);
+
+        $handle = fopen($maintrackertoolbar_traffic, "w+");
+        fwrite($handle, serialize($row));
+        fclose($handle);
+    }
     $dled    = 0 + (float)$row["dled"];
     $upld    = 0 + (float)$row["upld"];
     $traffic = misc::makesize($dled + $upld);

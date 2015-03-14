@@ -98,7 +98,7 @@ function scrape($url, $infohash = "")
             }
         }
         
-        $array = Bencode::decode($stream);
+        $array = bencdec::decode($stream);
         if (!isset($array)) {
             $ret = $db->query("UPDATE namemap SET lastupdate = NOW() WHERE announce_url = '" . $url . "'" . ($infohash == "" ? "" : " AND namemap.info_hash IN ('" . $infohash . "')"));
             write_log("FAILED update external torrent " . ($infohash == "" ? "" : "(infohash: " . $infohash . ")") . " from " . $url . " tracker (not bencode data)", "");

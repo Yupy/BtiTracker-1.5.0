@@ -42,7 +42,7 @@ if (isset($_FILES["torrent"])) {
         $alltorrent = preg_replace("/file-mediali(.*?)ee(.*?):/i", "file-mediali0ee$2:", $alltorrent);
         $alltorrent = preg_replace("/file-durationli(.*?)ee(.*?):/i", "file-durationli0ee$2:", $alltorrent);
         
-        $array = Bencode::decode($alltorrent);
+        $array = bencdec::decode($alltorrent, bencdec::OPTION_EXTENDED_VALIDATION);
         if (!isset($array)) {
             echo "<font color='red'>" . ERR_PARSER . "</FONT>";
             endOutput();
@@ -56,9 +56,9 @@ if (isset($_FILES["torrent"])) {
 
         if (in_array($array["announce"], $TRACKER_ANNOUNCEURLS) && $DHT_PRIVATE) {
             $array["info"]["private"] = 1;
-            $hash  = sha1(Bencode::encode($array["info"]));
+            $hash  = sha1(bencdec::encode($array["info"]));
         } else {
-            $hash = sha1(Bencode::encode($array["info"]));
+            $hash = sha1(bencdec::encode($array["info"]));
         }
         fclose($fd);
     }
@@ -160,7 +160,7 @@ if (isset($_FILES["torrent"])) {
             write_log("Uploaded new torrent $filename - EXT ($hash)", "add");
         } else {
             if ($DHT_PRIVATE) {
-                $alltorrent = Bencode::encode($array);
+                $alltorrent = bencdec::encode($array);
                 $fd         = fopen($TORRENTSDIR . "/" . $hash . ".btf", "rb+");
                 fwrite($fd, $alltorrent);
                 fclose($fd);

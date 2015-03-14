@@ -114,29 +114,39 @@ $namemap = array();
 while ($row = $query->fetch_row())
     $namemap[$row[0]] = $row[1];
 
-if ($usehash)
-    $query = $db->query("SELECT summary.info_hash, summary.seeds, summary.leechers, summary.finished FROM summary LEFT JOIN namemap ON namemap.info_hash = summary.info_hash WHERE namemap.external = 'no' AND summary.info_hash IN " . $info_hash) or show_error("Database error. Cannot complete request.");
-else
-    $query = $db->query("SELECT summary.info_hash, summary.seeds, summary.leechers, summary.finished FROM summary LEFT JOIN namemap ON namemap.info_hash = summary.info_hash WHERE namemap.external = 'no' ORDER BY summary.info_hash") or show_error("Database error. Cannot complete request.");
+$cache_scrape = CACHE_PATH . 'scrape_' . $info_hash . '.txt';
+$cache_scrape_expire = 2 * 60;
 
+if (file_exists($cache_scrape) && is_array(unserialize(file_get_contents($cache_scrape))) && (vars::$timestamp - filemtime($cache_scrape)) < $cache_scrape_expire) {
+    $result = unserialize(@file_get_contents($cache_scrape));
+} else {
+    if ($usehash)
+        $query = $db->query("SELECT summary.info_hash, summary.seeds, summary.leechers, summary.finished FROM summary LEFT JOIN namemap ON namemap.info_hash = summary.info_hash WHERE namemap.external = 'no' AND summary.info_hash IN " . $info_hash) or show_error("Database error. Cannot complete request.");
+    else
+        $query = $db->query("SELECT summary.info_hash, summary.seeds, summary.leechers, summary.finished FROM summary LEFT JOIN namemap ON namemap.info_hash = summary.info_hash WHERE namemap.external = 'no' ORDER BY summary.info_hash") or show_error("Database error. Cannot complete request.");
 
-$result = "d5:filesd";
+    $result = "d5:filesd";
 
-while ($row = $query->fetch_row())
-{
-    $hash = hex2bin($row[0]);
-    $result .= "20:" . $hash . "d";
-    $result .= "8:completei" . $row[1] . "e";
-    $result .= "10:downloadedi" . $row[3] . "e";
-    $result .= "10:incompletei" . $row[2] . "e";
+    while ($row = $query->fetch_row())
+    {
+        $hash = hex2bin($row[0]);
+        $result .= "20:" . $hash . "d";
+        $result .= "8:completei" . $row[1] . "e";
+        $result .= "10:downloadedi" . $row[3] . "e";
+        $result .= "10:incompletei" . $row[2] . "e";
 
-    if (isset($namemap[$row[0]]))
-        $result .= "4:name" . strlen($namemap[$row[0]]) . ":" . $namemap[$row[0]];
+        if (isset($namemap[$row[0]]))
+            $result .= "4:name" . strlen($namemap[$row[0]]) . ":" . $namemap[$row[0]];
 
-    $result .= "e";
+        $result .= "e";
+    }
+
+    $result .= "ee";
+
+    $handle = fopen($cache_scrape, "w+");
+    fwrite($handle, serialize($result));
+    fclose($handle);
 }
-
-$result .= "ee";
 
 echo $result;
 

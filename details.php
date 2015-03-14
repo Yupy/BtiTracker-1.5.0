@@ -189,7 +189,7 @@ if (file_exists($row["url"])) {
     $ffile = fopen($row["url"], "rb");
     $content = fread($ffile, filesize($row["url"]));
     fclose($ffile);
-    $content  = Bencode::decode($content);
+    $content  = bencdec::decode($content);
     $numfiles = 0;
     if (isset($content["info"]) && $content["info"]) {
         $thefile = $content["info"];

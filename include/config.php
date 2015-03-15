@@ -50,9 +50,9 @@ $GLOBALS['maxleech'] = 5;
 $dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = '';
-$database = 'BtiTracker';
+$database = 'btit';
 //Tracker's name
-$SITENAME='BtitTracker Test';
+$SITENAME='BtiTracker 1.5.0';
 //Tracker's Base URL
 $BASEURL='http://localhost';
 // tracker's announce urls, can be more than one

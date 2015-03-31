@@ -1250,7 +1250,7 @@ if (!user::$current || user::$current["admin_access"] != "yes") {
         print("</tr>\n");
         foreach ($cat as $category) {
             $res = $db->query("SELECT * FROM users WHERE language = " . (int)$category["id"]);
-            $total_users = 0 + @$res->num_rows;
+            $total_users = intval(0 + @$res->num_rows);
             print("<tr>\n");
             print("<td class='lista' align='center'>" . security::html_safe(unesc($category["language"])) . "</td>\n");
             print("<td class='lista' align='center'>" . $category["language_url"] . "</td>\n");

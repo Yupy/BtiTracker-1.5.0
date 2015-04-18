@@ -382,10 +382,7 @@ function unesc($x)
 
 function mksecret($len = 20)
 {
-    $ret = "";
-    for ($i = 0; $i < $len; $i++)
-        $ret .= chr(mt_rand(0, 255));
-    return $ret;
+    return _string::random($len);
 }
 
 function hashit($var, $addtext = '')

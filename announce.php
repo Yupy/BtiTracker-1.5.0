@@ -387,7 +387,7 @@ function start($info_hash, $ip, $port, $peer_id, $left, $downloaded = 0, $upload
 		$ip = $db->real_escape_string($_GET["ip"]);
 	}
 	else
-	    $ip = ip::get_ip();
+	    $ip = vars::$ip;
 
 	$ip = $db->real_escape_string($ip);
 	$agent = $db->real_escape_string($agent);

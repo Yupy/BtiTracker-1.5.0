@@ -414,7 +414,7 @@ function userlogin()
     global $db;
     unset($GLOBALS["CURUSER"]);
     
-    $ip  = ip::get_ip();
+    $ip  = vars::$ip;
     $nip = ip2long($ip);
     $res = $db->query("SELECT * FROM bannedip WHERE '" . $nip . "' >= first AND '" . $nip . "' <= last") or sqlerr(__FILE__, __LINE__);
     if ($res->num_rows > 0) {

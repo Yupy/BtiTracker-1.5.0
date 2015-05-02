@@ -214,9 +214,9 @@ function getRandomPeers($hash, $where = "")
     $peercount = mysqli_result($results, 0, 0);
     
     if ($peercount < 500)
-        $query = "SELECT " . ((isset($_GET["no_peer_id"]) && $_GET["no_peer_id"] == 1) ? "" : "peer_id,") . "ip, port, status FROM peers " . $where . " ORDER BY RAND() LIMIT {$GLOBALS['maxpeers']}";
+        $query = "SELECT " . ((isset($_GET["no_peer_id"]) && $_GET["no_peer_id"] == 1) ? "" : "peer_id,") . "ip, port, status FROM peers " . $where . " ORDER BY RAND() LIMIT " . (int)$GLOBALS['maxpeers'];
     else
-        $query = "SELECT " . ((isset($_GET["no_peer_id"]) && $_GET["no_peer_id"] == 1) ? "" : "peer_id,") . "ip, port, status FROM peers " . $where . " LIMIT " . @mt_rand(0, $peercount - (int)$GLOBALS["maxpeers"]) . ", {$GLOBALS['maxpeers']}";
+        $query = "SELECT " . ((isset($_GET["no_peer_id"]) && $_GET["no_peer_id"] == 1) ? "" : "peer_id,") . "ip, port, status FROM peers " . $where . " LIMIT " . @mt_rand(0, $peercount - (int)$GLOBALS['maxpeers']) . ", " . (int)$GLOBALS['maxpeers'];
     
     $results = $db->query($query);
     if (!$results)

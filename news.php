@@ -60,7 +60,7 @@ if ($action == "del") {
     elseif ($_POST["conferma"] == FRM_CONFIRM) {
         if (isset($_POST["news"]) && isset($_POST["title"])) {
             $news = $_POST["news"];
-            $uid = $CURUSER["uid"];
+            $uid = user::$current["uid"];
             $title = $_POST["title"];
             if ($news == "" || $title == "") {
                 err_msg(ERROR, ERR_INS_TITLE_NEWS);

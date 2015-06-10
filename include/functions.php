@@ -94,7 +94,7 @@ function print_version()
     if ($PRINT_DEBUG) {
         print("[ Execution time: ".number_format(($time_end-$time_start),4)." sec. ] - [Memory usage: ".misc::makesize($max_mem)."] - [ GZIP: ".$gzip." ]<br />");
     }
-    print("BtiTracker (" . $tracker_version . ") by <a href='https://github.com/Yupy/BtiTracker-1.5.0' target='_blank'>Yupy<a/> & <a href='http://www.btiteam.org' target='_blank'>Btiteam</a></p>");
+    print("BtiTracker (" . $tracker_version . ") by <a href='https://github.com/Yupy/BtiTracker-1.5.0' target='_blank'>Yupy</a> & <a href='http://www.btiteam.org' target='_blank'>Btiteam</a></p>");
 }
 
 //Disallow special characters in username

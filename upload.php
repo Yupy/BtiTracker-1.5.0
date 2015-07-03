@@ -105,7 +105,7 @@ if (isset($_FILES["torrent"])) {
             $size += floatval($file["length"]);
         }
     } else
-        $size = "0";
+        $size = 0;
     
     if (!isset($array["announce"])) {
         err_msg(ERROR, "Announce is empty");

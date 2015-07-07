@@ -15,7 +15,7 @@ $scriptname = $_SERVER["PHP_SELF"];
 $link = $_GET["returnto"];
 
 if ($link == "")
-   $link = "torrents.php";
+    $link = "details.php?id=" . $row["info_hash"];
 
 if ((isset($_POST["comment"])) && (isset($_POST["name"])))
 {

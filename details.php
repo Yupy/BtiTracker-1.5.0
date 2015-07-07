@@ -74,7 +74,7 @@ if (user::$current["uid"] > 1 && (user::$current["uid"] == $row["uploader"] || u
 
 // edit and delete picture/link
 if (user::$current["uid"] > 1 && (user::$current["uid"] == $row["uploader"] || user::$current["edit_torrents"] == "yes")) {
-    print("<a href='edit.php?info_hash=" . $row["info_hash"] . "&amp;returnto=" . urlencode("torrents.php") . "'>" . image_or_link($STYLEPATH . "/edit.gif", "", EDIT) . "</a>&nbsp;&nbsp;");
+    print("<a href='edit.php?info_hash=" . $row["info_hash"] . "&amp;returnto=" . urlencode("details.php?id=" . $row["info_hash"]) . "'>" . image_or_link($STYLEPATH . "/edit.gif", "", EDIT) . "</a>&nbsp;&nbsp;");
 }
 
 if (user::$current["uid"] > 1 && (user::$current["uid"] == $row["uploader"] || user::$current["delete_torrents"] == "yes")) {

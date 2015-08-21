@@ -87,7 +87,7 @@ if (isset($_POST["uid"]) && isset($_POST["act"])) {
     else
         $link = "";
     if (isset($_POST["act"]))
-        $act = $_POST["act"];
+        $act = security::html_safe($_POST["act"]);
     else
         $act = "";
 }

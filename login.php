@@ -58,7 +58,7 @@ if (!user::$current || user::$current["uid"] == 1) {
             print("<br /><br /><div align='center'><font size='2' color='#FF0000'>" . ERR_PASSWORD_INCORRECT . "</font></div>");
             login();
         } else {
-            $db->query("UPDATE users SET loginhash = '" . md5(ip::get_ip().$row['password']) . "' WHERE id = " . (int)$row['id']);
+            $db->query("UPDATE users SET loginhash = '" . md5(vars::$ip.$row['password']) . "' WHERE id = " . (int)$row['id']);
             $salted = md5($GLOBALS["salting"].$row["random"].$row["password"].$row["random"]);
             logincookie((int)$row["id"], $salted);
 

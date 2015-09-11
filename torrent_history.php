@@ -60,13 +60,13 @@ while ($row = $res->fetch_array(MYSQLI_BOTH))
     print("<td align='center' class='lista'>" . $row["active"] . "</td>");
     print("<td align='center' class='lista'>" . security::html_safe($row["agent"]) . "</td>");
 
-    $dled = misc::makesize((int)$row["downloaded"]);
-    $upld = misc::makesize((int)$row["uploaded"]);
+    $dled = misc::makesize((float)$row["downloaded"]);
+    $upld = misc::makesize((float)$row["uploaded"]);
     print("<td align='center' class='lista'>" . $dled . "</td>");
     print("<td align='center' class='lista'>" . $upld . "</td>");
 
     if (intval($row["downloaded"]) > 0) {
-        $ratio = number_format((int)$row["uploaded"] / (int)$row["downloaded"], 2);
+        $ratio = number_format((float)$row["uploaded"] / (float)$row["downloaded"], 2);
     } else {
 	    $ratio = "&infin;";
     }

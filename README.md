@@ -1,5 +1,7 @@
 <h1>BtitTracker v.1.5.0</h1>
 
+<a href='https://pledgie.com/campaigns/30320'><img alt='Click here to lend your support to: Github and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/30320.png?skin_name=chrome' border='0' ></a>
+
 Installation
 ================
 

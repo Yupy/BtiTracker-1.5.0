@@ -16,7 +16,7 @@ if (isset($_GET['action']) && $_GET['action'])
 else
     $action = '';
 
-if ($action = "find")
+if ($action != "find")
 {
     ?>
     <form action='searchusers.php?action=find' name='users' method='post'>

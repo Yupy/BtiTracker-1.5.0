@@ -6,13 +6,13 @@
 * Copyright (C) 2004-2014 Btiteam.org
 */
 
-class ocr_captcha
+class ocr_captch
 {
     var $key; // ultra private static text
-    var $long; // size of text
-    var $lx; // width of picture
-    var $ly; // height of picture
-    var $nb_noise; // nb of background noisy characters
+    var $long = 6; // size of text
+    var $lx = 120; // width of picture
+    var $ly = 30; // height of picture
+    var $nb_noise = 25; // nb of background noisy characters
     var $filename; // file of captcha picture stored on disk
     var $imagetype = "png"; // can also be "png";
     var $public_key; // public key

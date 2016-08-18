@@ -464,7 +464,7 @@ function tabella($action, $dati = array())
             if (extension_loaded('gd')) {
                 $arr = gd_info();
                 if ($arr['FreeType Support'] == 1) {
-                    $p = new ocr_captcha();
+                    $p = new ocr_captch();
                     
                     print("<tr>\n\t<td align='left' class='header'>" . IMAGE_CODE . ":</td>");
                     print("\n\t<td align='left' class='lista'><input type='text' name='private_key' value='' maxlength='6' size='6'>\n");
@@ -572,7 +572,7 @@ function aggiungiutente()
                 $public  = $_POST['public_key'];
                 $private = $_POST['private_key'];
                 
-                $p = new ocr_captcha();
+                $p = new ocr_captch();
                 
                 if ($p->check_captcha($public, $private) != true) {
                     err_msg(ERROR, ERR_IMAGE_CODE);

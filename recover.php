@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                 $public = $_POST['public_key'];
                 $private = $_POST['private_key'];
 
-                $p = new ocr_captcha();
+                $p = new ocr_captch();
 
                 if ($p->check_captcha($public, $private) != true)
                 {
@@ -222,7 +222,7 @@ EOD;
 
             if ($arr['FreeType Support'] == 1)
             {
-                $p = new ocr_captcha();
+                $p = new ocr_captch();
 
                 print("<tr>\n\t<td>Image Code&nbsp;</td>");
                 print("\n\t<td colspan='2'><input type='text' name='private_key' value='' maxlength='6' size='6'>\n");
